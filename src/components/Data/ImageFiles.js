@@ -1,0 +1,39 @@
+let data = [
+    {
+        id:1,
+        imgpath:'/Images/home-bg-1.jpg'
+    },
+    {
+        id:2,
+        imgpath:'/Images/home-bg-2.jpg'
+    },
+    {
+        id:3,
+        imgpath:'/Images/home-bg-3.jpg'
+    },
+    {
+        id:4,
+        imgpath:'/Images/bg1.jpg'
+    },
+    {
+        id:5,
+        imgpath:'/Images/bg2.jpg'
+    },
+    {
+        id:6,
+        imgpath:'/Images/bg3.jpg'
+    },
+    {
+        id:7,
+        imgpath:'/Images/bg8.jpg'
+    },
+    {
+        id:8,
+        imgpath:'/Images/bg5.jpg'
+    },
+    {
+        id:9,
+        imgpath:'/Images/bg7.jpg'
+    },
+]
+export default data;
