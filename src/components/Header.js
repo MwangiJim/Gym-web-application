@@ -69,16 +69,14 @@ function Header() {
           <li onClick={()=>navigate('/joinus')}>Join Us</li>
           <li onClick={MoveToCheckOut}><FontAwesomeIcon icon={faShoppingCart} className='shopping'/><span>{EcommerceStore.length}</span></li>
           <div className='profile_image' onClick={ShowProfile}>
-            {userDetails.PhotoImage? 
-           <img src={userDetails.PhotoImage} className='img'/>:
-           <p>{DetailsName?.UserName.charAt(0)}{DetailsName?.UserName.charAt(1)}</p>}
+            <p>{DetailsName?.UserName.charAt(0)}{DetailsName?.UserName.charAt(1)}</p>
           </div>
           <small>Hello<br/>{userDetails.Email?userDetails.Email:DetailsName.UserName}</small>
         {/* //   <p></p>}  */}
           <button onClick={()=>auth.signOut()}>LOGOUT</button>
           <div className='location'>
                 <FontAwesomeIcon icon={faLocation} className='icon' onClick={ShowGoogleMaps}/>
-                <small>{localStorage.getItem('address')},Kenya</small>
+                <small>{localStorage.getItem('address')}</small>
             </div>
       </div>
       <FontAwesomeIcon icon={Menu?faTimes:faBars} className='menu' onClick={ShowMenu}/>
