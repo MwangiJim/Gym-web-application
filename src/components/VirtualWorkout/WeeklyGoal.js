@@ -82,7 +82,7 @@ function WeeklyGoal(props) {
 export default WeeklyGoal
 
 let Container = styled.div`
- bottom:620px;
+ bottom:610px;
  position:relative;
  z-index:5;
  background-image:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('/Images/blog-5.jpg');
