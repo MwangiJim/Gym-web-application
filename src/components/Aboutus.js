@@ -145,4 +145,7 @@ i{
  @media(max-width:600px){
     flex-basis:100%;
  }
+ iframe{
+    border-radius:10px;
+ }
 `

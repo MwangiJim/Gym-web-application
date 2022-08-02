@@ -18,7 +18,7 @@ function VideoPreviewSection(props) {
         title='Exercise Video'
         src={`https://www.youtube.com/embed/${props.vid_id}`}
          width='100%'
-         height= '200px'
+         height= '280px'
          allowFullScreen
         ></iframe>
     </Container>
@@ -27,7 +27,7 @@ function VideoPreviewSection(props) {
 
 export default VideoPreviewSection
 let Container = styled.div`
-  height:80vh;
+  height:92vh;
   width:97.5%;
   background-color:rgb(30, 102, 197);
   bottom:625px;
