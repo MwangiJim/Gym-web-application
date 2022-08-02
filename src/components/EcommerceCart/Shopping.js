@@ -69,7 +69,7 @@ function Shopping() {
                   id='15'
                  image = '/Images/ChestWorkout Machine.png'
                  description = 'Weight Holder'
-                 price={30000}
+                 price={130000}
                 />
             </Row>
             <Row>
