@@ -47,7 +47,7 @@ function Languages(){
 
 let Container = styled.div`
  bottom:625px;
- height:100vh;
+ height:93vh;
  position:relative;
  width:100%;
  background-color:#fff;
