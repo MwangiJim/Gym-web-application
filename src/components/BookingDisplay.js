@@ -24,9 +24,8 @@ function BookingDisplay() {
                <div className='user__details'>
                   <h4>{userDetails.UserName?userDetails.UserName:DetailsName?.UserName}</h4>
                   <small>{userDetails.Email?userDetails.Email:DetailsName?.Email}</small>
-                 <div className='user__Profile'>
-                 {userDetails.PhotoImage? <img src={userDetails.PhotoImage}/>: 
-                 <p>{DetailsName?.UserName.charAt(0)}{DetailsName?.UserName.charAt(1)}</p>}
+                 <div className='user__Profile'> 
+                   <p>{DetailsName?.UserName.charAt(0)}{DetailsName?.UserName.charAt(1)}</p>
                  </div>
                </div>
         </Content>

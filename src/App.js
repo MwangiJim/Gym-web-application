@@ -19,6 +19,7 @@ import Virtualworkout from './components/VirtualWorkout/Virtualworkout';
 import ExercisePreview from './components/VirtualWorkout/ExercisePreview';
 import TrainerbookingSection from './components/TrainerbookingSection';
 import Joinus from './components/JoinUsSection/Joinus';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   let dispatch = useDispatch()
@@ -63,9 +64,10 @@ function App() {
           <Route path='/shopping' element={<Shopping/>}></Route>
           <Route path='/' element={<Home/>}></Route>
         </Routes>
+        <ScrollToTop/>
+        <Footer/>
       </BrowserRouter>:
       <UserLogin/>}
-      <Footer/>
     </div>
     </PayPalScriptProvider>
   );

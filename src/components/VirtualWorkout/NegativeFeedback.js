@@ -25,10 +25,10 @@ function NegativeFeedback() {
 export default NegativeFeedback
 let Container = styled.div`
 width:100%;
-height:55vh;
+height:60vh;
 z-index:6;
-bottom:630px;
-position:relative;
+bottom:230px;
+position:absolute;
 padding:5px;
 background:radial-gradient(transparent,#fff);
 .buttons{

@@ -63,6 +63,7 @@ export default ExercisePreview
 
 let Container = styled.div`
 display:none;
+position:relative;
 .Top__section{
   margin-bottom:-35px;
   cursor:pointer;
@@ -123,8 +124,8 @@ let Footer = styled.div`
  padding:15px 12px;
  background-color:#fff;
  text-align:center;
- bottom:19px;
- position:relative;
+ bottom:-45px;
+ position:absolute;
  button{
   background-color:rgb(30, 102, 197);
   width:80%;

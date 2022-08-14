@@ -56,11 +56,11 @@ width:100%;
 background-color:#fff;
 height:max-content;
 z-index:9;
-bottom:625px;
-position:relative;
+bottom:6px;
+position:absolute;
 .top__section{
     background-color:rgb(30, 102, 197);
-    height:70vh;
+    height:71vh;
     .textbox{
         display:flex;
         justify-content:center;

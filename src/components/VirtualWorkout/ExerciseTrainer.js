@@ -233,6 +233,7 @@ export default ExerciseTrainer
 let Container = styled.div`
  width:100%;
  height:max-content;
+ position:relative;
  .top__bar{
   display:flex;
   justify-content:space-between;

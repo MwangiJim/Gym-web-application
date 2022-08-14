@@ -23,10 +23,10 @@ export default Report
 let Container=styled.div`
  background-color:#fff;
  width:100%;
- height:70vh;
+ height:94vh;
  z-index:9;
- bottom:625px;
- position:relative;
+ bottom:4px;
+ position:absolute;
  .top{
   background-color:rgb(30, 102, 197);
   height:30vh;

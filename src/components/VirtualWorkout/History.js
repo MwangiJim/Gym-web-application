@@ -57,9 +57,9 @@ export default History
 let Container=styled.div`
  width:100%;
  background-color:#fff;
- bottom:625px;
+ bottom:16px;
  z-index:9;
- position:relative;
+ position:absolute;
  .react-calendar{
     background-color:#fff;
     padding:10px 12px;

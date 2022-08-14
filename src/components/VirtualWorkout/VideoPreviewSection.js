@@ -30,10 +30,10 @@ let Container = styled.div`
   height:92vh;
   width:97.5%;
   background-color:rgb(30, 102, 197);
-  bottom:625px;
+  bottom:0px;
   z-index:7;
   padding:10px;
-  position:relative;
+  position:absolute;
   .arrow__back{
     color:#fff;
     cursor:pointer;

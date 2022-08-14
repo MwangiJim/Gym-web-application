@@ -46,9 +46,9 @@ function Languages(){
  export default Languages
 
 let Container = styled.div`
- bottom:625px;
- height:93vh;
- position:relative;
+ bottom:5px;
+ height:96vh;
+ position:absolute;
  width:100%;
  background-color:#fff;
  z-index:5;

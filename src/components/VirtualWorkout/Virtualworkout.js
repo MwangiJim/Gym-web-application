@@ -241,4 +241,5 @@ let Center=styled.div`
 flex-basis:50%;
 margin-top:4%;
 height:max-content;
+position:relative;
 `

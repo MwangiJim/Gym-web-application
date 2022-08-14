@@ -67,8 +67,8 @@ let Container = styled.div`
  height:95vh;
  width:100%;
  z-index:11;
- bottom:640px;
- position:relative;
+ bottom:-60px;
+ position:absolute;
  background:rgba(76,76,76,0.3);
  border-radius:5px;
  .display__section{
