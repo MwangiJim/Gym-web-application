@@ -67,7 +67,7 @@ let Container = styled.div`
  height:95vh;
  width:100%;
  z-index:11;
- bottom:-60px;
+ bottom:-68px;
  position:absolute;
  background:rgba(76,76,76,0.3);
  border-radius:5px;
