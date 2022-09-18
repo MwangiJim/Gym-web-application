@@ -46,12 +46,13 @@ let Container = styled.div`
  text-align:center;
  cursor:pointer;
  border-radius:10px;
+ transition:0.5s;
  @media(max-width:600px){
   flex-basis:100%;
   margin:1% 0;
  }
  :hover{
-   background-color:#333;
+   box-shadow:4px 4px 12px #f44336;
  }
  h3{
    color:#fff;

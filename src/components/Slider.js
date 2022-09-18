@@ -106,8 +106,8 @@ img{
     background:radial-gradient(rgba(146, 6, 6, 0.63),transparent);
     top:0;
     left:0;
-    bottom:0;
     right:0;
+    bottom:0;
     position:absolute;
 }
 `

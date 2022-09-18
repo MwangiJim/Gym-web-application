@@ -6,7 +6,7 @@ import BookingDisplayComponent from './BookingDisplayComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faSearch } from '@fortawesome/free-solid-svg-icons';
 
-function TrainerbookingSection(props) {
+function TrainerbookingSection() {
     let{TrainerDetails,BookingsMade}=useSelector((state)=>state.gymRegucer);
     let[book,setBooked]=React.useState(false);
     let dispatch = useDispatch()
@@ -66,7 +66,7 @@ function TrainerbookingSection(props) {
         opacity:savedSuccessfully?1:0
      }  
   return (
-    <Container style={props.M_styles}>
+    <Container>
       <div className='left__side'>
         <hr/>
       <form onSubmit={HandleForm}>

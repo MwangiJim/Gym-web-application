@@ -99,16 +99,6 @@ let Container = styled.div`
     font-size:19px;
     font-weight:300;
     margin-top:-20px;
-    ::after{
-      text-align:center;
-      left:100px;
-      bottom:12px;
-      position:relative;
-      content:'';
-      width:63px;
-      height:2px;
-      display:block;
-      background-color:#f44336;
-    }
+    text-decoration:line-through;
   }
 `

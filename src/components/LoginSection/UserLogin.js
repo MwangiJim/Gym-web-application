@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { db } from '../../firebase'
-import{createUserWithEmailAndPassword, FacebookAuthProvider, getAuth, GithubAuthProvider, GoogleAuthProvider, sendEmailVerification,signInWithPopup, updateProfile} from 'firebase/auth'
+import{createUserWithEmailAndPassword, FacebookAuthProvider, getAuth, GithubAuthProvider, sendEmailVerification,signInWithPopup, updateProfile} from 'firebase/auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faE, faEye, faEyeSlash, faPerson,faMailBulk } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
@@ -38,6 +38,10 @@ function UserLogin() {
              .then((AuthUser)=>{
                  console.log(AuthUser)
                  updateProfile(auth.currentUser,{displayName:form.username})
+                 sendEmailVerification(auth.currentUser,form.email)
+                 .catch((err)=>{
+                    alert(err.message)
+                 })
              })
              .catch((error)=>{
                  setError(error.message)
@@ -204,7 +208,6 @@ let Container = styled.div`
     right:0;
     bottom:0;
     width:100%;
-    background:no-repeat;
     z-index:-1;
     position:absolute;
  }
