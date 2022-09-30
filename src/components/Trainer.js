@@ -4,31 +4,55 @@ import StarRate from './StarRate'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { SetTrainerDetails } from '../redux/reducers/reducerSlice'
+import { useEffect } from 'react'
 
 function Trainer(props) {
-  let{TrainerDetails}=useSelector((state)=>state.gymRegucer)
+  let{TrainerDetails,userDetails,DetailsName}=useSelector((state)=>state.gymRegucer)
   let navigate = useNavigate()
   let dispatch = useDispatch()
   const ShowBooking=()=>{
+   // alert('Hello')
     navigate('/booking')
     dispatch(SetTrainerDetails({
       Image:props.image,
       TrainerLevel:props.level,
       TrainerName:props.name,
     }))
-    console.log(TrainerDetails)
+   // console.log(TrainerDetails)
   }
+  const[userCheck,setUserCheck] = React.useState([])
+  useEffect(()=>{
+    fetch('http://localhost:8080/newTrainer')
+    .then((res)=>res.json())
+    .then((data)=>{
+     let InfoTrainer = data.message.map((item)=>{
+       return(
+         {
+           email:item.Email,
+           username:item.Username,
+         }
+       )
+     })
+     setUserCheck(InfoTrainer)
+    })
+  },[1])
   return (
     <Container>
        <div className='details'>
-       <img src={props.image}/>
+        {!props.image?<img className="image"src='/Images/avatar2.png'/>:<img src={props.image}/>}
         <div className='bottom'>
-            <h4>{props.level}</h4>
+            <h4>{props.level} Trainer</h4>
             <StarRate
              rate={props.rating}
             />
             <p>{props.name}</p>
-            <button onClick={ShowBooking} className='btn'>Book Trainer</button>
+            <button onClick={userCheck.map((item)=>{
+              return(
+                <>
+                 {item.email !== DetailsName.Email?ShowBooking():console.log('Not Possible')}
+                </>
+              )
+            })} className='btn'>Book Trainer</button>
         </div>
        </div>
     </Container>
@@ -42,8 +66,13 @@ cursor:pointer;
 margin:0 0.5%;
 @media(max-width:600px){
 }
+.image{
+  width:100%;
+  height:260px;
+}
 img{
      width:100%;
+     object-fit:cover;
  }
  .btn{
     color:#fff;

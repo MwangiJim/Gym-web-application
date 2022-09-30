@@ -1,4 +1,4 @@
-import { faBars, faBell, faClockFour, faLocation, faShoppingCart, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faBell, faClockFour, faHome, faLocation, faLock, faShop, faShoppingCart, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getAuth } from 'firebase/auth'
 import React ,{useEffect}from 'react'
@@ -23,10 +23,6 @@ function Header() {
     const ShowHome=()=>{
         navigate(`/`)
     }
-    let[Profile,setProfile]=React.useState(false);
-    const ShowProfile=()=>{
-          setProfile((prevState)=>!prevState)
-    }
     let[Menu,setMenu]=React.useState(false);
     const ShowMenu=()=>{
        setMenu((prevMenu)=>!prevMenu)
@@ -38,37 +34,16 @@ function Header() {
     const ShowGoogleMaps=()=>{
        setGoogleMaps((prevForm)=>!prevForm)
     }
-    // let[Weather,setWeather]=React.useState({})
-    //https://openweathermap.org/img/wn/"+icon+".png
-//     useEffect(()=>{
-//      let WeatherDetails = async()=>{
-//         await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${localStorage.getItem('address')}&units=metric&appid=c7686ab0dff66d8e68735a9f78856cd1`)
-//         .then((response)=>response.json())
-//         .then((data)=>{
-//            //console.log(data)
-//             let weatherInfo = {
-//                 Condition:data.weather[0].main ,
-//                 WeatherIcon:data.weather[0].icon,
-//                 Temperature:data.main.temp,
-//             }  
-//             setWeather(weatherInfo)
-//         })
-//       }
-//       WeatherDetails()
-//       return ()=> WeatherDetails()
-//     })
-//   // console.log(localStorage.getItem('address'))
-//console.log(DetailsName)
   return (
     <Container>
           <h2 className='h2'>BE<strong>FIT</strong></h2>
       <div className='center' style={styles}>
-          <li onClick={ShowHome}>Home</li>
+          <li onClick={ShowHome}><FontAwesomeIcon icon={faHome}/>Home</li>
           <li onClick={()=>navigate(`/virtualworkout`)}>Virtual Workout</li>
-          <li onClick={ShowShopping}>Shop</li>
-          <li onClick={()=>navigate('/joinus')}>Join Us</li>
+          <li onClick={ShowShopping}><FontAwesomeIcon icon={faShop}/>Shop</li>
+          <li onClick={()=>navigate('/joinus')}><FontAwesomeIcon icon={faLock}/>Account</li>
           <li onClick={MoveToCheckOut}><FontAwesomeIcon icon={faShoppingCart} className='shopping'/><span>{EcommerceStore.length}</span></li>
-          <div className='profile_image' onClick={ShowProfile}>
+          <div className='profile_image'>
             <p>{DetailsName?.UserName.charAt(0)}{DetailsName?.UserName.charAt(1)}</p>
           </div>
           <small>Hello<br/>{userDetails.Email?userDetails.Email:DetailsName.UserName}</small>
@@ -80,7 +55,6 @@ function Header() {
             </div>
       </div>
       <FontAwesomeIcon icon={Menu?faTimes:faBars} className='menu' onClick={ShowMenu}/>
-      {Profile?<BookingDisplay/>:''}
       {Googlemaps?<GoogleMap/>:''}
     </Container>
   )
@@ -151,9 +125,13 @@ let Container = styled.div`
         flex-direction:column;
         align-items:center;
         li{
-            display:block;
+            display:flex;
+            justify-content:center;
+            align-items:center;
             margin-bottom:-20px;
             padding:-35px 0;
+            color:#fff;
+            font-size:17px;
         }
     }
  }

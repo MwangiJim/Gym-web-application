@@ -67,7 +67,7 @@ export const gymReducer = createSlice({
         Userprofile:{
 
         },
-        DaysCount:null
+        DaysCount:null,
     },
     reducers:{
         addPost:(state,action)=>{

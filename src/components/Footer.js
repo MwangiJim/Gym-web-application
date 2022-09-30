@@ -24,14 +24,17 @@ function Footer() {
            }
        })
     }
-    const HandleForm =()=>{
-      if(Form.input){
-        dispatch(addPost({
-          Message:Form.input,
-          Check:Form.checked,
-          Occupation:Form.occupation
-        }))
-      }
+    const HandleForm =async()=>{
+       await fetch('http://localhost:8080/testimonials',{
+        method:'POST',
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          message:Form.input,
+          Occupation:Form.occupation,
+          timePosted:new Date().toLocaleTimeString(),
+          datePosted:new Date().toLocaleDateString()
+        })
+       })
     }
   return (
     <Container>
@@ -142,6 +145,7 @@ let Container = styled.div`
          background-color:#333;
          color:#fff;
          height:45px;
+         border-radius:6px;
          padding:0 10px;
          margin:7px 0;
          ::placeholder{

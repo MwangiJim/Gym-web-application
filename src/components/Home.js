@@ -19,7 +19,7 @@ function Home() {
         <Features/>
         <Planning/>
         <Trainers/>
-        {testimonials.length >0 &&  <Testimonials/>}
+        <Testimonials/>
         <Posts/>
      </Container>
   )

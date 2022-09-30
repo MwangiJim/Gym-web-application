@@ -2,13 +2,12 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import UserProfile from './UserProfile';
 
-function BookingDisplay() {
-  let navigate = useNavigate()
-    let{ BookingsMade,userDetails,DetailsName,Userprofile}= useSelector((state)=>state.gymRegucer);
+function BookingDisplay(props) {
+
+    let{ userDetails,DetailsName}= useSelector((state)=>state.gymRegucer);
     let[State,setState]=React.useState(false);
     const CloseBookings=()=>{
       setState((prevState)=>!prevState)
@@ -16,7 +15,7 @@ function BookingDisplay() {
     let styles = {
         display:State?'none':'block'
     }
-    console.log(BookingsMade)
+   // console.log(userProfileInfo)
   return (
     <Container style={styles}>
         <Content>
@@ -24,15 +23,12 @@ function BookingDisplay() {
                <div className='user__details'>
                   <h4>{userDetails.UserName?userDetails.UserName:DetailsName?.UserName}</h4>
                   <small>{userDetails.Email?userDetails.Email:DetailsName?.Email}</small>
-                 <div className='user__Profile'> 
-                   <p>{DetailsName?.UserName.charAt(0)}{DetailsName?.UserName.charAt(1)}</p>
-                 </div>
                </div>
         </Content>
-        {Userprofile?.UserName? 
         <div className='profile'>
-         <UserProfile/>
-        </div>:<h5>Please set up your Profile <br/><strong onClick={()=>navigate(`/joinus`)}>Here</strong> as a Member or Trainer</h5>}
+       <UserProfile
+       />
+        </div>
     </Container>
   )
 }
@@ -41,14 +37,10 @@ export default BookingDisplay
 
 let Container = styled.div`
  background-color:#fff;
- width:400px;
- height:max-content;
  border-radius:5px;
  overflow:hidden;
- left:70%;
- position:fixed;
- top:11%;
- z-index:5;
+ flex-basis:55%;
+ margin:0 1%;
  .profile{
    bottom:10px;
    position:relative;
@@ -72,7 +64,8 @@ let Content = styled.div`
  color:#fff;
  .icon{
   font-size:20px;
-  left:90%;
+  left:95%;
+  top:5%;
   cursor:pointer;
   color:#fff;
   position:relative;
@@ -89,6 +82,17 @@ let Content = styled.div`
     top:30px;
     position:relative;
     z-index:3;
+    p{
+      color:#fff;
+      background-color:#f44336;
+      height:25px;
+      width:32px;
+      border-radius:10px;
+      text-align:center;
+      padding:6px;
+      font-size:20px;
+      text-transform:uppercase
+   }
     img{
       width:60px;
       height:60px;

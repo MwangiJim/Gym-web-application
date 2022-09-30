@@ -1,19 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
-import Questions from '../Data/TrainerQuestions'
-import M_Questions from '../Data/MemberQuestions'
-import {useDispatch,useSelector} from 'react-redux'
-import { SetProfile } from '../../redux/reducers/reducerSlice'
 import TrainerQuiz from './TrainerQuiz'
+import { useEffect } from 'react'
+import { createContext } from 'react'
+import moment from 'moment'
+import Dashboard from './Dashboard'
+import TrainerDashboard from './TrainerDashboard'
+import { useSelector } from 'react-redux'
+
+export const UserInformation = createContext()
 
 function Joinus() {
-    let dispatch = useDispatch()
+    let{userDetails,DetailsName} = useSelector((state)=>state.gymRegucer)
+   // console.log(DetailsName.Email)
     let[Form,setForm]=React.useState({
         username:'',
         State:'',
         Age:null,
         location:'',
         Message:'',
+        password:''
     })
     let[RadioForm,setRadioForm]=React.useState({
         periodTraining:'',
@@ -50,21 +56,53 @@ function Joinus() {
             }
         })
     }
-    const HandleForm=(e)=>{
+   // let[member,setmember]=React.useState(false);
+    const HandleForm=async(e)=>{
         e.preventDefault()
-        if(Form.username,Form.Age,Form.State,Form.location){
-            console.log(Form,RadioForm.periodTraining,RadioForm.pushups)
-            dispatch(SetProfile({
-                UserName:Form.username,
-                City:Form.State,
-                Years:Form.Age,
-                Location:Form.location,
-                message:Form.Message,
-                Period:RadioForm.periodTraining,
-                Pushups:RadioForm.pushups
-            }))
-        }
+        await fetch('http://localhost:8080/newMember',{
+            method:'POST',
+            headers:{"Content-Type":'application/json'},
+            body:JSON.stringify({
+               name:Form.username,
+               state:Form.State,
+               age:Form.Age,
+               location:Form.location,
+               biography:Form.Message,
+               Period:RadioForm.periodTraining,
+               pushups:RadioForm.pushups,  
+            })
+        })
     }
+let[Member,setMember]=React.useState([])
+    useEffect(()=>{
+        let GetProfile = async()=>{
+            await fetch('http://localhost:8080/newMember')
+            .then((res)=>res.json())
+            .then((data)=>{
+               // console.log(data)
+                let userProfile = data.message.map((item)=>{
+                    return(
+                        {
+                            name:item.Name,
+                            state:item.State,
+                            age:item.Age,
+                            location:item.Location,
+                            bio:item.Bio,
+                            frequency:item.TrainingFrequency,
+                            pushups:item.PushupReps
+                        }
+                    )
+                })
+                setMember(userProfile)
+            })
+            .catch((err)=>{
+                console.log(err.message)
+            })
+        }
+        return ()=>GetProfile();
+    },[1])
+    console.log(Member)
+
     let[TrainerForm,setTrainerForm]=React.useState(false)
     //console.log(QuestionsSelected)
     const showForms=()=>{
@@ -76,11 +114,58 @@ function Joinus() {
     let linestyles = {
         left:TrainerForm?'90px':'',
     }
+    const[Trainer,setTrainer]=React.useState([])
+    useEffect(()=>{
+        let trainerInfo = async()=>{
+            await fetch('http://localhost:8080/newTrainer')
+            .then((res)=>res.json())
+            .then((data)=>{
+                //console.log(data)
+                let TrainerInfo = data.message.map((item)=>{
+                    return(
+                        {
+                            age:item.Age,
+                            city:item.City,
+                            experience:item.Experience,
+                            flag:item.Flag,
+                            hourlypay:item.HourPay,
+                            levelofexperience:item.LevelofExperience,
+                            location:item.Location,
+                            message:item.Message,
+                            phone:item.Phone,
+                            username:item.Username,
+                            email:item.Email
+                        }
+                    )
+                })
+                setTrainer(TrainerInfo)
+            })
+        }
+        return ()=>{
+            trainerInfo()
+        }
+    },[1])
+    let box__styles = {
+        opacity:Trainer?'0':'1'
+    }
+ // console.log(Trainer)
   return (
     <Container>
+       <UserInformation.Provider value={Member}>
+            {Member.length>0?<Dashboard/>:''}
+                {Trainer.map((item)=>{
+                    return(
+                       <>
+                        {item.email === DetailsName.Email? 
+                        <TrainerDashboard trainerProfile = {Trainer}/>:''}
+                       </>
+                    )
+                })}
+       </UserInformation.Provider>
+    <div className="box">
       <div className='left__side'>
          <div className='textbox'>
-           <h2>Join us at BEFIT as a Member or a Trainer</h2>  
+                <h2>Join us at BEFIT as a Member or a Trainer</h2>  
            <div className='buttons' onClick={showForms}>
               <button>As a Member</button>
               <button>As a Trainer</button>
@@ -89,10 +174,12 @@ function Joinus() {
 
            </div>
          </div>
-      </div>
+      </div> 
       <div className='right__side'>
-       <form onSubmit={HandleForm} style={styles}>
-        <h3>Fill in the details below as a Member</h3>
+        <div className='header'>
+                <h3>Fill in the details below as a {TrainerForm?'Trainer':'Member'}</h3>
+            </div>
+       <div  className="form" style={styles}>
         <label>Your Name</label>
         <span>*</span>
         <br/>
@@ -221,10 +308,11 @@ function Joinus() {
          />
          <label>10-20 reps(Pro)</label>
          <br/>
-         <button>Submit</button>
-       </form>
+         <button onClick={HandleForm}>Submit</button>
+       </div>
        {TrainerForm?<TrainerQuiz/>:''}
       </div>
+    </div>
     </Container>
   )
 }
@@ -232,89 +320,99 @@ function Joinus() {
 export default Joinus
 let Container = styled.div`
  width:100%;
- height:100vh;
+ height:max-content;
  background-color:#fff;
- display:flex;
- justify-content:space-between;
- padding:80px 8%;
- .left__side{
-   flex-basis:50%;
-   background-image:linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('/Images/blog-2.jpg');
-   background-position:center;
-   background-size:cover;
-   .textbox{
-     display:flex;
-     justify-content:space-between;
-     align-items:center;
-     flex-direction:column;
-     margin-top:30%;
-     .line{
-        background:radial-gradient(green,red);
-        width:120px;
-        height:3px;
-        bottom:17px;
-        right:80px;
-        position:relative;
-        border-radius:5px;
-        transition:0.5s;
-    }
-     h2{
-        font-family: 'Bebas Neue', cursive;
-        color:#fff;
-       }
-       .buttons{
-        display:flex;
-        justify-content:center;
-        margin:2% 0;
-        border:3px solid #fff;
-        border-radius:20px;
-        p{
-            color:#fff;
-            display:flex;
-            align-items:center;
+ .box{
+    background-color:#fff;
+    display:flex;
+    justify-content:space-between;
+    padding:70px 8%;
+    .left__side{
+        flex-basis:50%;
+        background-image:linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('/Images/blog-2.jpg');
+        background-position:center;
+        background-size:cover;
+        .textbox{
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          flex-direction:column;
+          margin-top:30%;
+          .line{
+             background:radial-gradient(green,red);
+             width:120px;
+             height:3px;
+             bottom:14px;
+             right:80px;
+             position:relative;
+             border-radius:5px;
+             transition:0.5s;
+         }
+          h2{
+             font-family: 'Bebas Neue', cursive;
+             color:#fff;
+            }
+            .buttons{
+             display:flex;
+             justify-content:center;
+             margin:2% 0;
+             border:3px solid #fff;
+             border-radius:20px;
+             p{
+                 color:#fff;
+                 display:flex;
+                 align-items:center;
+             }
+             button{
+                 color:#fff;
+                 font-size:16px;
+                 outline:none;
+                 cursor:pointer;
+                 border:none;
+                 padding:12px 35px;
+                 border-radius:10px;
+                 background:transparent;
+             }
+            }
         }
-        button{
-            color:#fff;
-            font-size:16px;
-            outline:none;
-            cursor:pointer;
-            border:none;
-            padding:12px 35px;
-            border-radius:10px;
-            background:transparent;
-        }
-       }
-   }
- }
- .right__side{
-    flex-basis:48%;
-    span{
-        color:red;
-    }
-    .input{
-        width:500px;
-        height:45px;
-        border-radius:7px;
-        margin:1% 0;
-        padding:0 10px;
-    }
-    textarea{
-        width:500px;
-        border-radius:7px;
-        resize:none;
-        padding:10px 10px;
-    }
-    .radios{
-        margin:1% 0;
-    }
-    button{
-        background-color:rgb(30, 102, 197);
-        padding:12px 39px;
-        cursor:pointer;
-        border-radius:10px;
-        color:#fff;
-        outline:none;
-        border:none;
-    }
+      }
+      .right__side{
+         flex-basis:48%;
+         .header{
+             width:90%;
+             justify-content:space-between;
+             display:flex;
+             align-items:center;
+         }
+         span{
+             color:red;
+         }
+         
+         .input{
+             width:500px;
+             height:45px;
+             border-radius:7px;
+             margin:1% 0;
+             padding:0 10px;
+         }
+         textarea{
+             width:500px;
+             border-radius:7px;
+             resize:none;
+             padding:10px 10px;
+         }
+         .radios{
+             margin:1% 0;
+         }
+         button{
+             background-color:rgb(30, 102, 197);
+             padding:12px 39px;
+             cursor:pointer;
+             border-radius:10px;
+             color:#fff;
+             outline:none;
+             border:none;
+         }
+      }
  }
 `

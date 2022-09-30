@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function TrainerbookingSection() {
-    let{TrainerDetails,BookingsMade}=useSelector((state)=>state.gymRegucer);
+    let{TrainerDetails,BookingsMade,DetailsName}=useSelector((state)=>state.gymRegucer);
     let[book,setBooked]=React.useState(false);
     let dispatch = useDispatch()
     let[Form,setForm]=React.useState({
@@ -39,7 +39,7 @@ function TrainerbookingSection() {
     })
     }
     let[savedSuccessfully,setSavedSuccessfully]=React.useState(false);
-    const HandleForm=(e)=>{
+    const HandleForm=async(e)=>{
         e.preventDefault()
         if(Form.name,Form.date,Form.Age){
            // console.log(Form,selection.options)
@@ -48,8 +48,20 @@ function TrainerbookingSection() {
                 Age:Form.Age,
                 Booked_Date:Form.date,
                 Level:selection.options,
-                PhoneNumber:Form.telNumber
+                PhoneNumber:Form.telNumber,
             }))
+            await fetch('http://localhost:8080/bookings',{
+            method:"POST",
+            headers:{"Content-Type":'application/json'},
+            body:JSON.stringify({
+              name:Form.name,
+              age:Form.Age,
+              booked_Date:Form.date,
+              level:selection.options,
+              phoneNumber:Form.telNumber,
+              email:DetailsName.Email
+            })
+          })
             setBooked((prevForm)=>!prevForm)
             setSavedSuccessfully(true)
         }

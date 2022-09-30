@@ -5,7 +5,7 @@ function BookingDisplayComponent(props) {
   return (
     <Container>
        <div className='left__side'>
-           <img src={props.image}/>
+           {!props.image?<img src='/Images/avatar3.png'/>:<img src={props.image}/>}
            <h3>{props.Trainer}</h3>
            <h5>{props.level}</h5>
        </div>

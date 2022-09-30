@@ -1,45 +1,59 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
+import { useContext } from 'react';
+import { UserInformation } from './JoinUsSection/Joinus';
 
 function UserProfile() {
-    let{ Userprofile } = useSelector((state)=>state.gymRegucer)
+   let profileDetails = useContext(UserInformation);
+   console.log(profileDetails.length)
+   let{ userDetails,DetailsName}= useSelector((state)=>state.gymRegucer);
+   {profileDetails.map((item)=>{
+      return(
+         console.log(item.name,item.state,item.age,item.location)
+      )
+   })}
   return (
     <Container>
-       <h3 className='name'>{Userprofile.UserName}</h3>
-        <div className='details'>
-           <div>
-                <small>{Userprofile.Years}</small>
-                <h6>Age</h6>
-           </div>
-            <div>
-              {Userprofile.Phone && <small>{Userprofile.Phone}</small>}
-             <h6>Tel</h6>
-            </div>
-            <div>
-            <small>{Userprofile.HourlyPay}</small>
-            <h6>Charges/Hr</h6>
-            </div>
-            <div>
-            <small>{Userprofile.LevelofExperience}</small>
-            <h6>Level</h6>
-            </div>
-        </div>
-       <div className='location'>
-          <div>
-             <h4>{Userprofile.City}</h4>
-             <small>City/state</small>
-          </div>
-         <div>
-         <h4>{Userprofile.Location}</h4>
-         <small>Location</small>
-         </div>
-       </div>
-        <h3 className='head__summary'>Summary</h3>
-       <small className='summary'>{Userprofile.message?Userprofile.message:'Please Give us a Summary of Yourself'}</small>
-       <br/>
-       {Userprofile.HourlyPay?<small>Charges Per Hour:{Userprofile.HourlyPay}</small>:
-       <small>{Userprofile.Period}</small>}
+               {profileDetails.map((item)=>{
+                  return(
+                     <>
+                       <div className='details'>
+                     <div className='name'>
+                        <img src='/Images/avatar1.png' className='avatar'/>
+                        <br/>
+                        <div className='content'>
+                        <img src='/Images/name.png' className='avatar__name'/>
+                        <p>{item.name}</p>
+                        </div>
+                     </div>
+                     <div className="email">
+                           <img src="/Images/mail.png"/>
+                           <p>{userDetails?.Email?userDetails.Email:DetailsName.Email}</p>
+                     </div>
+                  </div>
+                  <div className='bio'>
+                        <img src='/Images/bio.png'/>
+                        <small>{item.bio}</small>
+                        </div>
+                  <div className='location'>
+                     <div className='city'>
+                        <img src='/Images/city.png'/>
+                        <h4>{item.state}</h4>
+                     </div>
+                     <br/>
+                     <div className='loc'>
+                        <img src="/Images/location.png"/>
+                        <h4>{item.location}</h4>
+                     </div>
+                  </div>
+                  <br/>
+                  <small>Charges Per Hour:{}</small>
+                  <small>{}</small>
+                     </>
+                  )
+               })}
+               
     </Container>
   )
 }
@@ -51,14 +65,62 @@ let Container = styled.div`
  border-radius:15px;
  width:100%;
  height:40vh;
+ .bio{
+   display:flex;
+   justify-content:left;
+   flex-direction:column;
+   background:#f4f4f4;
+   padding:20px 12px;
+   width:100%;
+   box-shadow:2px 2px 4px #333;
+   border-radius:8px;
+   margin:2% 0;
+   img{
+      width:20px;
+      height:20px;
+   }
+ }
  .details{
     display:flex;
-    justify-content:space-between;
-    align-items:center;
+    justify-content:left;
+    flex-direction:column;
     color:#fff;
-    background-color:rgb(30, 102, 197);
-    padding:8px;
+    background:#f4f4f4;
+    padding:20px 12px;
+    color:#000;
     border-radius:5px;
+    margin-top:5%;
+    p{
+      font-size:12px;
+    }
+    h4{
+      font-size:12px;
+    }
+    .name{
+      display:flex;           
+      justify-content:left;
+      flex-direction:column;
+      .content{
+         display:flex;
+      }
+      .avatar{
+         width:80px;
+         height:80px;
+      }
+      .avatar__name{
+         width:20px;
+         height:20px;
+      }
+    }
+    .email{
+      display:flex;
+      justify-content:left;
+      align-items:center;
+      img{
+         width:20px;
+         height:20px;
+      }
+    }
     div{
         display:block;
         text-align:center;
@@ -75,9 +137,34 @@ let Container = styled.div`
  }
  .location{
     display:flex;
-    justify-content:center;
-    align-items:center;
-    background-color:rgb(30, 102, 197);
+    justify-content:left;
+    flex-direction:column;
+    background:#f4f4f4;
+    padding:20px 12px;
+    .city{
+      color:#000;
+      display:flex;
+      align-items:center;
+      img{
+         width:20px;
+         height:20px;
+      }
+       h4{
+         font-size:12px;
+       }
+    }
+    .loc{
+      color:#000;
+      align-items:center;
+      display:flex;
+      img{
+         width:20px;
+         height:20px;
+      }
+      h4{
+         font-size:12px;
+       }
+    }
     div{
         display:block;
         text-align:center;

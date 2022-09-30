@@ -32,14 +32,27 @@ function Posts() {
        FetchFitnessNews()
     },[])
     //console.log(posts)
+    let[Counter,setCounter]=React.useState(null);
+
+    useEffect(()=>{
+       let Count = setInterval(()=>{
+          if(Counter >= 100){
+            setCounter(0)
+            setCounter((count)=>count+1)
+          }else{
+            setCounter((count)=>count+1)
+          }
+       },100)
+       return ()=> clearInterval(Count)
+    },Counter)
   return (
     <Container>
         <h2>DailyPosts</h2>
-        <Row>
-           {posts.map((item)=>{
+        {posts.length > 0? <Row>
+           {posts.map((item,i)=>{
                return(
                 <Post
-                key={item.id}
+                key={i}
                  id={item.Title}
                  image = {item.image}
                  Author={item.Author}
@@ -51,7 +64,17 @@ function Posts() {
                 />
                )
            })}
-        </Row>
+        </Row>:<LazyLoads>
+              {[...Array(5)].map((item,i)=>{
+                return(
+                    <div className='lazy__load' key={i}>
+                         <small>Please wait...</small>
+                         <img src='/Images/picturePreloader.png'/>
+                    </div>
+
+                )
+              })}
+            </LazyLoads>}
     </Container>
   )
 }
@@ -106,5 +129,37 @@ let Row = styled.div`
      height:3px;
      background-color:#333;
      border-radius:8px;
+ }
+`
+let LazyLoads = styled.div`
+display:flex;
+justify-content:space-between;
+align-items:center;
+ width:100%;
+ max-width:100vw;
+ overflow-y:hidden;
+ overflow-x:scroll;
+ .lazy__load{
+    background:gray;
+    animation:load 2s alternate infinite;
+    height:300px;
+    width:300px;
+    border-radius:7px;
+    margin-left:3%;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    align-items:center;
+    img{
+        width:30%;
+    }
+ }
+ @load{
+    0%{
+        background:#333;
+    }
+    100%{
+        background:#000;
+    }
  }
 `

@@ -6,36 +6,64 @@ import styled from 'styled-components'
 
 function TestimonialColumn(props) {
     let{DetailsName} = useSelector((state)=>state.gymRegucer)
+  //  console.log(props.work)
   return (
     <Container>
-        <p>{props.Text}</p>
-        <h4>Feedback:{props.Feedback?
-        'Please Try out The Virtual Workout Available.'
-        :"Glad to see You working out..Keep up the Endurance"}</h4>
+        <div className='title_head'>
+        {props.image? <img src={props.image}/>:<p className='image'>{DetailsName.UserName.charAt(0)}{DetailsName.UserName.charAt(1)}</p>}
+        <h5 className='work'>{props.work}</h5>
+        </div>
         <div className='foot'>
             <Left>
-             {props.image? <img src={props.image}/>:<p>{DetailsName.UserName.charAt(0)}{DetailsName.UserName.charAt(2)}</p>}
              <div className='foot-info'>
-                 <h2>@{props.Username?props.Username:DetailsName.UserName}</h2>
-                 <small>{props.work}</small>
+                 <div className='head'>
+                 <h2>{props.Username?props.Username:DetailsName.UserName}</h2>
+                 <small>commented on {props.date} at {props.time}</small>
+                 </div>
+                 <p>{props.Text}</p>
              </div>
             </Left>
             <FontAwesomeIcon icon={faQuoteLeftAlt} className='quote'/>
         </div>
+        <h4>Feedback:{props.Feedback?
+        'Please Try out The Virtual Workout Available.'
+        :"Glad to see You working out..Keep up the Endurance"}</h4>
     </Container>
   )
 }
 
 export default TestimonialColumn
 let Container = styled.div`
- background-color:#333;
+ background-color:#000;
+ box-shadow:3px 3px 5px #f44336;
  border-radius:5px;
+ color:#333;
  padding:20px 20px;
  height:150px;
- max-width:600px;
+ width:100%;
  flex-basis:33%;
- margin:0 1%;
+ margin:10px 0;
  border-style:1px solid #333;
+ .image{
+    color:#fff;
+    background-color:#f44336;
+    height:25px;
+    width:32px;
+    border-radius:10px;
+    text-align:center;
+    padding:7px;
+    font-size:20px;
+    text-transform:uppercase
+}
+.work{
+    color:#fff;
+}
+ img{
+    width:40px;
+    height:40px;
+    border:2px solid #f44336;
+    border-radius:50%;
+}
  @media(max-width:600px){
     flex-basis:60%;
  }
@@ -45,7 +73,7 @@ let Container = styled.div`
      font-size:15px;
  }
  p{
-     color:gray;
+     color:#fff;
      marging:3% 0;
      font-size:16px;
  }
@@ -84,16 +112,17 @@ let Left = styled.div`
          font-weight:300;
          color:#fff;
      }
+     p{
+        margin-top:10px;
+     }
+     .head{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        small{
+            margin-left:4px;
+            font-size:12px;
+        }
+     }
  }
- p{
-    color:#fff;
-    background-color:#f44336;
-    height:25px;
-    width:32px;
-    border-radius:10px;
-    text-align:center;
-    padding:6px;
-    font-size:25px;
-    text-transform:uppercase
-}
 `

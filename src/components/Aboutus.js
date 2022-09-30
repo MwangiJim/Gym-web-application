@@ -11,7 +11,7 @@ function Aboutus() {
            await fetch(' https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=workouts&key=AIzaSyAKk3p0zGEes4k0ar4RR5kFFllqCr-SVH0')
            .then((response)=>response.json())
            .then((data)=>{
-               console.log(data)
+               //console.log(data)
                let RandomVideo = data.items[Math.floor(Math.random()*data.items.length-1)]
                setVideos(RandomVideo.id.videoId)
            })

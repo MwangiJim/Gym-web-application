@@ -1,10 +1,9 @@
 import React ,{useEffect}from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { SetProfile} from '../../redux/reducers/reducerSlice'
 
 function TrainerQuiz() {
-  let dispatch = useDispatch()
+  let{userDetails,DetailsName} = useSelector((state)=>state.gymRegucer)
     let [Form,setForm] = React.useState({
        username:'',
        Age:null,
@@ -20,6 +19,22 @@ function TrainerQuiz() {
       level2:'Intermediate',
       level3:'Advanced'
     })
+    let[Years,setYears] = React.useState({
+      yearChoice:"",
+      starter:"< 1 years",
+      second:"1 - 2 years",
+      third:"2 years",
+      fourth:"2-3 years",
+      fifth:"3 - 5 years",
+    })
+    const HandleYearChoice=(e)=>{
+       setYears((prevYears)=>{
+        return{
+          ...prevYears,
+          [e.target.name]:e.target.value
+        }
+       })
+    }
     const HandleInput=(event)=>{
         setForm((prevForm)=>{
             return{
@@ -36,18 +51,27 @@ function TrainerQuiz() {
         }
       })
     }
-    const HandleForm=(e)=>{
-      e.preventDefault()
-      dispatch(SetProfile({
-        UserName:Form.username,
-        Years:Form.Age,
-        City:Form.State,
-        Location:Form.location,
-        message:Form.description,
-        HourlyPay:Form.hourlypay,
-        LevelofExperience:Options.choice,
-        Phone:Form.phoneNumber
-      }))
+    const HandleForm=async(e)=>{
+      e.preventDefault();
+      await fetch('http://localhost:8080/newTrainer',{
+        method:'POST',
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify({
+          userName:Form.username,
+          age:Form.Age,
+          city:Form.State,
+          location:Form.location,
+          message:Form.description,
+          hourlyPay:Form.hourlypay,
+          levelofExperience:Options.choice,
+          phone:Form.phoneNumber,
+          experience:Years.yearChoice,
+          flag:CountryForm.country,
+          email:userDetails.Email || DetailsName.Email,
+        })
+      })
+      localStorage.setItem("flag",CountryForm.country)
+    
     }
     let[Countries,setCountries] = React.useState([]);
     useEffect(()=>{
@@ -58,7 +82,6 @@ function TrainerQuiz() {
           let CountryInfo = data.map((info)=>{
             return(
               {
-                flagImage:info.countryInfo.flag,
                 countryCode:info.countryInfo.iso3
               }
             )
@@ -82,11 +105,10 @@ function TrainerQuiz() {
         }
        })
     }
-    console.log(Countries)
+   // console.log(CountryForm)
   return (
     <Container>
          <form onSubmit={HandleForm}>
-        <h3>Fill in Your Information as a Trainer</h3>
         <label>Your Name</label>
         <span>*</span>
         <br/>
@@ -111,6 +133,18 @@ function TrainerQuiz() {
           className='input'
          />
          <br/>
+          <label>Years of Experience</label>
+          <span>*</span>
+          <br/>
+          <select name='yearChoice' onChange={HandleYearChoice}  className='select'>
+            <option>[...Years...]</option>
+            <option value={Years.starter}> less than 1 year</option>
+            <option value={Years.second}> 1 - 2 years</option>
+            <option value={Years.third}>2 years</option>
+            <option value={Years.fourth}>2-3 years</option>
+            <option value={Years.fifth}>3 - 5 years</option>
+          </select>
+          <br/>
           <label>Your Training Level of Experience</label>
           <span>*</span>
           <br/>
@@ -171,22 +205,13 @@ function TrainerQuiz() {
          <br/>
          <label>Your Phone Number</label>
          <span>*</span>
-         <br/>
+         <br/><br/>
           <div className='Phone__number'>
             {/* {Countries.map((image)=>{
               return(
                 <img src={image.flagImage}/>
               )
             })} */}
-            <select name='image' onChange={HandleCountry}>
-            {Countries.map((country)=>{
-                return(
-                  <>
-                   <option value={country.flagImage}>{country.flagImage}</option>
-                  </>
-                )
-               })}
-            </select>
             <select name='country' onChange={HandleCountry}>
                {Countries.map((country)=>{
                 return(
@@ -219,7 +244,7 @@ let Container = styled.div`
   display:flex;
   justify-content:space-between;
   align-items:center;
-  height:45px;
+  height:35px;
   width:80%;
   select{
     width:52px;
@@ -236,7 +261,7 @@ let Container = styled.div`
   }
   .inputs{
     flex-basis:85%;
-    height:45px;
+    height:35px;
     border-radius:7px;
     margin:1% 0;
     padding:0 10px;
@@ -258,7 +283,7 @@ span{
 }
 .select{
   width:525px;
-  height:50px;
+  height:40px;
   border-radius:7px;
   option{
     padding:10px 12px;

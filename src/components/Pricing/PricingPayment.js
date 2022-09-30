@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import PlanBox from './PlanBox'
 import EmailSection from './EmailSection'
 import PricingPaypalButton from './PricingPaypalButton'
+import PurchasedPlan from './PurchasedPlan'
 
 function PricingPayment() {
     let{StorePricingPlan,PurchaseDetails}=useSelector((state)=>state.gymRegucer);
@@ -52,32 +53,35 @@ function PricingPayment() {
       <EmailSection/>
        <Paysection>
            <h3>3:Make Secure Payment</h3>
-           <div className='purchase__details'>
-            <div className='box'>
-                <Line>
-                <small>{StorePricingPlan.Plan}-{PurchaseDetails.Period} month plan</small>
-              {PurchaseDetails.InitialAmount?  <p>$ {PurchaseDetails.InitialAmount*PurchaseDetails.Period}</p>: <p>{PurchaseDetails.Price}</p>}
-                </Line>
-                <Line>
-                    <small>Plan Activation</small>
-                    <p>$ 0</p>
-                </Line>
-                <Line>
-                    <small>Setup</small>
-                    <p>$ 0</p>
-                </Line>
-                <Line>
-                   {PurchaseDetails.Savings? <small>Discount-{PurchaseDetails.Savings}%</small>:''}
-                   {PurchaseDetails.Discount? <p className='red'>-$ {PurchaseDetails.Discount}</p>:''}
-                </Line>
-                <Line>
-                    <small>Total</small>
-                    <p>$ {PurchaseDetails.Price}</p>
-                </Line>
-                <PricingPaypalButton
-                 planCost = {PurchaseDetails.Price}
-                />
-            </div>
+           <div className='row_box'>
+            <div className='purchase__details'>
+                <div className='box'>
+                    <Line>
+                    <small>{StorePricingPlan.Plan}-{PurchaseDetails.Period} month plan</small>
+                {PurchaseDetails.InitialAmount?  <p>$ {PurchaseDetails.InitialAmount*PurchaseDetails.Period}</p>: <p>{PurchaseDetails.Price}</p>}
+                    </Line>
+                    <Line>
+                        <small>Plan Activation</small>
+                        <p>$ 0</p>
+                    </Line>
+                    <Line>
+                        <small>Setup</small>
+                        <p>$ 0</p>
+                    </Line>
+                    <Line>
+                    {PurchaseDetails.Savings? <small>Discount-{PurchaseDetails.Savings}%</small>:''}
+                    {PurchaseDetails.Discount? <p className='red'>-$ {PurchaseDetails.Discount}</p>:''}
+                    </Line>
+                    <Line>
+                        <small>Total</small>
+                        <p>$ {PurchaseDetails.Price}</p>
+                    </Line>
+                    <PricingPaypalButton
+                    planCost = {PurchaseDetails.Price}
+                    />
+                </div>
+                </div>
+                <PurchasedPlan/>
            </div>
        </Paysection>
     </Box>
@@ -161,7 +165,7 @@ h3{
     font-size:30px;
     font-weight:300;
 }
-width:50%;
+width:100%;
 .box{
  box-shadow:4px 4px 8px #333;
 border-radius:6px;
@@ -169,6 +173,13 @@ padding:20px 12px;
 }
 @media(max-width:600px){
     width:80%;
+}
+.row_box{
+    display:flex;
+    justify-content:space-between;
+    .purchase__details{
+        flex-basis:45%;
+     }
 }
 `
 let Line = styled.div`

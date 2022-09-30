@@ -50,7 +50,6 @@ function PaypalCheckoutButton(props) {
           //    alert('Transaction was sucessfully Completed by:',details.payer.name)
           //  })
            console.log('Order',Order)
-
            handleApprove(data.orderID)
            dispatch(AddPurchasedItems({
              history:EcommerceStore

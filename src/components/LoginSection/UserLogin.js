@@ -86,7 +86,13 @@ function UserLogin() {
         display:Visual?'none':'block'
     }
     let lineStyles = {
-        marginLeft:Visual?'110px':''
+        marginLeft:Visual?'108px':''
+    }
+    let h4Styles = {
+        color:Visual?"#fff":"#000"
+    }
+    let H4Styles = {
+        color:Visual?"#000":"#fff"
     }
   return (
     <Container>
@@ -107,12 +113,12 @@ function UserLogin() {
           <Button>
             <span onClick={ChangeStatus}>
                <div className='btns'>
-                   <h4>Register</h4>
-                   <h4>Login</h4>
-               </div>
-               <div className='color' style={lineStyles} >
+                   <h4 style={H4Styles}>Register</h4>
+                   <h4 style={h4Styles}>Login</h4>
+                   <div className='color' style={lineStyles} >
 
-                </div> 
+                   </div> 
+               </div>
             </span>
           </Button>
             <Box>
@@ -132,7 +138,7 @@ function UserLogin() {
                     <label>What's Your Email?</label>
                     <br/>
                     <div className='inputBox'>
-                    <FontAwesomeIcon icon={faMailBulk}/>
+                    <img src="/Images/mail.png"/>
                         <input
                         type='email'
                         placeholder='Enter Your Email'
@@ -146,6 +152,7 @@ function UserLogin() {
                     <label>Create a Password</label>
                     <br/>
                    <div className='password'>
+                    <img src="/Images/padlock.png"/>
                        <input
                         type={Eye?'text':'password'}
                         placeholder='Enter Your Password'
@@ -159,7 +166,7 @@ function UserLogin() {
                     <label>Your UserName</label>
                     <br/>
                     <div className='inputBox'>
-                    <FontAwesomeIcon icon={faPerson}/>
+                    <img src="/Images/avatar1.png"/>
                         <input
                         type='text'
                         placeholder='Enter username'
@@ -258,19 +265,27 @@ align-items:center;
         display:flex;
         justify-content:space-between;
         align-items:center;
-        overflow:hidden;
+        position:relative;
         padding:3px 8px;
+        background:#fff;
         font-size:19px;
         font-weight:500;
+        overflow:hidden;
+        h4{
+            position:relative;
+            z-index:2;
+        }
+        .color{
+            height:44px;
+            border-radius:20px;
+            width:110px;
+            left:0%;
+            z-index:1;
+            position:absolute;
+            background:rgb(30, 102, 197);
+            transition:0.5s;
+         }
     }
-    .color{
-        height:4px;
-        width:100px;
-        left:0%;
-        position:relative;
-        background:rgb(30, 102, 197);
-        transition:0.5s;
-     }
  }
 `
 let Register = styled.div`
@@ -346,6 +361,10 @@ h2{
      label{
          text-align:left;
          font-weight:600;
+     }
+     img{
+        width:20px;
+        height:20px;
      }
      .inputBox{
         display:flex;
