@@ -3,6 +3,7 @@
 * [Project Description](#project-decsription)
 * [Technology stack](#tech-stack)
 * [Setup](#setup)
+* [Api Refrences](#api-refrences)
 * [How it works](#how-it-works)
 * [Issues and challanges](#issues)
 * [Project status](#project-status)
@@ -28,6 +29,9 @@ $cd backend
 $run npm start
 
 ```
+##Api References
+* YouTube Data Api
+* News Api.
 ## How it Works
 Quick Guideline to how it works
 * [Create an account with BEFIT(app-name).
