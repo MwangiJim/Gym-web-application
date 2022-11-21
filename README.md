@@ -3,6 +3,7 @@
 * [Project Description](#project-decsription)
 * [Technology stack](#tech-stack)
 * [Setup](#setup)
+* [How it works](#how-it-works)
 * [Issues and challanges](#issues)
 * [Project status](#project-status)
 * [References](#references)
@@ -27,6 +28,14 @@ $cd backend
 $run npm start
 
 ```
+## How it Works
+Quick Guideline to how it works
+* [Create an account with BEFIT(app-name).
+* [The landing page offers in-depth information to the company's work]
+* [The Virtual Workout section - provides you with well curated routines for beginners,intermediate and advanced trainers.]
+* [Plan Sections - Here you can choose a basic or Premium plan to suit you.Purchases are done with paypal]
+* [Booking section - Trainers can be booked only if you have a member's account.Therefore you have to create a BEFIT account to track your progress with trainer]
+* [Shopping section - Here there are a variety of products BEFIT has put on sale.You as a customer can rate the product and purchase it.Payments are done via paypal]
 ## Issues and Challenges
 * speech recognition package does not work well between renders
 * use of Gif Images slows down the application.
