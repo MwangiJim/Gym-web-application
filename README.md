@@ -1,10 +1,10 @@
 ##Table of Contents
-*[General Information]
-*[Project Description]
-*[Technology stack]
-*[Setup]
-*[Issues and challanges]
-*[Project status]
+*[General Information](#general-info)
+*[Project Description](#project-decsription)
+*[Technology stack](#tech-stack)
+*[Setup](#setup)
+*[Issues and challanges](#issues)
+*[Project status](#poject status)
 
 # Gym Web Application
 ##General Information
@@ -25,10 +25,10 @@ $cd backend
 $run npm start
 
 ```
-###Issues and Challenges
+##Issues and Challenges
 speech recognition package does not work well between renders
 use of Gif Images slows down the application.
-###Project status
+##Project status
 The project is at the end of development.
 I am currently adding features to improve it's functionality.
 Considering to add JWTs and using Node for authentication in place of Firebase
