@@ -1,6 +1,7 @@
 ## Table of Contents
 * [General Information](#general-info)
 * [Project Description](#project-decsription)
+* [Why build the application?](#Objective)
 * [Technology stack](#tech-stack)
 * [Setup](#setup)
 * [Api Refrences](#api-refrences)
@@ -19,6 +20,13 @@ Project is created with:
 * [Nodejs]
 * [Firebase]
 * [Paypal SDK]
+## Project Deliverables
+ The objective of building this application was:
+  * [ Provide authentication and authorization in the application ]
+  * [ Create a Virtual Workout section where users can access curated exercises]
+  * [ Provide monetization in the application during in app purchases ]
+  * [ Account creation by users and trainers to kepp track of progress ]
+  * [ Booking of Trainers by members with BEFIT Accounts]
 ## Setup
 To run this project,
 ```
