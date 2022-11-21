@@ -4,7 +4,8 @@
 * [Technology stack](#tech-stack)
 * [Setup](#setup)
 * [Issues and challanges](#issues)
-* [Project status](#poject status)
+* [Project status](#project-status)
+* [References](#references)
 
 # Gym Web Application
 ## General Information
@@ -32,3 +33,5 @@ $run npm start
 * The project is at the end of development.
 * I am currently adding features to improve it's functionality.
 * Considering to add JWTs and using Node for authentication in place of Firebase
+## References
+The Landing page design was insipired by:https://www.youtube.com/watch?v=z3MueMJcfSE&t=198s
