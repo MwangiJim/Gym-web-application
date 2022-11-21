@@ -1,3 +1,5 @@
+# Gym Web Application
+
 ## Table of Contents
 * [General Information](#general-info)
 * [Project Description](#project-decsription)
@@ -10,7 +12,6 @@
 * [Project status](#project-status)
 * [References](#references)
 
-# Gym Web Application
 ## General Information
 A fullstack application built with React,Node js and MongoDb for a gym facility.The Application has a virtual workout section,an ecommerce section,an account creation section for trainer and member and a landing page for preview of services provided.Payments are done via paypal.
 # Tech stack
