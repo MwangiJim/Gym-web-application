@@ -7,7 +7,7 @@ import Options from './Options';
 import RightNewsSection from './RightNewsSection';
 import ExerciseTrainer from './ExerciseTrainer';
 import { SetTimeStart, setVisibility } from '../../redux/reducers/reducerSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Reminder from './Reminder';
 import WeeklyGoal from './WeeklyGoal';
@@ -15,6 +15,7 @@ import Languages from './Languages';
 export const LangaugeSetter = createContext()//Creating Context
 
 const Virtualworkout = () => {
+  let{DetailsName} = useSelector((state)=>state.gymRegucer)
     let[Start,setStart]=React.useState(false);
     let StartTime = new Date();
     let dispatch=useDispatch()
@@ -45,7 +46,7 @@ const Virtualworkout = () => {
         .then((data)=>{
            //console.log(data)
            let RandomVideo = data.items[Math.floor(Math.random()*data.items.length-1)];
-           console.log(RandomVideo.id.videoId)
+        //   console.log(RandomVideo.id.videoId)
            setExerciseVideo(RandomVideo.id.videoId)
         })
     }
@@ -59,44 +60,6 @@ const Virtualworkout = () => {
   let settingsStyles={
     left:Settings?'0px':'-350px'
   }
-  let[SportsNews,setSportsNews]=React.useState([])
-  //https://newsapi.org/v2/everything?q=fitness&apiKey=dc2d56d3ed754a1295c8d6fc4f1a6125
-  useEffect(()=>{
-       let FetchNews=async()=>{
-            await fetch('https://newsapi.org/v2/everything?q=workouts&apiKey=dc2d56d3ed754a1295c8d6fc4f1a6125')
-            .then((response)=>response.json())
-            .then((data)=>{
-              //console.log(data)
-              let Information = data.articles.map((item)=>{
-                return(
-                  {
-                    Author:item.author,
-                    Description:item.description,
-                    timePublished:item.publishedAt,
-                    Publisher:item.source.name,
-                    Title:item.title,
-                    Image:item.urlToImage,
-                    PostLink:item.url,
-                    Id:item.source.id
-                  }
-                )
-              })
-              setSportsNews(Information);
-            })
-            .catch((err)=>{
-              console.log(err.message);
-            })
-       }
-       FetchNews()
-       return ()=>{
-         FetchNews()
-       }
-  },[])
-  let[News,setNews]=React.useState(false);
-  const ShowNews=()=>{
-    setNews((prevNews)=>!prevNews)
-  }
-
   const QuitExercise=()=>{
       setStart(false)
   }
@@ -113,9 +76,31 @@ const Virtualworkout = () => {
      setlanguage((prevState)=>!prevState)
   }
   let[languages,setlangauges] = React.useState(['English','Deustch','Chinese','Spanish','French','Mexican','Portguese','Turkey','Vietnamese','Japanese'])
+  let[PreloaderImg,setPreloaderImg]=React.useState(false);
+  useEffect(()=>{
+    setTimeout(()=>{
+       setPreloaderImg(true);
+    },9000);
+  })
+  let styles = {
+    display:PreloaderImg?'none':'block'
+  }
+   //console.log(Count)
   return (
     <Container>
        {/**Left Container */}
+       <div className='preloader-image' style={styles}>
+          <div className='content'>
+            <h1>Welcome to VirtualWorkout,{DetailsName.UserName}</h1>
+            <div className='info'>
+               <h3>BE<strong>FIT</strong></h3>
+            <div className='info-content'>
+              <h4>ENERGY & PERSISTENCE</h4>
+              <p>Conquer all things</p>
+            </div>
+            </div>
+          </div>
+       </div>
        <LeftSide style={settingsStyles}>
           <div className='top__banner'>
             <FontAwesomeIcon icon={faGlobeAfrica} className='africa' onClick={ShowLangauges}/>
@@ -163,7 +148,6 @@ const Virtualworkout = () => {
            <MainWorkout
             settingsHandler = {ShowSettings}
             menuBoolean = {Settings}
-            newsHandler = {ShowNews}
             SetWeeklyGoal={ShowWeeklyGoalsMenu}
            /> 
           {Start? <ExerciseTrainer
@@ -197,6 +181,49 @@ let Container = styled.div`
  display:flex;
  padding:20px 5px;
  justify-content:space-between;
+ .preloader-image{
+  height:100vh;
+  width:100%;
+  top:0;
+  left:0;
+  position:fixed;
+  z-index:6;
+  background-image:linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('/Images/abs advanced.jpg');
+  background-size:cover;
+  background-position:center;
+  .content{
+    top:80%;
+    left:30%;
+    position:absolute;
+    color:#fff;
+    h1{
+      font-size:35px;
+      font-weight:400;
+    }
+    .info{
+      display:flex;
+      border:2px solid #f44336;
+      border-radius:6px;
+      padding:15px 10px;
+      background:linear-gradient(rgba(255,0,0,0.3),rgba(255,0,0,0.3));
+      justify-content:center;
+      align-items:center;
+      h3{
+        margin:0 2%;
+        strong{
+          color:#f44336;
+        }
+      }
+      .info-content{
+        text-align:left;
+        h4{
+          font-size:16px;
+          font-weight:300;
+        }
+      }
+    }
+  }
+ }
 `
 let LeftSide =styled.div`
  flex-basis:25%;

@@ -1,30 +1,38 @@
 import React from 'react'
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import DashboardCenter from './DashboardCenter'
 
 
 const TrainerDashboard = (props) => {
-    let[Form,setForm]=React.useState({
-        username:'',
-        State:'',
-        Age:null,
-        location:'',
-        Message:'',
-        password:'',
-        hourlypay:''
-    })
-const HandleInput=(e)=>{
-   setForm((prevStates)=>{
-    return{
-        ...prevStates,
-        [e.target.name]:e.target.value
-    }
-   })
-}
+    let[username,setusername]=React.useState('')
+    let[State,setState]=React.useState('')
+    let[Age,setAge]=React.useState('')
+    let[location,setlocation]=React.useState('')
+    let[Message,setmessage]=React.useState('')
+    let[password,setpassword]=React.useState('')
+    let[hourlypay,sethourlypay]=React.useState('')
 //Endpoint:https://countryflagsapi.com/:filetype/:code
- const HandleForm=()=>{
+ const HandleForm=(e)=>{
     //Make changes to page
+    e.preventDefault()
+    props.trainerProfile.map((user)=>{
+        return(
+            fetch(`http://localhost:8080/updateProfile/${user.Trainer_id}`,{
+                method:'PUT',
+                headers:{"Content-Type":'application/json'},
+                body:JSON.stringify({
+                  name:username,
+                  hourpay:hourlypay,
+                  message:Message,
+                  age:Age,
+                  location:location,
+                  city:State  
+                })
+            })
+        )
+    })
  }
   return (
     <Container>
@@ -64,8 +72,8 @@ const HandleInput=(e)=>{
                     type={'text'}
                     placeholder='Username'
                     name='username'
-                    value={Form.username}
-                    onChange={HandleInput}
+                    value={username}
+                    onChange={(e)=>setusername(e.target.value)}
                     className='input'
                     />
                     <br/>
@@ -76,8 +84,8 @@ const HandleInput=(e)=>{
                     type={'text'}
                     placeholder='State/Province'
                     name='State'
-                    value={Form.State}
-                    onChange={HandleInput}
+                    value={State}
+                    onChange={(e)=>setState(e.target.value)}
                     className='input'
                     />
                     <br/>
@@ -88,8 +96,8 @@ const HandleInput=(e)=>{
                     type={'number'}
                     placeholder='Your Age'
                     name='Age'
-                    value={Form.Age}
-                    onChange={HandleInput}
+                    value={Age}
+                    onChange={(e)=>setAge(e.target.value)}
                     className='input'
                     />
                     <br/>
@@ -100,8 +108,8 @@ const HandleInput=(e)=>{
                     type={'text'}
                     placeholder='Location'
                     name='location'
-                    value={Form.location}
-                    onChange={HandleInput}
+                    value={location}
+                    onChange={(e)=>setlocation(e.target.value)}
                     className='input'
                     />
                     <br/>
@@ -112,9 +120,8 @@ const HandleInput=(e)=>{
                     type={'text'}
                     placeholder='Tell us About Yourself'
                     name='Message'
-                    value={Form.Message}
-                    onChange={HandleInput}
-                    className='input'
+                    value={Message}
+                    onChange={(e)=>setmessage(e.target.value)}
                     />
                      <br/>
                     <label>Hour pay(in $)</label>
@@ -124,8 +131,8 @@ const HandleInput=(e)=>{
                         type={'number'}
                         placeholder='Proposed Hourly Pay'
                         name='hourlypay'
-                        value={Form.hourlypay}
-                        onChange={HandleInput}
+                        value={hourlypay}
+                        onChange={(e)=>sethourlypay(e.target.value)}
                         className='input'
                         />
                     <br/>
@@ -223,6 +230,8 @@ let Container = styled.div`
                 width:300px;
                 border-radius:7px;
                 resize:none;
+                outline:none;
+                height:150px;
                 padding:10px 10px;
                 border:none;
                 background-color:#f4f4f4;

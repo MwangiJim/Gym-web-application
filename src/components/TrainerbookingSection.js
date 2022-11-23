@@ -50,6 +50,7 @@ function TrainerbookingSection() {
                 Level:selection.options,
                 PhoneNumber:Form.telNumber,
             }))
+           // localStorage.setItem('member',Form.name)
             await fetch('http://localhost:8080/bookings',{
             method:"POST",
             headers:{"Content-Type":'application/json'},
@@ -59,7 +60,8 @@ function TrainerbookingSection() {
               booked_Date:Form.date,
               level:selection.options,
               phoneNumber:Form.telNumber,
-              email:DetailsName.Email
+              email:DetailsName.Email,
+              trainer:TrainerDetails.TrainerName
             })
           })
             setBooked((prevForm)=>!prevForm)

@@ -140,8 +140,8 @@ align-items:center;
  overflow-y:hidden;
  overflow-x:scroll;
  .lazy__load{
-    background:gray;
-    animation:load 2s alternate infinite;
+    background:#fff;
+    animation:load 2s linear infinite  alternate;
     height:300px;
     width:300px;
     border-radius:7px;

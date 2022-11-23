@@ -97,6 +97,8 @@ function Footer() {
            <label>Are The Gym Workouts Intense?</label>
            <br/>
            <button onClick={HandleForm}>Send Message</button>
+           <br/>
+           <small className='small'>BEFIT fitness Group||Copyright © || All rights Reserved</small>
        </div>
     </Container>
   )
@@ -127,6 +129,11 @@ let Container = styled.div`
       text-align:left;
       flex-basis:25%;
       color:#fff;
+      .small{
+        color:grey;
+        margin-top:2%;
+        font-size:12px;
+     }
       h2{
           margin-bottom:20px;
       }
@@ -160,6 +167,7 @@ let Container = styled.div`
          outline:none;
          border:none;
          border-radius:20px;
+         margin-bottom:2%;
      }
   }
 `

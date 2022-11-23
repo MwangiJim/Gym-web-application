@@ -5,27 +5,53 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { SetTrainerDetails } from '../redux/reducers/reducerSlice'
 import { useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 
 function Trainer(props) {
   let{TrainerDetails,userDetails,DetailsName}=useSelector((state)=>state.gymRegucer)
   let navigate = useNavigate()
   let dispatch = useDispatch()
+  //1:Look for way to check if one has already booked a trainer....
+  let[booking,setbooking]=React.useState([])
+  useEffect(()=>{
+     fetch('http://localhost:8080/bookings')
+     .then((res)=>res.json())
+     .then((data)=>{
+        console.log(data)
+        let booked = data.message.map((item)=>{
+           return(
+              {
+                 name:item.FullName,
+                 age:item.Age,
+                 email:item.Email,
+                 trainer:item.Trainer
+              }
+           )
+        })
+        setbooking(booked)
+     })
+     .catch((err)=>{
+        console.log(err.message)
+     })
+  })
   const ShowBooking=()=>{
    // alert('Hello')
-    navigate('/booking')
-    dispatch(SetTrainerDetails({
-      Image:props.image,
-      TrainerLevel:props.level,
-      TrainerName:props.name,
-    }))
+   navigate('/booking')
+   dispatch(SetTrainerDetails({
+     Image:props.image,
+     TrainerLevel:props.level,
+     TrainerName:props.name,
+   }))
+   //localStorage.setItem('trainer',props.name)
    // console.log(TrainerDetails)
   }
   const[userCheck,setUserCheck] = React.useState([])
   useEffect(()=>{
-    fetch('http://localhost:8080/newTrainer')
+    fetch('http://localhost:8080/newMember')
     .then((res)=>res.json())
     .then((data)=>{
-     let InfoTrainer = data.message.map((item)=>{
+     let InfoMember = data.message.map((item)=>{
        return(
          {
            email:item.Email,
@@ -33,7 +59,7 @@ function Trainer(props) {
          }
        )
      })
-     setUserCheck(InfoTrainer)
+     setUserCheck(InfoMember)
     })
   },[1])
   return (
@@ -46,13 +72,15 @@ function Trainer(props) {
              rate={props.rating}
             />
             <p>{props.name}</p>
-            <button onClick={userCheck.map((item)=>{
+            {userCheck.length>0?'':"*to book trainers you need a members account*"}
+            {userCheck.map((item)=>{
               return(
                 <>
-                 {item.email !== DetailsName.Email?ShowBooking():console.log('Not Possible')}
+                  {item?.email === DetailsName.Email?<button onClick={ShowBooking} className='btn'>Book Trainer</button>:
+                 <li onClick={()=>navigate(`/joinus`)}><FontAwesomeIcon icon ={faTriangleExclamation}/>Create Member Account *Click here*</li>}
                 </>
               )
-            })} className='btn'>Book Trainer</button>
+            })}
         </div>
        </div>
     </Container>
@@ -89,6 +117,15 @@ img{
     background-color:#333;
     bottom:54px;
     position:relative;
+    li{
+      list-style:none;
+      color:red;
+      font-size:9px;
+      padding:10px 20px;
+      background:transparent;
+      border-radius:5px;
+      border:1px solid red;
+    }
     h4{
         color:#f44336;
         font-weight:400;

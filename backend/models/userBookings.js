@@ -7,6 +7,7 @@ const booking = mongoose.Schema({
     Date:String,
     PhoneNumber:String,
     Email:String,
+    Trainer:String,
 })
 
 export default mongoose.model("Booking",booking)

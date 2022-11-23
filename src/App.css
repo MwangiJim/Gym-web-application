@@ -56,6 +56,9 @@ body::-webkit-scrollbar-track{
   cursor: pointer;
 
 }
+.error{
+  background-color: #8f65628a;
+}
 .anime{
   background-color:gray;
   border-radius:10px;

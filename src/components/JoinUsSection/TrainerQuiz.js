@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 function TrainerQuiz() {
+  const dispatch = useDispatch()
   let{userDetails,DetailsName} = useSelector((state)=>state.gymRegucer)
     let [Form,setForm] = React.useState({
        username:'',
@@ -71,7 +72,6 @@ function TrainerQuiz() {
         })
       })
       localStorage.setItem("flag",CountryForm.country)
-    
     }
     let[Countries,setCountries] = React.useState([]);
     useEffect(()=>{

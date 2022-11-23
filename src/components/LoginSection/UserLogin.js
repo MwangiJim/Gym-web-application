@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { db } from '../../firebase'
 import{createUserWithEmailAndPassword, FacebookAuthProvider, getAuth, GithubAuthProvider, sendEmailVerification,signInWithPopup, updateProfile} from 'firebase/auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faE, faEye, faEyeSlash, faPerson,faMailBulk } from '@fortawesome/free-solid-svg-icons'
+import { faE, faEye, faEyeSlash, faPerson,faMailBulk, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { storeUserDetails } from '../../redux/reducers/reducerSlice'
 import LoginPad from './LoginPad'
@@ -133,8 +133,11 @@ function UserLogin() {
               </div>
                 <small>or</small>
                 <h5>Sign up with your email address</h5>
+                {Error?<div className="error">
+                        <FontAwesomeIcon icon={faTriangleExclamation}/>
+                        <p>{Error}</p>
+                    </div>:''}
                 <form onSubmit={HandleForm}>
-                    <p>{Error?Error:''}</p>
                     <label>What's Your Email?</label>
                     <br/>
                     <div className='inputBox'>
@@ -189,7 +192,6 @@ function UserLogin() {
                      />
                      </div>
                     <button className='btn'>Create Account</button>
-                    <p>Already have an Account?<i>Login</i></p>
                 </form>
             </Register>
             {Visual?<LoginPad/>:''}
@@ -235,8 +237,9 @@ let Container = styled.div`
 let Form = styled.div`
  padding:15px 10px;
  width:500px;
- height:550px;
+ height:570px;
  background-color:#fff;
+ flex-basis:52%;
  h4{
      text-align:center;
      strong{
@@ -342,6 +345,15 @@ h2{
      font-size:18px;
      text-align:center;
  }
+ .error{
+    padding:8px 12px;
+    border-radius:8px;
+    border:2px solid #f44336;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#f44336;
+}
  form{
     margin:2% 0;
     .btn{
@@ -409,7 +421,7 @@ h2{
       height:40px;
       outline:none;
       padding:0 10px;
-      margin:2% 0;
+      margin:1% 0;
       border-radius:5px;
       color:#000;
       border:none;
@@ -435,7 +447,7 @@ let InviteSection = styled.div`
  background-size:cover;
  width:100%;
  flex-basis:44%;
- height:580px;
+ height:600px;
  color:#f44336;
  .textbox{
     top:50%;

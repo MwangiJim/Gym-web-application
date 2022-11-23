@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import {useDispatch}  from 'react-redux'
 import { storeUserDetails } from '../../redux/reducers/reducerSlice'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -27,7 +27,7 @@ function LoginPad() {
             console.log('Email sent')
         })
         .catch((error)=>{
-            setError(error.message)
+            setError(error)
         })
     }
     let[LoginForm,setLoginForm]=React.useState({
@@ -48,8 +48,8 @@ function LoginPad() {
         event.preventDefault()
         if(LoginForm.email,LoginForm.password){
             signInWithEmailAndPassword(auth,LoginForm.email,LoginForm.password)
-            .catch((error)=>{
-                setError(error.message)
+            .catch((err)=>{
+                setError(err.message)
             })
         }
     }
@@ -66,7 +66,6 @@ function LoginPad() {
     <small>or</small>
     <h4>Sign in with Email Address</h4>
     <form onSubmit={HandleLoginForm}>
-        <p className='error'>{Error?Error:''}</p>
         <label>Email Address</label>
         <br/>
         <input
@@ -91,6 +90,10 @@ function LoginPad() {
         </div>
         <p onClick={ForgotPassword}>Forgot Your Password?</p>
         <button className='button'>Log in</button>
+        {Error?<div className="error">
+                        <FontAwesomeIcon icon={faTriangleExclamation}/>
+                        <p>{Error}</p>
+                    </div>:''}
     </form>
 </Login>
   )
@@ -124,6 +127,19 @@ let Login = styled.div`
      }
  }
  form{
+    .error{
+        padding:10px 12px;
+        margin:2% 0;
+        border-radius:8px;
+        border:2px solid #f44336;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        color:#f44336;
+        p{
+            color:#f44336;
+        }
+    }
      label{
          text-align:left;
      }

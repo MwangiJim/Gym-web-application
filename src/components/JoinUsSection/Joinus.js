@@ -7,6 +7,8 @@ import moment from 'moment'
 import Dashboard from './Dashboard'
 import TrainerDashboard from './TrainerDashboard'
 import { useSelector } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons'
 
 export const UserInformation = createContext()
 
@@ -70,6 +72,7 @@ function Joinus() {
                biography:Form.Message,
                Period:RadioForm.periodTraining,
                pushups:RadioForm.pushups,  
+               email:DetailsName.Email
             })
         })
     }
@@ -89,7 +92,9 @@ let[Member,setMember]=React.useState([])
                             location:item.Location,
                             bio:item.Bio,
                             frequency:item.TrainingFrequency,
-                            pushups:item.PushupReps
+                            pushups:item.PushupReps,
+                            member_Id:item._id,
+                            email:item.Email
                         }
                     )
                 })
@@ -101,7 +106,7 @@ let[Member,setMember]=React.useState([])
         }
         return ()=>GetProfile();
     },[1])
-    console.log(Member)
+    //console.log(Member)
 
     let[TrainerForm,setTrainerForm]=React.useState(false)
     //console.log(QuestionsSelected)
@@ -134,7 +139,8 @@ let[Member,setMember]=React.useState([])
                             message:item.Message,
                             phone:item.Phone,
                             username:item.Username,
-                            email:item.Email
+                            email:item.Email,
+                            Trainer_id:item._id
                         }
                     )
                 })
@@ -145,24 +151,45 @@ let[Member,setMember]=React.useState([])
             trainerInfo()
         }
     },[1])
+    const[EMAIL__VERIFIER,setEMAILVERFIFIER]=React.useState(null);
+   // console.log(EMAIL__VERIFIER);
     let box__styles = {
-        opacity:Trainer?'0':'1'
+        
     }
- // console.log(Trainer)
+  //console.log(Member)
+ // console.log(DetailsName.Email)
+ let[SingleQuote,setSingleQuote]=React.useState(null)
+ useEffect(()=>{
+      fetch('https://type.fit/api/quotes')
+      .then((res)=>res.json())
+      .then((data)=>{
+        //console.log(data);
+        let randomQuote = data[Math.floor(Math.random()*data.length-1)]
+        setSingleQuote(randomQuote);
+      })
+ },[1])
+ console.log(SingleQuote)
   return (
     <Container>
        <UserInformation.Provider value={Member}>
-            {Member.length>0?<Dashboard/>:''}
                 {Trainer.map((item)=>{
                     return(
-                       <>
-                        {item.email === DetailsName.Email? 
-                        <TrainerDashboard trainerProfile = {Trainer}/>:''}
-                       </>
+                        <>
+                          {item.email === DetailsName.Email?
+                          <TrainerDashboard  trainerProfile = {Trainer}/>
+                          :''}
+                        </>
                     )
-                })}
+                 })}
+                  {Member.map((item)=>{
+                    return(
+                        <>
+                        {item.email === DetailsName.Email?<Dashboard memberInfo={Member}/>:''}
+                        </>
+                    )
+                 })}
        </UserInformation.Provider>
-    <div className="box">
+    <div className="box" style={box__styles}>
       <div className='left__side'>
          <div className='textbox'>
                 <h2>Join us at BEFIT as a Member or a Trainer</h2>  
@@ -173,6 +200,12 @@ let[Member,setMember]=React.useState([])
            <div className='line' style={linestyles}>
 
            </div>
+         </div>
+         <div className='quotes'>
+            <FontAwesomeIcon icon={faQuoteLeft} className='icon'/>
+             <h2>{!SingleQuote?.Text?'Checking....':SingleQuote.Text}</h2>
+            <p>{!SingleQuote?.Author?'ShakeSpeare checking....':SingleQuote.Author}</p> 
+            <FontAwesomeIcon icon={faQuoteRight} className='icon'/>
          </div>
       </div> 
       <div className='right__side'>
@@ -332,6 +365,24 @@ let Container = styled.div`
         background-image:linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('/Images/blog-2.jpg');
         background-position:center;
         background-size:cover;
+        .quotes{
+            top:10%;
+            left:50px;
+            position:relative;
+                .icon{
+                    color:#fff;
+                    font-size:25px;
+                }
+            h2{
+                color:#fff;
+                font-size:25px;
+                font-weight:400;
+            }
+            p{
+                font-size:19px;
+                color:#fff;
+            }
+        }
         .textbox{
           display:flex;
           justify-content:space-between;

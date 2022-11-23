@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import BookingDisplay from '../BookingDisplay'
+import { UserInformation } from './Joinus'
 
 const Dashboard = (props) => {
+    let memberprofileInfo = useContext(UserInformation)
+    console.log(memberprofileInfo)
         let[Form,setForm]=React.useState({
             username:'',
             State:'',
@@ -21,16 +24,21 @@ const Dashboard = (props) => {
     }
     const HandleForm=async(e)=>{
         e.preventDefault();
-          await fetch('http://localhost:8080/newMember',{
-            method:'PUT',
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({
-                newName:Form.username,
-                newBio:Form.Message,
-                newLocation:Form.location,
-                newState:Form.State
+          memberprofileInfo.map((item)=>{
+            return(
+                fetch(`http://localhost:8080/updateMember/${item.member_Id}`,{
+                    method:'PUT',
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify({
+                        newName:Form.username,
+                        newMessage:Form.Message,
+                        newLocation:Form.location,
+                        newState:Form.State,
+                        newAge:Form.Age
+             })
             })
-          })
+            )
+        })
     }
   return (
     <Container>
@@ -48,8 +56,9 @@ const Dashboard = (props) => {
                   <h3>Profile Completion</h3>
                 <div className='completion'>
                 {[...Array(4)].map((item,i)=>{
+                    let complete = i+1
                     return(
-                        <span key={i} style={{backgroundColor:i<3?'rgb(30, 102, 197)':'gray'}}></span>
+                        <span key={i} style={{backgroundColor:complete<=3?'rgb(30, 102, 197)':'gray'}}></span>
                     )
                   })}
                   <small>90% completion</small>
@@ -61,7 +70,7 @@ const Dashboard = (props) => {
                 <h3>Update Profile</h3>
                 <form onSubmit={HandleForm}>
                     <div className='avatar'>
-                        <img src='/Images/avatar2.png'/>
+                        <img src='/Images/avatar1.png'/>
                     </div>
                   <label>Your Name</label>
                   <span>*</span>
@@ -136,7 +145,7 @@ let Container = styled.div`
     display:flex;
     justify-content:space-between;
     width:100%;
-    height:124vh;
+    height:110vh;
     background:#fff;
     left:0%;
     position:absolute;

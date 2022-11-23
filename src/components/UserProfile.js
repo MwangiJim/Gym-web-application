@@ -3,18 +3,108 @@ import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import { useContext } from 'react';
 import { UserInformation } from './JoinUsSection/Joinus';
+import BookingsSection from './JoinUsSection/BookingsSection';
+import { useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMessage, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import Comments from './JoinUsSection/Comments';
+import DeleteMemberAccount from './JoinUsSection/DeleteMemberAccount';
 
 function UserProfile() {
    let profileDetails = useContext(UserInformation);
-   console.log(profileDetails.length)
+//   console.log(profileDetails.length)
    let{ userDetails,DetailsName}= useSelector((state)=>state.gymRegucer);
-   {profileDetails.map((item)=>{
-      return(
-         console.log(item.name,item.state,item.age,item.location)
-      )
-   })}
+   let[TrainerData,setTrainerData]=React.useState([]);
+   useEffect(()=>{
+      fetch('http://localhost:8080/newTrainer')
+      .then((res)=>res.json())
+      .then((data)=>{
+        // console.log(data)
+         let TrainerInfo = data.message.map((item)=>{
+            return(
+               {
+                  name:item.Username,
+                  age:item.Age,
+                  phone:item.Phone,
+                  experience:item.LevelofExperience,
+                  email:item.Email,
+                  location:item.Location
+               }
+            )
+         })
+         setTrainerData(TrainerInfo)
+      })
+      .catch((err)=>{
+         console.log(err.message)
+      })
+   })
+   let[booking,setbooking]=React.useState([])
+   useEffect(()=>{
+      fetch('http://localhost:8080/bookings')
+      .then((res)=>res.json())
+      .then((data)=>{
+         //console.log(data)
+         let booked = data.message.map((item)=>{
+            return(
+               {
+                  name:item.FullName,
+                  age:item.Age,
+                  email:item.Email,
+                  trainer:item.Trainer
+               }
+            )
+         })
+         setbooking(booked)
+      })
+      .catch((err)=>{
+         console.log(err.message)
+      })
+   })
+   let[TrainerComment,setTrainerComment] = React.useState([])
+   useEffect(()=>{
+    fetch('http://localhost:8080/Trainercomments')
+    .then((res)=>res.json())
+    .then((data)=>{
+      //console.log(data)
+      let trainer = data.message.map((item)=>{
+        return(
+          {
+            comment:item.Comment,
+            time:item.TimeCommented,
+            date:item.DateCommented,
+            rate:item.Rate
+          }
+        )
+      })
+      setTrainerComment(trainer)
+    })
+   })
+   let[MemberComment,setMemberComment] = React.useState([])
+   useEffect(()=>{
+    fetch('http://localhost:8080/Membercomments')
+    .then((res)=>res.json())
+    .then((data)=>{
+      //console.log(data)
+      let member = data.message.map((item)=>{
+        return(
+          {
+            comment:item.Comment,
+            time:item.TimeCommented,
+            date:item.DateCommented,
+            rate:item.Rate
+          }
+        )
+      })
+      setMemberComment(member)
+    })
+   })
+   let[memberTerminate,setMemberTerminate]=React.useState(false);
+   function deleteMemberAccount(){
+       setMemberTerminate((prevState)=>!prevState)
+   }
   return (
     <Container>
+      {memberTerminate?<DeleteMemberAccount/>:''}
                {profileDetails.map((item)=>{
                   return(
                      <>
@@ -32,10 +122,12 @@ function UserProfile() {
                            <p>{userDetails?.Email?userDetails.Email:DetailsName.Email}</p>
                      </div>
                   </div>
+                  <h2>biography</h2>
                   <div className='bio'>
                         <img src='/Images/bio.png'/>
                         <small>{item.bio}</small>
                         </div>
+                        <h2>Address</h2>
                   <div className='location'>
                      <div className='city'>
                         <img src='/Images/city.png'/>
@@ -47,9 +139,56 @@ function UserProfile() {
                         <h4>{item.location}</h4>
                      </div>
                   </div>
-                  <br/>
-                  <small>Charges Per Hour:{}</small>
-                  <small>{}</small>
+                  <h2>Your Trainer</h2>
+                   {booking.length>0?<div className='trainer'>
+                     {TrainerData.map((item,i)=>{
+                        return(
+                           <BookingsSection
+                               key={i}
+                               name={item.name}
+                               age = {item.age}
+                               phone= {item.phone}
+                               level={item.experience}
+                               email={item.email}
+                               location={item.location}
+                               data = {TrainerData}
+                            />
+                        )
+                     })}
+                   </div>:'You have no Trainers..Book if you wish to train'}
+                   <br/>
+                   <h2><FontAwesomeIcon icon={faMessage}/> Chats</h2>
+                    {MemberComment.map((item,i)=>{
+                     return(
+                        <Comments
+                        key={i}
+                        id={1}
+                        comment={item.comment}
+                        date={item.date}
+                        time={item.time}
+                        rate={item.rate}
+                        />
+                     )
+                    })}
+                    {TrainerComment.map((item,i)=>{
+                     return(
+                        <Comments
+                        key={i}
+                        id={2}
+                        comment={item.comment}
+                        date={item.date}
+                        time={item.time}
+                        rate={item.rate}
+                        />
+                     )
+                    })}
+                     <br/>
+                     <h2 className='blue'>Danger Zone</h2>
+                     <div className='danger__zone'>
+                        <FontAwesomeIcon icon={faTriangleExclamation} className='warning'/>
+                        <h3>Delete Account</h3>
+                        <button onClick={deleteMemberAccount}>Delete My {item.name?'Member':'Trainer'} Account</button>
+                     </div>
                      </>
                   )
                })}
@@ -62,9 +201,15 @@ export default UserProfile
 
 let Container = styled.div`
  background:#f4f4f4;
- border-radius:15px;
+ border-radius:3px;
+ margin:1% 0;
  width:100%;
- height:40vh;
+ height:70vh;
+ max-height:70vh;
+ overflow-y:scroll;
+ ::-webkit-scrollbar{
+     width:0;
+ }
  .bio{
    display:flex;
    justify-content:left;
@@ -190,5 +335,44 @@ let Container = styled.div`
  .head__summary{
     font-weight:300;
     margin-bottom:3%;
+ }
+ h2{
+   ::after{
+      content:'';
+      width:100px;
+      background-color:rgb(30, 102, 197);
+      height:4px;
+      border-radius:8px;
+      display:block;
+      margin:1% 0;
+    }
+ }
+
+ .danger__zone{
+   width:90%;
+   height:20vh;
+   left:5%;
+   position:relative;
+   border-radius:5px;
+   border:2px solid #f44336;
+   display:flex;
+   justify-content:center;
+   align-items:center;
+   flex-direction:column;
+   background-color:#b36661e0;
+   padding:6px;
+   .warning{
+     color:#f44336;
+     font-size:40px;
+   }
+   button{
+     padding:12px 45px;
+     border-radius:8px;
+     background:#f44336;
+     color:#fff;
+     border:none;
+     outline:none;
+     cursor:pointer;
+   }
  }
 `

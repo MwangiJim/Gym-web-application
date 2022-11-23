@@ -6,6 +6,9 @@ import pricingplan from './models/pricingplan.js';
 import memberProfile from './models/memberProfile.js';
 import trainerProfile from './models/trainerProfile.js';
 import userBookings from './models/userBookings.js';
+import Comments from './models/Comments.js';
+import TrainerComments from './models/TrainerComments.js';
+import path from 'path'
 
 const PORT = 8080;
 const app = express();
@@ -81,7 +84,7 @@ app.get('/newMember',async(req,res)=>{
     }
 })
 app.post('/newMember',async(req,res)=>{
-    const{name,age,state,location,biography,Period,pushups} = req.body;
+    const{name,age,state,location,biography,Period,pushups,email} = req.body;
     if(!name){
         return res.status(400).json({"message":"Input Fields Required!!!"})
     }
@@ -93,30 +96,41 @@ app.post('/newMember',async(req,res)=>{
             Location:location,
             Bio:biography,
             TrainingFrequency:Period,
-            PushupReps:pushups
+            PushupReps:pushups,
+            Email:email,
         })
         res.status(201).json({"message":newMember})
        // console.log(newMember)
     }
 })
-app.put('/newMember',async(req,res)=>{
+app.put('/updateMember/:id',async(req,res)=>{
    // const{biography,name} = req.body;
-   const filter = await memberProfile.findOne({Name:req.body.name})
-   const update = {
-          Bio:req.body.newBio,
-          Name:req.body.newName,
-          Location:req.body.newLocation,
-          State:req.body.newState
-     }
-    const Member = await memberProfile.findOneAndUpdate(filter,update,{
-        returnOriginal:false,
-    })
-    if(!Member){
-        return res.status(400).json({"message":"Operation Failed!!"})
+    const id = req.params.id;
+    if(!id){
+        return res.status(400).json({'message':'No id found'})
     }
     else{
-        res.status(200).json({"message":Member})
-        console.log(Member)
+        const updatedMemberProfile = await memberProfile.findByIdAndUpdate(id,{$set:{
+          Name:req.body.newName,
+          Age:req.body.newAge,
+          State:req.body.newState,
+          Bio:req.body.newMessage,
+          Location:req.body.newLocation
+        }},{returnOriginal:false})
+        res.status(200).json({'message':'Successfully updated'+ updatedMemberProfile})
+        console.log('New Member profile '+ updatedMemberProfile)
+    }
+})
+app.delete('/deleteMember/:id',async(req,res)=>{
+    const id = req.params.id;
+    if(!id){
+        res.status(400).json({'message':'Id not found'})
+    }
+    else{
+        const deletedAccount = await memberProfile.findByIdAndDelete(id);
+
+        res.status(200).json({'msg':deletedAccount})
+        console.log(deletedAccount);
     }
 })
 //routes and controllers for new trainer
@@ -127,7 +141,20 @@ app.get('/newTrainer',async(req,res)=>{
     }
     else{
         res.status(200).json({"message":foundTrainer})
+        //console.log(foundTrainer)
     }
+})
+//route to get one trainer matching the Id
+app.get('/userTrainer/:id',async(req,res)=>{
+   const id = req.params.id;
+   if(id){
+   const foundTrainer =   await trainerProfile.findById(id)
+   res.status(200).json({"message":foundTrainer})
+  // console.log('The trainer',foundTrainer)
+   }
+   else{
+    res.status(500).json({msg:'no user was found'})
+   }
 })
 app.post('/newTrainer',async(req,res)=>{
     const{userName,age,city,location,message,hourlyPay,levelofExperience,phone,experience,flag,email}=req.body;
@@ -149,8 +176,37 @@ app.post('/newTrainer',async(req,res)=>{
             Email:email
         })
         res.status(201).json({newTrainer})
-        console.log(newTrainer);
+       // console.log(newTrainer);
     }
+})
+app.put('/updateProfile/:id',async(req,res)=>{
+      const id = req.params.id;
+      if(!id){
+        return res.status(500).json({'message':"No Id matching "+ id})
+      }
+      else{
+        const updatedProfile = await trainerProfile.findByIdAndUpdate(id,{$set:{
+           Username:req.body.name,
+           HourPay:req.body.hourpay,
+           City:req.body.city,
+           Message:req.body.message,
+           Location:req.body.location,
+           Age:req.body.age, 
+        }},{returnOriginal:false})
+        res.status(200).json({"message":updatedProfile})
+        console.log(updatedProfile)
+      }
+})
+app.delete('/deleteTrainerProfile/:id',async(req,res)=>{
+    const id=req.params.id;
+    if(!id){
+        return res.status(500).json({'message':"No Id matching "+ id})
+     }
+     else{
+        const deletedTrainerAccount = await trainerProfile.findByIdAndDelete(id)
+        res.status(200).json({message:deletedTrainerAccount})
+        console.log(deletedTrainerAccount)
+     }
 })
 //routes and controllers for bookings
 app.get("/bookings",async(req,res)=>{
@@ -160,11 +216,11 @@ app.get("/bookings",async(req,res)=>{
     }
     else{
         res.status(200).json({"message":foundBookings})
-        console.log(foundBookings)
+        //console.log(foundBookings)
     }
 })
 app.post('/bookings',async(req,res)=>{
-   const {name,age,booked_Date,level,phoneNumber,email}=req.body;
+   const {name,age,booked_Date,level,phoneNumber,email,trainer}=req.body;
    if(!name ||!age){
     return res.status(400).json({"message":'Inputs Required'})
    }
@@ -175,12 +231,78 @@ app.post('/bookings',async(req,res)=>{
         Date:booked_Date,
         Level:level,
         PhoneNumber:phoneNumber,
-        Email:email
+        Email:email,
+        Trainer:trainer
       })
       res.status(201).json({"message":newBooking})
-      console.log(newBooking)
+     // console.log(newBooking)
    }
 })
+app.delete('/bookings/:id',async(req,res)=>{
+    const id=req.params.id;
+    if(!id){
+        return res.status(500).json({"message":"No item matching id: "+id+"was found"})
+    }
+    else{
+        let deletedItem = await userBookings.findByIdAndDelete(id)
+        res.status(200).json({"message":deletedItem})
+        console.log(deletedItem)
+    }
+})
+//routes and comments for trainer and member
+app.get('/Membercomments',async(req,res)=>{
+    const foundComments = await Comments.find();
+    if(!foundComments){
+        return res.status(400).json({"message":"No Comments found"})
+    }
+    else{
+        res.status(200).json({"message":foundComments})
+       // console.log(foundComments)
+    }
+})
+app.post('/Membercomments',async(req,res)=>{
+  const {time,date,comment,rate}=req.body;
+  if(!comment){
+    return res.status(400).json({'message':"Bad Request"})
+  }
+  else{
+    const newComment = await Comments.create({
+        Comment:comment,
+        TimeCommented:time,
+        DateCommented:date,
+        Rate:rate
+    })
+    res.status(201).json({'message':newComment})
+  //  console.log(newComment);
+  }
+})
+
+app.get('/Trainercomments',async(req,res)=>{
+    const foundtrainerComments = await TrainerComments.find();
+    if(!foundtrainerComments){
+        return res.status(400).json({"message":"no messages found"})
+    }
+    else{
+        res.status(200).json({'message':foundtrainerComments})
+    }
+})
+app.post('/Trainercomments',async(req,res)=>{
+    const {time,date,comment,rate}=req.body;
+    if(!comment){
+      return res.status(400).json({'message':"Bad Request"})
+    }
+    else{
+      const newComment = await TrainerComments.create({
+          Comment:comment,
+          TimeCommented:time,
+          DateCommented:date,
+          Rate:rate
+      })
+      res.status(201).json({'message':newComment})
+      //console.log(newComment);
+    }
+  })
+
 app.all("*",(req,res)=>{
     return res.status(404).json({"message":"Page not Found"})
 })

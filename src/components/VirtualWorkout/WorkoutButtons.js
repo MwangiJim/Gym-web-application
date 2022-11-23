@@ -172,7 +172,7 @@ const WorkoutButtons = (props) => {
     <Container onClick={SetWorkoutdetails}>
         <img src={props.imagebackground}/>
        <Contents>
-       <h3>{props.Exercise}</h3>
+         <h3>{props.Exercise}</h3>
          <small>Last time:Jan 07</small>
          <div className='difficulty_level'>
             {[...Array(3)].map((strike,i)=>{
@@ -196,11 +196,12 @@ const WorkoutButtons = (props) => {
 export default WorkoutButtons
 
 let Container=styled.div`
- border-radius:5px;
+ border-radius:10px;
  cursor:pointer;
- margin-bottom:-30px;
+ position:relative;
+ margin-bottom:3%;
  overflow:hidden;
- padding:0;
+ background:#fff;
  h3{
      color:#fff;
  }
@@ -211,12 +212,13 @@ let Container=styled.div`
      width:100%;
      height:25vh;
      object-fit:cover;
+     border-radius:8px;
  }
 `
 let Contents = styled.div`
-bottom:140px;
+bottom:70px;
  left:20px;
- position:relative;
+ position:absolute;
  .difficulty_level{
      display:flex;
      justify-content:left;

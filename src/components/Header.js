@@ -5,8 +5,6 @@ import React ,{useEffect}from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { SetShowBookings } from '../redux/reducers/reducerSlice'
-import BookingDisplay from './BookingDisplay'
 import GoogleMap from './GoogleMap'
 
 function Header() {
@@ -37,11 +35,11 @@ function Header() {
   return (
     <Container>
           <h2 className='h2'>BE<strong>FIT</strong></h2>
-      <div className='center' style={styles}>
-          <li onClick={ShowHome}><FontAwesomeIcon icon={faHome}/>Home</li>
-          <li onClick={()=>navigate(`/virtualworkout`)}>Virtual Workout</li>
-          <li onClick={ShowShopping}><FontAwesomeIcon icon={faShop}/>Shop</li>
-          <li onClick={()=>navigate('/joinus')}><FontAwesomeIcon icon={faLock}/>Account</li>
+      <div className='center'>
+          <li onClick={ShowHome}><FontAwesomeIcon icon={faHome}/><small>Home</small></li>
+          <li onClick={()=>navigate(`/virtualworkout`)}><small>Virtual Workout</small></li>
+          <li onClick={ShowShopping}><FontAwesomeIcon icon={faShop}/><small>Shop</small></li>
+          <li onClick={()=>navigate('/joinus')}><FontAwesomeIcon icon={faLock}/><small>Account</small></li>
           <li onClick={MoveToCheckOut}><FontAwesomeIcon icon={faShoppingCart} className='shopping'/><span>{EcommerceStore.length}</span></li>
           <div className='profile_image'>
             <p>{DetailsName?.UserName.charAt(0)}{DetailsName?.UserName.charAt(1)}</p>
@@ -104,34 +102,29 @@ let Container = styled.div`
      margin:0 7%;
  }
  @media(max-width:600px){
-    .menu{
-        display:block;
-        top:10px;
-        right:10px;
-        position:absolute;
-        z-index:9;
-        cursor:pointer;
-    }
     .center{
         background-color:#000;
-        width:350px;
-        height:70vh;
+        width:100%;
+        height:20vh;
         z-index:8;
-        top:0;
-        right:0px;
-        position:absolute;
+        top:60%;
+        left:0px;
+        position:fixed;
         display:flex;
         justify-content:space-between;
-        flex-direction:column;
         align-items:center;
+        box-shadow:3px 3px 6px #fff;
         li{
             display:flex;
             justify-content:center;
             align-items:center;
             margin-bottom:-20px;
             padding:-35px 0;
-            color:#fff;
+            color:#000;
             font-size:17px;
+            small{
+                display:none;
+            }
         }
     }
  }

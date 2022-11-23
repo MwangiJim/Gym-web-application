@@ -8,6 +8,7 @@ const MemberProfile = mongoose.Schema({
     Bio:String,
     TrainingFrequency:String,
     PushupReps:String,
+    Email:String
 })
 
 export default mongoose.model('MemberProfile',MemberProfile)

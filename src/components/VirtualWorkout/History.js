@@ -57,7 +57,7 @@ export default History
 let Container=styled.div`
  width:100%;
  background-color:#fff;
- bottom:16px;
+ top:1px;
  z-index:9;
  position:absolute;
  .react-calendar{

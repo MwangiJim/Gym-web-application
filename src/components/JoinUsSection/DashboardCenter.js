@@ -4,6 +4,11 @@ import styled from 'styled-components'
 import Rating from './Rating'
 import { useSelector } from 'react-redux'
 import BookingsSection from './BookingsSection.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleExclamation, faMessage, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+import Comments from './Comments'
+import DeleteTrainerAccount from './DeleteTrainerAccount'
+import TrainersViews from './TrainersViews'
 
 const DashboardCenter = (props) => {
   let{BookingsMade}=useSelector((state)=>state.gymRegucer);
@@ -25,7 +30,7 @@ const DashboardCenter = (props) => {
        let fetchedBookings = async()=>{
         await fetch('http://localhost:8080/bookings')
         .then((res)=>res.json())
-        .then((data)=>{console.log(data)
+        .then((data)=>{
            let Booked = data.message.map((item)=>{
             return(
              {
@@ -34,7 +39,8 @@ const DashboardCenter = (props) => {
                date: item.Date,
                phone: item.PhoneNumber,
                level:item.Level,
-               email:item.Email
+               email:item.Email,
+               booking_Id:item._id
              }
             )
            })
@@ -48,9 +54,52 @@ const DashboardCenter = (props) => {
         fetchedBookings();
        }
     },[1])
-    console.log(BookedSessions)
+   // console.log(BookedSessions)
+   let[TrainerComment,setTrainerComment] = React.useState([])
+   useEffect(()=>{
+    fetch('http://localhost:8080/Trainercomments')
+    .then((res)=>res.json())
+    .then((data)=>{
+      let trainer = data.message.map((item)=>{
+        return(
+          {
+            comment:item.Comment,
+            time:item.TimeCommented,
+            date:item.DateCommented,
+            rate:item.Rate
+          }
+        )
+      })
+      setTrainerComment(trainer)
+    })
+   })
+   let[MemberComment,setMemberComment] = React.useState([])
+   useEffect(()=>{
+    fetch('http://localhost:8080/Membercomments')
+    .then((res)=>res.json())
+    .then((data)=>{
+      //console.log(data)
+      let member = data.message.map((item)=>{
+        return(
+          {
+            comment:item.Comment,
+            time:item.TimeCommented,
+            date:item.DateCommented,
+            rate:item.Rate
+          }
+        )
+      })
+      setMemberComment(member)
+    })
+   })
+   const[DeleteComponent,setDeleteComponent]=React.useState(false);
+   const DeleteAccount=()=>{
+       setDeleteComponent((prevState)=>!prevState)
+   }
   return (
     <Container>
+      {DeleteComponent?<DeleteTrainerAccount
+       bookedSessions = {BookedSessions} Trainerprofile ={props.Profile}/>:''}
       {props.Profile.map((data)=>{
         return(
             <>
@@ -111,15 +160,45 @@ const DashboardCenter = (props) => {
                     return(
                       <BookingsSection
                        name = {item.name}
+                       trainer = {data.username}
                        age = {item.age}
                        level = {item.level}
                        date = {item.date}
                        phone = {item.phone}
                        email = {item.email}
+                       id = {item.booking_Id}
                       />
                     )
                   })}
                   </div>:<p>You have no trainees at the moment</p>}
+                </div>
+                <div className='chats'>
+                  <h4><FontAwesomeIcon icon={faMessage}/>Chats</h4>
+                  <i>Messages are private to you and trainer</i>
+                   {TrainerComment.map((item,i)=>{
+                    return(
+                      <Comments
+                      key={i}
+                       id={1}
+                       comment={item.comment}
+                       date={item.date}
+                       time={item.time}
+                       rate={item.rate}
+                      />
+                    )
+                   })}
+                   {MemberComment.map((item,i)=>{
+                    return(
+                      <Comments
+                        key={i}
+                        id={2}
+                        comment={item.comment}
+                        date={item.date}
+                       time={item.time}
+                       rate={item.rate}
+                      />
+                    )
+                   })}
                 </div>
                 <div className='star__rating'>
                   <h4>Star Rating</h4>
@@ -127,6 +206,12 @@ const DashboardCenter = (props) => {
                   <div className='container__stars'>
                      <Rating/>
                   </div>
+                  <h4>Danger Zone</h4>
+                </div>
+                <div className='danger__zone'>
+                  <FontAwesomeIcon icon={faTriangleExclamation} className='warning'/>
+                  <h3>Delete Account</h3>
+                  <button onClick={DeleteAccount}>Delete My {data.username?'Trainer':'Member'} Account</button>
                 </div>
             </>
         )
@@ -142,6 +227,31 @@ height:110vh;
 max-height:110vh;
 margin:0 1%;
 overflow-y:scroll;
+.danger__zone{
+  width:95%;
+  height:20vh;
+  border-radius:5px;
+  border:2px solid #f44336;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  background-color:#b36661e0;
+  padding:6px;
+  .warning{
+    color:#f44336;
+    font-size:40px;
+  }
+  button{
+    padding:12px 45px;
+    border-radius:8px;
+    background:#f44336;
+    color:#fff;
+    border:none;
+    outline:none;
+    cursor:pointer;
+  }
+}
 ::-webkit-scrollbar{
   width:0px;
 }
@@ -177,7 +287,7 @@ overflow-y:scroll;
   }
  }
  .price{
-  border:1px solid rgb(30, 102, 197);
+  box-shadow:3px 3px 6px #333;
   padding:12px 20px;
   border-radius:40px;
   small{
@@ -312,6 +422,22 @@ overflow-y:scroll;
   }
  }
  .bookings{
+  margin:1% 0;
+  h4{
+    font-size:20px;
+    font-weight:400;
+    ::after{
+      content:'';
+      width:100px;
+      background-color:rgb(30, 102, 197);
+      height:4px;
+      border-radius:8px;
+      display:block;
+      margin:1% 0;
+    }
+  }
+ }
+ .chats{
   margin:1% 0;
   h4{
     font-size:20px;

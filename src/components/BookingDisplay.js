@@ -8,18 +8,11 @@ import UserProfile from './UserProfile';
 function BookingDisplay(props) {
 
     let{ userDetails,DetailsName}= useSelector((state)=>state.gymRegucer);
-    let[State,setState]=React.useState(false);
-    const CloseBookings=()=>{
-      setState((prevState)=>!prevState)
-    }
-    let styles = {
-        display:State?'none':'block'
-    }
+
    // console.log(userProfileInfo)
   return (
-    <Container style={styles}>
+    <Container>
         <Content>
-           <FontAwesomeIcon icon={faTimesCircle} className='icon' onClick={CloseBookings}/>
                <div className='user__details'>
                   <h4>{userDetails.UserName?userDetails.UserName:DetailsName?.UserName}</h4>
                   <small>{userDetails.Email?userDetails.Email:DetailsName?.Email}</small>
@@ -57,8 +50,8 @@ let Container = styled.div`
 `
 let Content = styled.div`
  width:100%;
- height:20vh;
- background-image:url("/Images/34.jpg");
+ height:30vh;
+ background-image:url("/Images/home-bg-1.jpg");
  background-position:center;
  background-size:cover;
  color:#fff;
@@ -75,6 +68,8 @@ let Content = styled.div`
   justify-content:space-between;
   align-items:center;
   flex-direction:column;
+  top:4%;
+  position:relative;
   h4,small{
     font-family: 'Smooch', cursive;
   }
