@@ -1,5 +1,5 @@
 # Gym Web Application
-![alt text](https://github.com/MwangiJim/Gym-web-application/blob/main/Images/gym.jpg?raw=true)
+<img src = '/Images/gym.jpg'/>
 
 ## Table of Contents
 * [General Information](#general-info)
