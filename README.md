@@ -1,5 +1,5 @@
 # Gym Web Application
-![Banner Image For Gym web application](/public/logo512.png)
+![Banner Image For Gym web application](/public/Images/gym.jpg)
 
 
 ## Table of Contents
