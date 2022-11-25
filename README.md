@@ -1,5 +1,5 @@
 # Gym Web Application
-<img src = '/Images/gym.jpg'/>
+![Banner Image For Gym web application](/Images/gym.jpg)
 
 ## Table of Contents
 * [General Information](#general-info)
