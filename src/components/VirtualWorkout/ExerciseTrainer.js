@@ -1,4 +1,4 @@
-import { faArrowAltCircleLeft, faArrowAltCircleRight, faCheck, faCheckCircle, faQuestionCircle, faThumbsDown, faThumbsUp, faVideo, faVideoCamera, faVolumeHigh, faVolumeLow, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleLeft, faArrowAltCircleRight, faCheck, faCheckCircle, faPause, faQuestionCircle, faThumbsDown, faThumbsUp, faVideo, faVideoCamera, faVolumeHigh, faVolumeLow, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
@@ -172,19 +172,22 @@ function ExerciseTrainer(props){
                             <FontAwesomeIcon icon={faThumbsUp} className='thumb' onClick={ShowThankYouSection} style={thumbstyle}/>
                           </div>
                           <div className='Exercise__details'>
-                            <h2>{item.Name}{}</h2>
+                            <h2>{item.Name}</h2>
                             <FontAwesomeIcon icon={faQuestionCircle}/>
                           </div>
                           <h1>{item.Frequency?item.Frequency:`00:${Time<10?`0${Time}`:Time}`}</h1>
+                          {item.Frequency? <button className='BTN' onClick={GoToRest}>
+                            <FontAwesomeIcon icon={faCheck}/>
+                            DONE
+                          </button>:<div className='pause'>
+                            <FontAwesomeIcon icon={faPause} className='icon'/>
+                            PAUSE
+                            </div>}
                   </div>
                )
              })}
            </div>:''
           }
-         <button className='BTN' onClick={GoToRest}>
-          <FontAwesomeIcon icon={faCheck}/>
-          DONE
-         </button>
          <Controls>
            <div className='previous' onClick={MoveExerciseBackwards}>
               <FontAwesomeIcon icon={faArrowAltCircleLeft}/>
@@ -234,6 +237,22 @@ let Container = styled.div`
  width:100%;
  height:max-content;
  position:relative;
+ .pause{
+  display:flex;
+  justify-content:center;
+  color:#fff;
+  font-size:30px;
+  background-color:rgb(30, 102, 197);
+  border-radius:20px;
+  width:40%;
+  padding:5px;
+  left:30%;
+  position:relative;
+  align-items:center;
+  .icon{
+    margin:0 1%;
+  }
+ }
  .top__bar{
   display:flex;
   justify-content:space-between;

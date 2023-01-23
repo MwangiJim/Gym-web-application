@@ -13,7 +13,7 @@ import path from 'path'
 const PORT = 8080;
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/gym_store")
+mongoose.connect("mongodb://127.0.0.1:27017/gym_store")
 .then((res)=>console.log("Db Connected"))
 .catch((err)=>console.log(err.message))
 

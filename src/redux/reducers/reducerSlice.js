@@ -70,6 +70,9 @@ export const gymReducer = createSlice({
         DaysCount:null,
         TrainerProfileStore:{
 
+        },
+        PurchasedPlan:{
+
         }
     },
     reducers:{
@@ -237,6 +240,12 @@ export const gymReducer = createSlice({
                 ...state,
                 TrainerProfileStore:action.payload
             }
+         },
+         setPurchasedPlan:(state,action)=>{
+            return{
+                ...state,
+                PurchasedPlan:action.payload
+            }
          }
     }
 })
@@ -268,6 +277,7 @@ export const {
     setDaysSelected,
     SetProfile,
     SetDaysCount,
-    setTrainerProfileDetails
+    setTrainerProfileDetails,
+    setPurchasedPlan
     } = gymReducer.actions
 export default gymReducer.reducer

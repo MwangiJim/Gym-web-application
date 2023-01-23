@@ -32,6 +32,7 @@ function Header() {
     const ShowGoogleMaps=()=>{
        setGoogleMaps((prevForm)=>!prevForm)
     }
+    let name = 'Guest'
   return (
     <Container>
           <h2 className='h2'>BE<strong>FIT</strong></h2>
@@ -42,7 +43,7 @@ function Header() {
           <li onClick={()=>navigate('/joinus')}><FontAwesomeIcon icon={faLock}/><small>Account</small></li>
           <li onClick={MoveToCheckOut}><FontAwesomeIcon icon={faShoppingCart} className='shopping'/><span>{EcommerceStore.length}</span></li>
           <div className='profile_image'>
-            <p>{DetailsName?.UserName.charAt(0)}{DetailsName?.UserName.charAt(1)}</p>
+            <p>{name.charAt(0)}</p>
           </div>
           <small>Hello<br/>{userDetails.Email?userDetails.Email:DetailsName.UserName}</small>
         {/* //   <p></p>}  */}
@@ -159,6 +160,7 @@ let Container = styled.div`
      }
      small{
          color:#fff;
+         font-size:15px;
          margin-left:3px;
      }
      li{

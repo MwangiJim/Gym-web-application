@@ -6,9 +6,52 @@ import Plans from './Plans';
 
 const PurchasedPlan = () => {
     let{ userDetails,DetailsName,StorePricingPlan,PurchaseDetails}=useSelector((state)=>state.gymRegucer);
-    console.log(StorePricingPlan.Plan,PurchaseDetails.Price,PurchaseDetails.Period)
+   // console.log(StorePricingPlan.Plan,PurchaseDetails.Price,PurchaseDetails.Period)
  
     const[plans,setplans] = React.useState([]);
+    let[userTrainer,setUserTrainer]=React.useState([])
+    useEffect(()=>{
+        const FetchUserAccount = async()=>{
+            await fetch('http://localhost:8080/newTrainer')
+            .then((res)=>res.json())
+            .then((data)=>{
+                let TrainerInfo = data.message.map((item)=>{
+                    return(
+                        {
+                            email:item.Email,
+                        }
+                    )
+                })
+                setUserTrainer(TrainerInfo)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+        return ()=>FetchUserAccount();
+    })
+    let[userMember,setUserMember]=React.useState([])
+    useEffect(()=>{
+        const FetchUserAccount = async()=>{
+            await fetch('http://localhost:8080/newMember')
+            .then((res)=>res.json())
+            .then((data)=>{
+                let userProfile = data.message.map((item)=>{
+                    return(
+                        {
+                            email:item.Email
+                        }
+                    )
+                })
+                setUserMember(userProfile)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+        return ()=>FetchUserAccount();
+    })
+
 
     useEffect(()=>{
        let FetchedPlans = async()=>{
@@ -33,12 +76,46 @@ const PurchasedPlan = () => {
        }
        return ()=> FetchedPlans();
     },[1])
-    console.log(plans)
+    console.log(userTrainer)
   return (
     <Container>
         <h3>View Plans Purchased Here</h3>
        <div className='plans'>
-       {plans.map((item,i)=>{
+        {userMember.map((item)=>{
+            return(
+                <>
+                  {item.email === DetailsName.Email?plans.map((item,i)=>{
+                        return(
+                            <Plans
+                                key={i}
+                                Name={userDetails?.UserName?userDetails.UserName:DetailsName.UserName}
+                                Plan={item.planName}
+                                time={item.time}
+                                date={item.date}
+                            />
+                        )
+                    }):'You have bought no plans'}
+                </>
+            )
+        })}
+        {userTrainer.map((item)=>{
+             return(
+                <>
+                  {item.email === DetailsName.Email?plans.map((item,i)=>{
+                        return(
+                            <Plans
+                                key={i}
+                                Name={userDetails?.UserName?userDetails.UserName:DetailsName.UserName}
+                                Plan={item.planName}
+                                time={item.time}
+                                date={item.date}
+                            />
+                        )
+                    }):'You have bought no plans'}
+                </>
+            )
+        })} 
+       {/* {plans.map((item,i)=>{
             return(
                 <Plans
                     key={i}
@@ -48,7 +125,7 @@ const PurchasedPlan = () => {
                     date={item.date}
                 />
             )
-        })}
+        })} */}
        </div>
     </Container>
   )
