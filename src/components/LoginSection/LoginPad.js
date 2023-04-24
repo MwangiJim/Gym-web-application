@@ -44,27 +44,31 @@ function LoginPad() {
         })
     }
     let[Error,setError] = React.useState('')
-    const HandleLoginForm=(event)=>{
+    const HandleLoginForm=async(event)=>{
         event.preventDefault()
-        if(LoginForm.email,LoginForm.password){
-            signInWithEmailAndPassword(auth,LoginForm.email,LoginForm.password)
-            .catch((err)=>{
-                setError(err.message)
+        await fetch('http://localhost:8080/login',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                email:LoginForm.email,
+                password:LoginForm.password
             })
-        }
+        })
+        .then((res)=>res.json())
+        .then((data)=>{
+            console.log(data,'Account Verified')
+            if(data.status === 'ok'){
+                window.localStorage.setItem('token',data.data)
+                window.localStorage.setItem('isLoggedIn',true);
+                window.location.assign('/')
+            }
+        })
     }
     const ToggleVisibility=()=>{
         setEye((prevEye)=>!prevEye)
     }
   return (
     <Login>
-    <h3>Sign In to Account</h3>
-    <button onClick={SignInWithGoogle} className='btn'>
-         <img src='/Images/google.png'/>
-        SIGN IN WITH GOOGLE
-    </button>
-    <small>or</small>
-    <h4>Sign in with Email Address</h4>
     <form onSubmit={HandleLoginForm}>
         <label>Email Address</label>
         <br/>
@@ -89,18 +93,29 @@ function LoginPad() {
             <FontAwesomeIcon icon={Eye?faEye:faEyeSlash} onClick={ToggleVisibility} className='eye'/>
         </div>
         <p onClick={ForgotPassword}>Forgot Your Password?</p>
-        <button className='button'>Log in</button>
+        <button className='button'>Sign in</button>
+          <h4>or</h4>
+         <img src='/Images/google.png'  onClick={SignInWithGoogle}/>
         {Error?<div className="error">
                         <FontAwesomeIcon icon={faTriangleExclamation}/>
                         <p>{Error}</p>
                     </div>:''}
     </form>
+    <p>Privacy.Terms.About</p>
 </Login>
   )
 }
 
 export default LoginPad
 let Login = styled.div`
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-direction:column;
+flex-basis:35%;
+p{
+    font-size:13px;
+}
  h3{
      text-align:center;
      margin:2% 0;
@@ -111,22 +126,62 @@ let Login = styled.div`
      margin:2% 0;
  }
  .button{
-     background-color:rgb(30, 102, 197);;
-     box-shadow:4px 4px 9px #000;
+     background-color:#13d4c4;
      width:100%;
      height:42px;
      color:#fff;
      outline:none;
      border:none;
-     border-radius:10px;
+     border-radius:20px;
      cursor:pointer;
      font-size:19px;
      font-weight:400;
+     text-transform:uppercase;
+     border:2px solid #000;
+     margin:3% 0;
      img{
          width:25px;
      }
  }
  form{
+    width:300px;
+    margin:9% 0;
+    img{
+        width:30px;
+        height:30px;
+        border-radius:50%;
+        cursor:pointer;
+        left:43%;
+        top:20px;
+        position:relative;
+    }
+    h4{
+        position:relative;
+        font-weight:300;
+        width:80%;
+        display:flex;
+        left:7%;
+        justify-content:center;
+        align-items:center;
+        ::before{
+            content:'';
+            position:absolute;
+            background-color:gray;
+            height:1px;
+            width:100px;
+            display:block;
+            right:2%;
+        }
+        ::after{
+            content:'';
+            position:absolute;
+            left:2%;
+            background-color:gray;
+            height:1px;
+            width:100px;
+            display:block;
+        }
+    }
     .error{
         padding:10px 12px;
         margin:2% 0;
@@ -142,16 +197,23 @@ let Login = styled.div`
     }
      label{
          text-align:left;
+         color:#25bd25;
+         font-weight:300;
+         font-size:14px;
      }
      .input{
-         width:95%;
+         width:100%;
          height:45px;
-         border-radius:5px;
-         margin:2% 0;
-         border:none;
-         background-color:#f4f4f4;
+         margin:1% 0;
+         outline:none;
+         border-bottom:2px solid  gray;
+         border-top:0;
+         border-left:0;
+         border-right:0;
+         background:transparent;
          padding:0 10px;
          color:#000;
+         margin-bottom:15px;
      }
      .password{
          display:flex;
@@ -159,34 +221,34 @@ let Login = styled.div`
          align-items:center;
          width:100%;
          height:45px;
-         border:none;
-         border-radius:5px;
-         background-color:#f4f4f4;
+         margin:1% 0;
+         border-bottom:2px solid gray;
+         background:transparent;
          input{
              padding: 0 10px;
-             width:95%;
+             width:600px;
              height:45px;
              outline:none;
              border:none;
-             background-color:#f4f4f4;
+             background:transparent;
          }
          .eye{
              margin:0 2%;
          }
      }
      p{
-         margin:2% 0;
-         color:#3b5998;
+         margin:5% 0;
+         color:#25bd25;
          cursor:pointer;
      }
  }
  .btn{
-    background-color:rgb(30, 102, 197);
+    background-color:#13d4c4;
     color:#fff;
     display:flex;
     justify-content:left;
     align-items:center;
-    border-radius:10px;
+    border-radius:25px;
     width:100%;
     height:42px;
     outline:none;

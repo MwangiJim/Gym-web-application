@@ -64,10 +64,10 @@ function PreviewExercises() {
 export default PreviewExercises
 
 let Container = styled.div`
- height:95vh;
+ height:93vh;
  width:100%;
  z-index:11;
- bottom:-68px;
+ bottom:-50px;
  position:absolute;
  background:rgba(76,76,76,0.3);
  border-radius:5px;

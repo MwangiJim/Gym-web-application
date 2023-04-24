@@ -7,9 +7,10 @@ import { SetTrainerDetails } from '../redux/reducers/reducerSlice'
 import { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { userDetailsContext } from '../App'
 
 function Trainer(props) {
-  let{TrainerDetails,userDetails,DetailsName}=useSelector((state)=>state.gymRegucer)
+  let{TrainerDetails,DetailsName}=useSelector((state)=>state.gymRegucer)
   let navigate = useNavigate()
   let dispatch = useDispatch()
   //1:Look for way to check if one has already booked a trainer....
@@ -18,7 +19,7 @@ function Trainer(props) {
      fetch('http://localhost:8080/bookings')
      .then((res)=>res.json())
      .then((data)=>{
-        console.log(data)
+        //console.log(data)
         let booked = data.message.map((item)=>{
            return(
               {
@@ -62,6 +63,7 @@ function Trainer(props) {
      setUserCheck(InfoMember)
     })
   },[1])
+  let userDetails = React.useContext(userDetailsContext);
   return (
     <Container>
        <div className='details'>
@@ -76,7 +78,7 @@ function Trainer(props) {
             {userCheck.map((item)=>{
               return(
                 <>
-                  {item?.email === DetailsName.Email?<button onClick={ShowBooking} className='btn'>Book Trainer</button>:
+                  {item?.email === userDetails?.data.email?<button onClick={ShowBooking} className='btn'>Book Trainer</button>:
                  <li onClick={()=>navigate(`/joinus`)}><FontAwesomeIcon icon ={faTriangleExclamation}/>Create Member Account *Click here*</li>}
                 </>
               )

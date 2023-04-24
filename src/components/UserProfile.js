@@ -9,11 +9,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMessage, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Comments from './JoinUsSection/Comments';
 import DeleteMemberAccount from './JoinUsSection/DeleteMemberAccount';
+import { userDetailsContext } from '../App';
 
 function UserProfile() {
    let profileDetails = useContext(UserInformation);
 //   console.log(profileDetails.length)
-   let{ userDetails,DetailsName}= useSelector((state)=>state.gymRegucer);
+   let{ DetailsName}= useSelector((state)=>state.gymRegucer);
    let[TrainerData,setTrainerData]=React.useState([]);
    useEffect(()=>{
       fetch('http://localhost:8080/newTrainer')
@@ -102,6 +103,7 @@ function UserProfile() {
    function deleteMemberAccount(){
        setMemberTerminate((prevState)=>!prevState)
    }
+   let userDetails = useContext(userDetailsContext);
   return (
     <Container>
       {memberTerminate?<DeleteMemberAccount/>:''}
@@ -119,7 +121,7 @@ function UserProfile() {
                      </div>
                      <div className="email">
                            <img src="/Images/mail.png"/>
-                           <p>{userDetails?.Email?userDetails.Email:DetailsName.Email}</p>
+                           <p>{userDetails?.data.email?userDetails.data.email:''}</p>
                      </div>
                   </div>
                   <h2>biography</h2>

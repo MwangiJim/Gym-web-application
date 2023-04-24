@@ -30,52 +30,24 @@ function UserLogin() {
        setEye((prevState)=>!prevState)
     }
     let[Error,setError] = React.useState('')
-    const HandleForm=(e)=>{
+    const HandleForm=async(e)=>{
         e.preventDefault()
-        if(form.email,form.password){
-            console.log(form)
-             createUserWithEmailAndPassword(auth,form.email,form.password)
-             .then((AuthUser)=>{
-                 console.log(AuthUser)
-                 updateProfile(auth.currentUser,{displayName:form.username})
-                 sendEmailVerification(auth.currentUser,form.email)
-                 .catch((err)=>{
-                    alert(err.message)
-                 })
-             })
-             .catch((error)=>{
-                 setError(error.message)
-                 alert(error.message)
-             })
-             localStorage.setItem('address',form.address)
-        }
-    }
-    let fbProvider = new FacebookAuthProvider()
-    const signUpWithFacebook=()=>{
-       signInWithPopup(auth,fbProvider)
-       .then((result)=>{
-         dispatch(storeUserDetails({
-            Name:result.user.displayName,
-            Email:result.user.emailVerified,
-            Photo:result.user.photoURL,
-         }))
-       })
-       .catch((err)=>{
-        alert(err.message)
-       })
-    }
-    let ghProvider = new GithubAuthProvider()
-    const signUpWithGithub=()=>{
-        signInWithPopup(auth,ghProvider)
-        .then((result)=>{
-            dispatch(storeUserDetails({
-                Name:result.user.displayName,
-                Email:result.user.emailVerified,
-                Photo:result.user.photoURL,
-            }))
+        await fetch('http://localhost:8080/register',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+               email:form.email,
+               username:form.username,
+               password:form.password
+            })
         })
-        .catch((error)=>{
-            alert(error.message)
+        .then((res)=>res.json())
+        .then((data)=>{
+            alert('User Registered..Kindly Sign In Now.')
+            console.log(data,'User registered')
+        })
+        .catch((err)=>{
+            console.log('error',err)
         })
     }
     let[Visual,setVisual]=React.useState(false)
@@ -86,20 +58,16 @@ function UserLogin() {
         display:Visual?'none':'block'
     }
     let lineStyles = {
-        marginLeft:Visual?'108px':''
+        marginLeft:Visual?'190px':''
     }
     let h4Styles = {
-        color:Visual?"#fff":"#000"
+        color:Visual?"#fff":"gray"
     }
     let H4Styles = {
-        color:Visual?"#000":"#fff"
+        color:Visual?"gray":"#fff"
     }
   return (
     <Container>
-        <div className='video'>
-            <video autoPlay muted loop src='/Images/video-1.mp4' width={'100%'}>
-            </video>
-        </div> 
        <div className='center'>
        <InviteSection>
           <div className='textbox'>
@@ -108,13 +76,12 @@ function UserLogin() {
           </div>
         </InviteSection>
        <Form>
-         <img src='/Images/logo.png' className='img'/>
          <h4>BE<strong>FIT</strong></h4>
           <Button>
             <span onClick={ChangeStatus}>
                <div className='btns'>
-                   <h4 style={H4Styles}>Register</h4>
-                   <h4 style={h4Styles}>Login</h4>
+                   <h4 style={H4Styles}>Sign Up</h4>
+                   <h4 style={h4Styles}>Sign In</h4>
                    <div className='color' style={lineStyles} >
 
                    </div> 
@@ -123,16 +90,6 @@ function UserLogin() {
           </Button>
             <Box>
             <Register style={styles}>
-              <div className='buttons'>
-              <button className='gbtn' onClick={signUpWithFacebook}>
-                     <img src='/Images/facebook.png'/>
-                </button>
-                <button className='fbtn' onClick={signUpWithGithub}>
-                    <img src='/Images/github.png'/>
-                </button>
-              </div>
-                <small>or</small>
-                <h5>Sign up with your email address</h5>
                 {Error?<div className="error">
                         <FontAwesomeIcon icon={faTriangleExclamation}/>
                         <p>{Error}</p>
@@ -155,7 +112,6 @@ function UserLogin() {
                     <label>Create a Password</label>
                     <br/>
                    <div className='password'>
-                    <img src="/Images/padlock.png"/>
                        <input
                         type={Eye?'text':'password'}
                         placeholder='Enter Your Password'
@@ -169,7 +125,6 @@ function UserLogin() {
                     <label>Your UserName</label>
                     <br/>
                     <div className='inputBox'>
-                    <img src="/Images/avatar1.png"/>
                         <input
                         type='text'
                         placeholder='Enter username'
@@ -180,7 +135,7 @@ function UserLogin() {
                         />
                     </div>
                     <br/>
-                    <legend>Address</legend>
+                    <label>Address</label>
                      <div className='inputBox'>
                      <input
                       type={'text'}
@@ -192,6 +147,7 @@ function UserLogin() {
                      />
                      </div>
                     <button className='btn'>Create Account</button>
+                     <p className='tag'>Privacy.Terms.About</p>
                 </form>
             </Register>
             {Visual?<LoginPad/>:''}
@@ -226,11 +182,11 @@ let Container = styled.div`
     justify-content:space-between;
     border-radius:10px;
     overflow:hidden;
-    width:80%;
+    width:90%;
     top:50%;
     left:50%;
     position:relative;
-    background-color:#fff;
+    background: #2a2e2a;
     transform:translate(-50%,-50%);
  }
 `
@@ -238,8 +194,8 @@ let Form = styled.div`
  padding:15px 10px;
  width:500px;
  height:570px;
- background-color:#fff;
- flex-basis:52%;
+ flex-basis:35%;
+ color:#fff;
  h4{
      text-align:center;
      strong{
@@ -257,41 +213,38 @@ display:flex;
 justify-content:center;
 align-items:center;
  span{
-    box-shadow:5px 5px 12px #333;
-    margin:0 2%;
-    border-radius:30px;
-    cursor:pointer;
-    overflow:hidden;
+    width:300px;
     .btns{
-        height:37px;
-        width:200px;
         display:flex;
+        padding:3px 8px;
         justify-content:space-between;
         align-items:center;
-        position:relative;
-        padding:3px 8px;
-        background:#fff;
         font-size:19px;
         font-weight:500;
-        overflow:hidden;
+        position:relative;
+        cursor:pointer;
         h4{
-            position:relative;
             z-index:2;
+            font-weight:300;
         }
         .color{
-            height:44px;
-            border-radius:20px;
+            height:2px;
+            border-radius:5px;
             width:110px;
             left:0%;
-            z-index:1;
+            bottom:-30%;
             position:absolute;
-            background:rgb(30, 102, 197);
+            background-color:#fff;
             transition:0.5s;
          }
     }
  }
 `
 let Register = styled.div`
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-direction:column;
 .buttons{
     display:flex;
     justify-content:center;
@@ -301,33 +254,17 @@ let Register = styled.div`
         margin:0 2%;
     }
 }
-.fbtn{
-    background-color:#000;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#fff;
-    border:none;
-    width:45px;
-    border-radius:50%;
-    height:45px;
-    margin:1% 0;
-    cursor:pointer;
-    img{
-        width:30px;
-    }
-}
 .gbtn{
     cursor:pointer;
-    background-color:#3b5998;
+    background-color:#13d4c4;
     display:flex;
     justify-content:center;
     align-items:center;
     color:#fff;
-    border:none;
-    width:45px;
-    border-radius:50%;
-    height:45px;
+    border:2px solid #000;
+    width:200px;
+    border-radius:20px;
+    height:35px;
     margin:1% 0;
     img{
         width:30px;
@@ -341,8 +278,8 @@ h2{
     text-align:center;
 }
  h5{
-     font-weight:600;
-     font-size:18px;
+     font-weight:400;
+     font-size:17px;
      text-align:center;
  }
  .error{
@@ -353,26 +290,64 @@ h2{
     justify-content:center;
     align-items:center;
     color:#f44336;
+    position:relative;
+    top:30px;
 }
  form{
-    margin:2% 0;
+    margin:8% 13%;
+    .tag{
+        font-weight:300;
+        font-size:13px;
+        margin-top:26px;
+    }
+    h6{
+        position:relative;
+        font-weight:300;
+        width:80%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        ::before{
+            content:'';
+            position:absolute;
+            background-color:gray;
+            height:1px;
+            width:100px;
+            display:block;
+            right:2%;
+        }
+        ::after{
+            content:'';
+            position:absolute;
+            left:2%;
+            background-color:gray;
+            height:1px;
+            width:100px;
+            display:block;
+        }
+    }
     .btn{
-        background-color:rgb(30, 102, 197);
-        width:100%;
-        height:45px;
+        background-color:#13d4c4;
+        width:50%;
+        height:35px;
         color:#fff;
-        border-radius:8px;
+        border-radius:25px;
         outline:none;
-        border:none;
+        border:2px solid #000;
         cursor:pointer;
-        margin:1% 0;
+        margin:2% 25%;
+        text-transform:uppercase;
         img{
            width:25px;
         }
     }
      label{
          text-align:left;
-         font-weight:600;
+         font-weight:300;
+         font-size:12px;
+         color:#25bd25;
+         position:relative;
+         align-items:start;
      }
      img{
         width:20px;
@@ -380,36 +355,43 @@ h2{
      }
      .inputBox{
         display:flex;
-        justify-content:space-between;
+        justify-content:left;
         align-items:center;
-        width:95%;
+        width:90%;
         height:40px;
-        border-radius:5px;
-        color:#000;
+        color:#fff;
         border:none;
-        background:#f4f4f4;
+        background:none;
+        border-bottom:2px solid gray;
         input{
-            background:transparent;
+            background:none;
             border:none;
             outline:none;
             padding: 0 15px;
+            ::placeholder{
+                color:#fff;
+             }
         }
      }
      .password{
          display:flex;
-         justify-content:space-between;
+         justify-content:left;
          align-items:center;
-         width:95%;
+         width:90%;
          height:40px;
-         border-radius:5px;
-         color:#000;
-         border:none;
-         background:#f4f4f4;
+         color:#fff;
+         border-bottom:2px solid gray;
+         background:none;
          input{
-             background:transparent;
+            height:40px;
+             width:600px;
              border:none;
              outline:none;
+             background:transparent;
              padding: 0 15px;
+             ::placeholder{
+                color:#fff;
+             }
          }
          .eye{
              cursor:pointer;
@@ -422,10 +404,11 @@ h2{
       outline:none;
       padding:0 10px;
       margin:1% 0;
-      border-radius:5px;
-      color:#000;
+      color:#fff;
       border:none;
-      background:#f4f4f4;
+      ::placeholder{
+        color:#fff;
+     }
   }
   .radios{
       display:flex;
@@ -446,7 +429,7 @@ let InviteSection = styled.div`
  background-position:center;
  background-size:cover;
  width:100%;
- flex-basis:44%;
+ flex-basis:65%;
  height:600px;
  color:#f44336;
  .textbox{

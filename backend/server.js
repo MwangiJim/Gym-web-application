@@ -8,7 +8,10 @@ import trainerProfile from './models/trainerProfile.js';
 import userBookings from './models/userBookings.js';
 import Comments from './models/Comments.js';
 import TrainerComments from './models/TrainerComments.js';
-import path from 'path'
+import UserAccount from './models/UserAccount.js';
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import nodemailer from 'nodemailer'
 
 const PORT = 8080;
 const app = express();
@@ -19,6 +22,86 @@ mongoose.connect("mongodb://127.0.0.1:27017/gym_store")
 
 app.use(express.json())
 app.use(cors());
+
+//send email notification on sign up
+const transporter = nodemailer.createTransport({
+    service:"hotmail",
+    auth:{
+        user:"kingongomwangi@outlook.com",
+        pass:"Kingongo@[123]"
+    }
+});
+
+//Authentication and creating accounts of users
+
+app.post('/register',async(req,res)=>{
+    const{username,email,password} = req.body;
+
+    let existingUser = await UserAccount.findOne({email:email});
+    let hashPwd = await bcrypt.hash(password,10)
+    if(existingUser){
+        return res.status(500).json({error:'user already exists'})
+    }
+    else{
+       let newUser =  await UserAccount.create({
+            email:email,
+            username:username,
+            password:hashPwd
+        })
+        const options = {
+            from:"kingongomwangi@outlook.com",
+            to:email,
+            subject:"Welcome to BEFIT,This is node at work",
+            text:"It Works and so should you..make sure you work out everyday use this link 'http://localhost:3000' to access it"
+        }
+        transporter.sendMail(options,function(err,info){
+            if(err){
+                console.log(err)
+                return;
+            }
+            console.log(info.response)
+        })
+        //console.log(newUser);
+        return res.status(200).json({status:'ok'})
+    }
+})
+let JWT_TOKEN = 'svy3et2783ew1892wi293e746tregdyuewqdt1823ueos2yhe2983e123sie239e'
+
+app.post('/login',async(req,res)=>{
+    const {email,password} = req.body;
+
+    let existingUser = await UserAccount.findOne({email:email});
+    if(!existingUser){
+        return res.status(402).json({error:'User does not exist'})
+    }
+    if(await bcrypt.compare(password,existingUser.password)){
+        let token = jwt.sign({email:existingUser.email},JWT_TOKEN);
+        if(res.status(200)){
+            return res.send({status:'ok',data:token})
+        }
+        else{
+            return res.send({error:'error'})
+        }
+    }
+    res.json({status:'error',error:'Invalid Password'})
+})
+
+app.post('/userDetails',async(req,res)=>{
+    const {token} = req.body;
+    try {
+        let user = jwt.verify(token,JWT_TOKEN,);
+        let useremail = user.email;
+
+        await UserAccount.findOne({email:useremail})
+        .then((data)=>{
+            console.log(data)
+            return res.send({status:'ok',data:data})
+        })
+        .catch((err)=>{
+            return res.send({status:'error',error:err})
+        })
+    } catch (error){}
+})
 
 //routes for creating and fetching Testimonials
 app.get('/testimonials',async(req,res)=>{

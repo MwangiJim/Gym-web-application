@@ -3,15 +3,17 @@ import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import CheckoutComponent from './CheckoutComponent'
 import CheckoutPayment from './CheckoutPayment'
+import { userDetailsContext } from '../../App'
 
 function CheckoutCart() {
-    let{userDetails,DetailsName,EcommerceStore}=useSelector((state)=>state.gymRegucer)
+    let{DetailsName,EcommerceStore}=useSelector((state)=>state.gymRegucer)
+    let userDetails = React.useContext(userDetailsContext);
   return (
     <Container>
        <LeftSide>
           <div className='image'>
           </div>
-          <h4>Your Shopping Cart @{userDetails.Email?userDetails.Email:<i>{DetailsName?.UserName}</i>}</h4>
+          <h4>Your Shopping Cart @{userDetails.data.email}</h4>
           <p>{EcommerceStore.length===0?'Your Shopping Cart is Empty':''}</p>
          {EcommerceStore.map((item)=>{
              return(

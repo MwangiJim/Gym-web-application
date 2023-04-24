@@ -5,9 +5,10 @@ import { SetBookings } from '../redux/reducers/reducerSlice'
 import BookingDisplayComponent from './BookingDisplayComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { userDetailsContext } from '../App';
 
 function TrainerbookingSection() {
-    let{TrainerDetails,BookingsMade,DetailsName}=useSelector((state)=>state.gymRegucer);
+    let{TrainerDetails,BookingsMade}=useSelector((state)=>state.gymRegucer);
     let[book,setBooked]=React.useState(false);
     let dispatch = useDispatch()
     let[Form,setForm]=React.useState({
@@ -16,6 +17,7 @@ function TrainerbookingSection() {
         Age:null,
         telNumber:''
     })
+    let userDetails = React.useContext(userDetailsContext);
     const HandleInput=(event)=>{
         setForm((prevForm)=>{
           return{
@@ -60,7 +62,7 @@ function TrainerbookingSection() {
               booked_Date:Form.date,
               level:selection.options,
               phoneNumber:Form.telNumber,
-              email:DetailsName.Email,
+              email:userDetails.data.email,
               trainer:TrainerDetails.TrainerName
             })
           })

@@ -9,11 +9,14 @@ import TrainerDashboard from './TrainerDashboard'
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons'
+import { userDetailsContext } from '../../App'
 
 export const UserInformation = createContext()
 
+
 function Joinus() {
-    let{userDetails,DetailsName} = useSelector((state)=>state.gymRegucer)
+    let userDetails = React.useContext(userDetailsContext);
+    let{DetailsName} = useSelector((state)=>state.gymRegucer)
    // console.log(DetailsName.Email)
     let[Form,setForm]=React.useState({
         username:'',
@@ -175,7 +178,7 @@ let[Member,setMember]=React.useState([])
                 {Trainer.map((item)=>{
                     return(
                         <>
-                          {item.email === DetailsName.Email?
+                          {item.email === userDetails?.data.email?
                           <TrainerDashboard  trainerProfile = {Trainer}/>
                           :''}
                         </>
@@ -184,7 +187,7 @@ let[Member,setMember]=React.useState([])
                   {Member.map((item)=>{
                     return(
                         <>
-                        {item.email === DetailsName.Email?<Dashboard memberInfo={Member}/>:''}
+                        {item.email === userDetails?.data.email?<Dashboard memberInfo={Member}/>:''}
                         </>
                     )
                  })}

@@ -1,17 +1,18 @@
 import { faBars, faBell, faClockFour, faHome, faLocation, faLock, faShop, faShoppingCart, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getAuth } from 'firebase/auth'
-import React ,{useEffect}from 'react'
+import React ,{useContext, useEffect}from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import GoogleMap from './GoogleMap'
+import { userDetailsContext } from '../App'
 
 function Header() {
     let navigate = useNavigate()
-    let{userDetails,DetailsName,EcommerceStore} = useSelector((state)=>state.gymRegucer)
+    let{EcommerceStore,DetailsName} = useSelector((state)=>state.gymRegucer)
     let auth = getAuth()
-   // console.log(userDetails)
+    console.log(DetailsName)
     const MoveToCheckOut=()=>{
         navigate(`/checkout`)
     }
@@ -33,6 +34,12 @@ function Header() {
        setGoogleMaps((prevForm)=>!prevForm)
     }
     let name = 'Guest'
+     function Logout(){
+        window.localStorage.clear();
+        window.localStorage.setItem("isLoggedIn",false);
+        window.location.assign('/accountsetup');
+     }
+     let userDetails = useContext(userDetailsContext);
   return (
     <Container>
           <h2 className='h2'>BE<strong>FIT</strong></h2>
@@ -43,11 +50,11 @@ function Header() {
           <li onClick={()=>navigate('/joinus')}><FontAwesomeIcon icon={faLock}/><small>Account</small></li>
           <li onClick={MoveToCheckOut}><FontAwesomeIcon icon={faShoppingCart} className='shopping'/><span>{EcommerceStore.length}</span></li>
           <div className='profile_image'>
-            <p>{name.charAt(0)}</p>
+            <p>{userDetails?.data.username?userDetails.data.username.charAt(0):'G'}</p>
           </div>
-          <small>Hello<br/>{userDetails.Email?userDetails.Email:DetailsName.UserName}</small>
+          <small>Hello<br/>{userDetails?.data.username?userDetails.data.username:'Guest'}</small>
         {/* //   <p></p>}  */}
-          <button onClick={()=>auth.signOut()}>LOGOUT</button>
+          <button onClick={Logout}>LOGOUT</button>
           <div className='location'>
                 <FontAwesomeIcon icon={faLocation} className='icon' onClick={ShowGoogleMaps}/>
                 <small>{localStorage.getItem('address')}</small>

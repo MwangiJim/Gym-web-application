@@ -20,40 +20,39 @@ import ExercisePreview from './components/VirtualWorkout/ExercisePreview';
 import TrainerbookingSection from './components/TrainerbookingSection';
 import Joinus from './components/JoinUsSection/Joinus';
 import ScrollToTop from './components/ScrollToTop';
+import { createContext } from 'react';
+export const userDetailsContext = createContext();
 
 function App() {
-  let dispatch = useDispatch()
-  let auth = getAuth()
-  let[user,setUser] = React.useState(null)
-
+  let [user,setuser] = React.useState(null)
+  let loggedIn = window.localStorage.getItem("isLoggedIn");
   useEffect(()=>{
-      onAuthStateChanged(auth,(AuthUser)=>{
-        if(AuthUser){
-          setUser(AuthUser)
-          console.log(AuthUser)
-          console.log('You are Logged in!!!')
-           dispatch(userNameStore({
-             UserName:AuthUser.displayName,
-             Email:AuthUser.email
-           }))
-          // localStorage.setItem('Username',AuthUser.displayName)
-        }
-        else{
-          setUser(null)
-          console.log('You are Logged out!!!')
-        }
-      })
-  },[user])
+    fetch('http://localhost:8080/userDetails',{
+       method:'POST',
+       headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({
+          token:window.localStorage.getItem('token')
+       })
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+       console.log('User Logged in',data);
+       setuser(data);
+    })
+ },[])
   let Options = {
     "client-id":"AXlh9wwCU-jQ3qLmNO7EIz15HAmw-w1r8aLyWLpMzjgskOBTZHVweztDrhBhZbqMz_7NPu01KOZ2eZvQ",
   }
+  console.log('Details',user)
   return (
-    <PayPalScriptProvider options={Options}>
+   <userDetailsContext.Provider value={user}>
+     <PayPalScriptProvider options={Options}>
     <div className="App">
-      {user?
+      {loggedIn?
       <BrowserRouter>
        <Header/>
         <Routes>
+          <Route path = '/accountsetup' element ={<UserLogin/>}></Route>
           <Route path='/joinus' element={<Joinus/>}></Route>
           <Route path='/booking' element={<TrainerbookingSection/>}></Route>
           <Route path='/virtualworkout' element={<Virtualworkout/>}></Route>
@@ -70,6 +69,7 @@ function App() {
       <UserLogin/>}
     </div>
     </PayPalScriptProvider>
+   </userDetailsContext.Provider>
   );
 }
 

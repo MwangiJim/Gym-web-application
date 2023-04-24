@@ -13,9 +13,9 @@ const Comments = (props) => {
   return (
     <Container style={received}>
      <div className='User_box'>
-       <span>{DetailsName.UserName.charAt(0)}</span>
+       <span>{DetailsName.data.username.charAt(0)}</span>
        <div className='userdetails'>
-         <p>{DetailsName.UserName}.</p>
+         <p>{DetailsName.data.username}.</p>
          <small>{props.time}.</small>
          <small>{props.date}</small>
        </div>

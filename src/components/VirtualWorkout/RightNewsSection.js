@@ -7,7 +7,7 @@ const RightNewsSection = () => {
   //https://newsapi.org/v2/everything?q=fitness&apiKey=dc2d56d3ed754a1295c8d6fc4f1a6125
   useEffect(()=>{
        let FetchNews=async()=>{
-            await fetch('https://newsapi.org/v2/everything?q=football&apiKey=dc2d56d3ed754a1295c8d6fc4f1a6125')
+            await fetch('https://newsapi.org/v2/everything?q=fitness&apiKey=dc2d56d3ed754a1295c8d6fc4f1a6125')
             .then((response)=>response.json())
             .then((data)=>{
               //console.log(data)

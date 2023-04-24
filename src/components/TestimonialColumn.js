@@ -1,23 +1,23 @@
-import { faQuoteLeftAlt, faQuoteRight } from '@fortawesome/free-solid-svg-icons'
+import { faQuoteLeftAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { userDetailsContext } from '../App'
 
 function TestimonialColumn(props) {
-    let{DetailsName} = useSelector((state)=>state.gymRegucer)
+    let userDetails = React.useContext(userDetailsContext);
   //  console.log(props.work)
   return (
     <Container>
         <div className='title_head'>
-        {props.image? <img src={props.image}/>:<p className='image'>{DetailsName.UserName.charAt(0)}{DetailsName.UserName.charAt(1)}</p>}
+        {props.image? <img src={props.image}/>:<p className='image'>{userDetails?.data.username.charAt(0)}{userDetails?.data.username.charAt(1)}</p>}
         <h5 className='work'>{props.work}</h5>
         </div>
         <div className='foot'>
             <Left>
              <div className='foot-info'>
                  <div className='head'>
-                 <h2>{props.Username?props.Username:DetailsName.UserName}</h2>
+                 <h2>{userDetails?.data.username?userDetails.data.username:''}</h2>
                  <small>commented on {props.date} at {props.time}</small>
                  </div>
                  <p>{props.Text}</p>

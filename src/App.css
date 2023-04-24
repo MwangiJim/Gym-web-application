@@ -54,7 +54,7 @@ body::-webkit-scrollbar-track{
 }
 .rating__star label .star{
   cursor: pointer;
-
+  color: #13d4c4;
 }
 .error{
   background-color: #8f65628a;

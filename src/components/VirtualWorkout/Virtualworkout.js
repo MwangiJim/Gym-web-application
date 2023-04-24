@@ -12,10 +12,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Reminder from './Reminder';
 import WeeklyGoal from './WeeklyGoal';
 import Languages from './Languages';
+import { userDetailsContext } from '../../App';
 export const LangaugeSetter = createContext()//Creating Context
 
 const Virtualworkout = () => {
-  let{DetailsName} = useSelector((state)=>state.gymRegucer)
+ // let{DetailsName} = useSelector((state)=>state.gymRegucer)
+  let userDetails = React.useContext(userDetailsContext);
     let[Start,setStart]=React.useState(false);
     let StartTime = new Date();
     let dispatch=useDispatch()
@@ -91,7 +93,7 @@ const Virtualworkout = () => {
        {/**Left Container */}
        <div className='preloader-image' style={styles}>
           <div className='content'>
-            <h1>Welcome to VirtualWorkout,{DetailsName.UserName}</h1>
+            <h1>Welcome to VirtualWorkout,{userDetails?.data.username?userDetails.data.username:''}</h1>
             <div className='info'>
                <h3>BE<strong>FIT</strong></h3>
             <div className='info-content'>
@@ -171,7 +173,7 @@ const Virtualworkout = () => {
   )
 }
 
-export default Virtualworkout
+export default React.memo(Virtualworkout)
 
 let Container = styled.div`
  width:100%;

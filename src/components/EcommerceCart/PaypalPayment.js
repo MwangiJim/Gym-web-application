@@ -7,9 +7,10 @@ import PaypalCheckoutButton from './PaypalCheckoutButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHistory, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import PaymentHistory from './PaymentHistory'
+import { userDetailsContext } from '../../App'
 
 function PaypalPayment() {
-  let{EcommerceStore,userDetails,DetailsName}=useSelector((state)=>state.gymRegucer)
+  let{EcommerceStore,DetailsName}=useSelector((state)=>state.gymRegucer)
   let[menu,setMenu]=useState(false);
 
   let totalPrice = EcommerceStore.reduce((amount,item)=>{
@@ -18,6 +19,7 @@ function PaypalPayment() {
   const ShowHistory=()=>{
     setMenu((prevMenu)=>!prevMenu)
   }
+  let userDetails = React.useContext(userDetailsContext);
   return (
     <Container>
        <Head>
@@ -30,7 +32,8 @@ function PaypalPayment() {
               <h4>Delivery Address</h4>
           </div>
           <div className='right__side'>
-            <p>{userDetails.Email?userDetails.Email:DetailsName?.UserName}</p>
+            <p>{userDetails.data.username}</p>
+            <p>{userDetails.data.email}</p>
             <p>Ruiru Nairobi,Kenya</p>
             <p>(0 100),Ruiru</p>
           </div>

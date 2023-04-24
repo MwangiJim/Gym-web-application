@@ -34,7 +34,7 @@ let Container=styled.div`
  background-color:rgb(30, 102, 197);
  width:100%;
  height:94vh;
- bottom:6px;
+ bottom:-10px;
  position:absolute;
  z-index:8;
  .textbox{

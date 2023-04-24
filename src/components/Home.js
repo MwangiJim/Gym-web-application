@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector ,useDispatch} from 'react-redux'
 import styled from 'styled-components'
 import Aboutus from './Aboutus'
 import Features from './Features'
@@ -9,9 +9,13 @@ import Posts from './Posts'
 import Slider from './Slider'
 import Testimonials from './Testimonials'
 import Trainers from './Trainers'
+import { useEffect } from 'react'
+import { userNameStore } from '../redux/reducers/reducerSlice'
 
 function Home() {
-   let{testimonials} = useSelector((state)=>state.gymRegucer)
+   let dispatch = useDispatch()
+   let{EcommerceStore,DetailsName} = useSelector((state)=>state.gymRegucer)
+   console.log(DetailsName)
   return (
      <Container>
         <Slider/>

@@ -56,7 +56,7 @@ width:100%;
 background-color:#fff;
 height:max-content;
 z-index:9;
-bottom:6px;
+bottom:0px;
 position:absolute;
 .top__section{
     background-color:rgb(30, 102, 197);
