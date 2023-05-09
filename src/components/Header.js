@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import GoogleMap from './GoogleMap'
 import { userDetailsContext } from '../App'
 
-function Header() {
+function Header(props) {
     let navigate = useNavigate()
     let{EcommerceStore,DetailsName} = useSelector((state)=>state.gymRegucer)
     let auth = getAuth()
@@ -40,6 +40,7 @@ function Header() {
         window.location.assign('/accountsetup');
      }
      let userDetails = useContext(userDetailsContext);
+     
   return (
     <Container>
           <h2 className='h2'>BE<strong>FIT</strong></h2>
@@ -59,6 +60,10 @@ function Header() {
                 <FontAwesomeIcon icon={faLocation} className='icon' onClick={ShowGoogleMaps}/>
                 <small>{localStorage.getItem('address')}</small>
             </div>
+           {props.type === 'Admin'? <div className='admin' onClick={()=>navigate('/admindashboard')}>
+                <h3>A</h3>
+                <h6>Admin</h6>
+            </div>:''}
       </div>
       <FontAwesomeIcon icon={Menu?faTimes:faBars} className='menu' onClick={ShowMenu}/>
       {Googlemaps?<GoogleMap/>:''}
@@ -72,7 +77,7 @@ let Container = styled.div`
  justify-content:space-between;
  align-items:center;
  background-color:#000;
- padding:15px 0;
+ padding:10px 0;
  top:0;
  left:0;
  position:fixed;
@@ -142,6 +147,26 @@ let Container = styled.div`
      display:flex;
      margin-right:5%;
      color:#f44336;
+     .admin{
+        background-color:gray;
+        height:50px;
+        width:50px;
+        border-radius:50%;
+        cursor:pointer;
+        border:2px solid #fff;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+        h3{
+            color:#fff;
+        }
+        h6{
+            color:#fff;
+            font-size:9px;
+            font-weight:200;
+        }
+     }
      .profile_image{
         cursor:pointer;
      }
@@ -158,12 +183,13 @@ let Container = styled.div`
         cursor:pointer;
      }
      button{
-         background:transparent;
+         background:#ffc017;
          outline:none;
-         border:none;
-         padding:12px 35px;
+         border:2px solid #fff;
+         padding:7px 20px;
          cursor:pointer;
-         color:#fff;
+         color:#000;
+         border-radius:6px;
      }
      small{
          color:#fff;

@@ -58,6 +58,7 @@ function LoginPad() {
         .then((data)=>{
             console.log(data,'Account Verified')
             if(data.status === 'ok'){
+                alert('successful login')
                 window.localStorage.setItem('token',data.data)
                 window.localStorage.setItem('isLoggedIn',true);
                 window.location.assign('/')
@@ -69,7 +70,14 @@ function LoginPad() {
     }
   return (
     <Login>
+    <Left>
+        <h2>BEFIT<small>TM</small></h2>
     <form onSubmit={HandleLoginForm}>
+        <h3>WELCOME BACK!</h3>
+        <button> <img src='/Images/google.png'  onClick={SignInWithGoogle}/>
+        Sign In With Google
+        </button>
+        <small>Or Sign In With Email</small>
         <label>Email Address</label>
         <br/>
         <input
@@ -90,173 +98,166 @@ function LoginPad() {
              name='password'
              onChange={HandleLogin}
             />
-            <FontAwesomeIcon icon={Eye?faEye:faEyeSlash} onClick={ToggleVisibility} className='eye'/>
         </div>
         <p onClick={ForgotPassword}>Forgot Your Password?</p>
         <button className='button'>Sign in</button>
-          <h4>or</h4>
-         <img src='/Images/google.png'  onClick={SignInWithGoogle}/>
         {Error?<div className="error">
                         <FontAwesomeIcon icon={faTriangleExclamation}/>
                         <p>{Error}</p>
                     </div>:''}
+                    <h6>© Copyright By BEFIT</h6>
     </form>
-    <p>Privacy.Terms.About</p>
+    </Left>
+    <Right>
+       <h1>NEW HERE?</h1>
+       <p>Join our BEFIT community with over 20,000 sport enthusiasts using our Sports Data. Start by registering your account here.</p>
+      <button onClick={()=>window.location.assign('/accountsetup')}>Register</button>
+    </Right>
 </Login>
   )
 }
 
 export default LoginPad
 let Login = styled.div`
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-direction:column;
-flex-basis:35%;
-p{
-    font-size:13px;
-}
- h3{
-     text-align:center;
-     margin:2% 0;
- }
- small{
-     left:45%;
-     position:relative;
-     margin:2% 0;
- }
- .button{
-     background-color:#13d4c4;
-     width:100%;
-     height:42px;
-     color:#fff;
-     outline:none;
-     border:none;
-     border-radius:20px;
-     cursor:pointer;
-     font-size:19px;
-     font-weight:400;
-     text-transform:uppercase;
-     border:2px solid #000;
-     margin:3% 0;
-     img{
-         width:25px;
-     }
- }
+ top:0;
+ left:0;
+ position:fixed;
+ z-index:30;
+ background-color:#fff;
+ width:100%;
+ height:100vh;
+ display:flex;
+ justify-content:space-between;
+`
+let Left = styled.div`
+ flex-basis:70%;
+ position:relative;
+ height:100vh;
+ background-color:#f4f4f4;
  form{
-    width:300px;
-    margin:9% 0;
-    img{
-        width:30px;
-        height:30px;
-        border-radius:50%;
-        cursor:pointer;
-        left:43%;
-        top:20px;
-        position:relative;
-    }
-    h4{
-        position:relative;
-        font-weight:300;
-        width:80%;
+    background-color:#fff;
+    border-radius:6px;
+    box-shadow:4px 4px 10px #333;
+    padding:15px;
+    left:300px;
+    top:100px;
+    width:350px;
+    position:absolute;
+    small{
+        color:grey;
+        font-size:13px;
         display:flex;
-        left:7%;
-        justify-content:center;
         align-items:center;
+        margin:10px 0;
         ::before{
             content:'';
-            position:absolute;
             background-color:gray;
-            height:1px;
+            height:2px;
             width:100px;
             display:block;
-            right:2%;
+            margin:auto;
         }
         ::after{
             content:'';
-            position:absolute;
-            left:2%;
             background-color:gray;
-            height:1px;
+            height:2px;
             width:100px;
             display:block;
+            margin:auto;
         }
+       }
+    h6{
+            text-align:center;
+            color:gray;
+            font-size:16px;
+            font-weight:400;
     }
-    .error{
-        padding:10px 12px;
-        margin:2% 0;
-        border-radius:8px;
-        border:2px solid #f44336;
+    button{
         display:flex;
         justify-content:center;
         align-items:center;
-        color:#f44336;
-        p{
-            color:#f44336;
+        img{
+            width:30px;
+            height:30px;
         }
+        font-weight:bold;
+        background:transparent;
+        border-radius:20px;
+        cursor:pointer;
+        border:none;
+        outline:none;
+        height:40px;
+        box-shadow:4px 4px 10px #333;
+        width:94%;
+        margin:10px 0;
     }
-     label{
-         text-align:left;
-         color:#25bd25;
-         font-weight:300;
-         font-size:14px;
-     }
-     .input{
-         width:100%;
-         height:45px;
-         margin:1% 0;
-         outline:none;
-         border-bottom:2px solid  gray;
-         border-top:0;
-         border-left:0;
-         border-right:0;
-         background:transparent;
-         padding:0 10px;
-         color:#000;
-         margin-bottom:15px;
-     }
-     .password{
-         display:flex;
-         justify-content:space-between;
-         align-items:center;
-         width:100%;
-         height:45px;
-         margin:1% 0;
-         border-bottom:2px solid gray;
-         background:transparent;
-         input{
-             padding: 0 10px;
-             width:600px;
-             height:45px;
-             outline:none;
-             border:none;
-             background:transparent;
-         }
-         .eye{
-             margin:0 2%;
-         }
-     }
-     p{
-         margin:5% 0;
-         color:#25bd25;
-         cursor:pointer;
-     }
+    .button{
+        font-weight:bold;
+        background:#f44336;
+        border-radius:20px;
+        cursor:pointer;
+        border:none;
+        outline:none;
+        height:40px;
+        box-shadow:4px 4px 10px #333;
+        width:94%;
+        margin:10px 0;
+    }
+    h3{
+        margin:15px 0;
+        text-align:center;
+        font-size:35px;
+        font-weight:700;
+    }
+    input{
+        width:90%;
+        height:50px;
+        border-radius:25px;
+        padding:0 15px;
+        margin:20px 0;
+        outline:none;
+        border:2px solid #000;
+    }
  }
- .btn{
-    background-color:#13d4c4;
-    color:#fff;
+ h2{
+    font-size:40px;
+    font-weight:500;
     display:flex;
-    justify-content:left;
-    align-items:center;
-    border-radius:25px;
-    width:100%;
-    height:42px;
-    outline:none;
-    border:none;
-    padding: 0 3px;
-    cursor:pointer;
-    img{
-        width:40px;
+    justify-content:center;
+    margin-top:3%;
+    small{
+        font-size:10px;
     }
+ }
+`
+let Right = styled.div`
+ flex-basis:30%;
+ background-image:url("/Images/banner2.jpg");
+ background-position:center;
+ background-size:cover;
+ height:100vh;
+ display:flex;
+ justify-content:center;
+ flex-direction:column;
+ align-items:center;
+ h1{
+    color:#fff;
+ }
+ p{
+    color:gray;
+    font-size:14px;
+    width:150px;
+    font-weight:600;
+    text-align:center;
+    margin:20px 0;
+    line-height:25px;
+ }
+ button{
+    color:#f44336;
+    border:2px solid #f44336;
+    border-radius:25px;
+    padding:12px 40px;
+    background:transparent;
+    cursor:pointer;
  }
 `

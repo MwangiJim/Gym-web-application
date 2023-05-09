@@ -21,11 +21,14 @@ import TrainerbookingSection from './components/TrainerbookingSection';
 import Joinus from './components/JoinUsSection/Joinus';
 import ScrollToTop from './components/ScrollToTop';
 import { createContext } from 'react';
+import AdminDashboard from './components/Dashboard/Users'
+import LoginPad from './components/LoginSection/LoginPad';
 export const userDetailsContext = createContext();
 
 function App() {
   let [user,setuser] = React.useState(null)
   let loggedIn = window.localStorage.getItem("isLoggedIn");
+  let[userType,setUserType] = React.useState(null);
   useEffect(()=>{
     fetch('http://localhost:8080/userDetails',{
        method:'POST',
@@ -37,7 +40,9 @@ function App() {
     .then((res)=>res.json())
     .then((data)=>{
        console.log('User Logged in',data);
+       alert(data.data.userType);
        setuser(data);
+       setUserType(data.data.userType);
     })
  },[])
   let Options = {
@@ -50,8 +55,10 @@ function App() {
     <div className="App">
       {loggedIn?
       <BrowserRouter>
-       <Header/>
+       <Header type={userType}/>
         <Routes>
+          <Route path = '/admindashboard' element={<AdminDashboard/>}></Route>
+          <Route path='/login' element={<LoginPad/>}></Route>
           <Route path = '/accountsetup' element ={<UserLogin/>}></Route>
           <Route path='/joinus' element={<Joinus/>}></Route>
           <Route path='/booking' element={<TrainerbookingSection/>}></Route>

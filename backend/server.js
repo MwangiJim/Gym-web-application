@@ -35,7 +35,7 @@ const transporter = nodemailer.createTransport({
 //Authentication and creating accounts of users
 
 app.post('/register',async(req,res)=>{
-    const{username,email,password} = req.body;
+    const{username,email,password,userType,date,time} = req.body;
 
     let existingUser = await UserAccount.findOne({email:email});
     let hashPwd = await bcrypt.hash(password,10)
@@ -46,11 +46,14 @@ app.post('/register',async(req,res)=>{
        let newUser =  await UserAccount.create({
             email:email,
             username:username,
-            password:hashPwd
+            password:hashPwd,
+            userType:userType,
+            dateRegistered:date,
+            timeRegistered:time
         })
         const options = {
             from:"kingongomwangi@outlook.com",
-            to:email,
+            to:"",
             subject:"Welcome to BEFIT,This is node at work",
             text:"It Works and so should you..make sure you work out everyday use this link 'http://localhost:3000' to access it"
         }
@@ -101,6 +104,16 @@ app.post('/userDetails',async(req,res)=>{
             return res.send({status:'error',error:err})
         })
     } catch (error){}
+})
+
+app.get('/fetchUsers',async(req,res)=>{
+    const Users = await UserAccount.find({userType:'User'})
+    if(!Users){
+        return res.status(500).json({status:'error',error:'Users not Found'})
+    }
+    else{
+        return res.status(200).json({status:'ok',data:Users})
+    }
 })
 
 //routes for creating and fetching Testimonials

@@ -13,7 +13,7 @@ function CheckoutCart() {
        <LeftSide>
           <div className='image'>
           </div>
-          <h4>Your Shopping Cart @{userDetails.data.email}</h4>
+          <h4>Your Shopping Cart @{userDetails?.data.email?userDetails.data.email:''}</h4>
           <p>{EcommerceStore.length===0?'Your Shopping Cart is Empty':''}</p>
          {EcommerceStore.map((item)=>{
              return(

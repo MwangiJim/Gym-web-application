@@ -1,7 +1,7 @@
 *{
   margin:0%;
   padding: 0%;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 body{
   background-color: #000;
@@ -35,6 +35,7 @@ body::-webkit-scrollbar-track{
 .image{
   flex-basis:33.3%;
   cursor: pointer;
+
 }
 @media(max-width:600px){
   .image{
@@ -48,6 +49,10 @@ body::-webkit-scrollbar-track{
   width: 100%;
   object-fit: cover;
   margin-bottom:-5px;
+}
+.not_admin{
+  pointer-events:none;
+  cursor:none;
 }
 .rating__star label input{
   display: none;
