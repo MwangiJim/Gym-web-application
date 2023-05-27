@@ -35,6 +35,7 @@ To run this project,
 ```
 $clone repository
 $cd ../yourprojectfolder
+$run npm install
 $run npm start
 $cd backend
 $run npm start
