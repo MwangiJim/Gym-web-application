@@ -34,9 +34,10 @@ let Container=styled.div`
  background-color:rgb(30, 102, 197);
  width:100%;
  height:94vh;
- bottom:-10px;
+ top:0px;
  position:absolute;
  z-index:8;
+ border-radius:7px;
  .textbox{
     display:flex;
     jusify-content:space-between;

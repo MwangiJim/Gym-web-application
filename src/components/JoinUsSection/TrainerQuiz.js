@@ -1,10 +1,13 @@
 import React ,{useEffect}from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { userDetailsContext } from '../../App'
+import { useContext } from 'react'
 
 function TrainerQuiz() {
   const dispatch = useDispatch()
-  let{userDetails,DetailsName} = useSelector((state)=>state.gymRegucer)
+  let userDetails = useContext(userDetailsContext);
+  let{DetailsName} = useSelector((state)=>state.gymRegucer)
     let [Form,setForm] = React.useState({
        username:'',
        Age:null,
@@ -68,7 +71,7 @@ function TrainerQuiz() {
           phone:Form.phoneNumber,
           experience:Years.yearChoice,
           flag:CountryForm.country,
-          email:userDetails.Email || DetailsName.Email,
+          email:userDetails.data.email
         })
       })
       localStorage.setItem("flag",CountryForm.country)

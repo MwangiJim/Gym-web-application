@@ -22,14 +22,16 @@ function ExerciseTrainer(props){
   let {ExerciseSchedule,WorkoutType,ExercisesIcons,TimeStart,TimeFinished}=useSelector((state)=>state.gymRegucer)
   let [time,settime]=React.useState(30);
   let dispatch=useDispatch();
-  let date = new Date().toDateString();
+  const date = new Date().toDateString();
 
    let timeDifference = TimeFinished.time?.getTime()-TimeStart.time?.getTime()
-   let time_difference = moment.duration(timeDifference).asMilliseconds()
+   let timeF = moment.duration(timeDifference).asSeconds()
+  let Timeformat = moment.utc(timeF*1000).format('mm:ss')
   //  let Timeformat = moment.utc(time_difference*1000).format('mm:ss')
    //get minutes
-   let Minutes = Math.floor(moment.duration(timeDifference).asMinutes())
+   let Minutes = moment.duration(timeDifference).asMinutes();
    let Calories = Math.floor((Minutes*5*60)/200)
+   //console.log(timeDifference)
   useEffect(()=>{
     if(time>0){
       let RestTime = setInterval(()=>{
@@ -47,6 +49,7 @@ function ExerciseTrainer(props){
     display:Restover?'none':'block'
   }
   //Controls for Foward movement
+  let[Time,setTime]=React.useState(30);
   const MoveExerciseFoward=()=>{
     if(ExerciseIndex <=ExerciseSchedule.exercise.length-1){
       setExerciseIndex((nextExercise)=>nextExercise+1)
@@ -60,23 +63,20 @@ function ExerciseTrainer(props){
   }
   //Controls for Backward movement
   const MoveExerciseBackwards=()=>{
-    if(ExerciseIndex >0){
+    if(ExerciseIndex > 0){
       setExerciseIndex((prevExercise)=>prevExercise-1)
     }
     else{
       setExerciseIndex(0)
     }
   }
-  let[Time,setTime]=React.useState(30)
   useEffect(()=>{
-    if(Time>0){
-      let Timer = setInterval(()=>{
-        setTime((prevSeconds)=>prevSeconds-1)
-    },1000)
-    return ()=>clearInterval(Timer)//clean up functions prevent memory leaks
-    }
-    else{
-     // console.log('Time Up!!')
+    if(Time > 0){
+     let timer = setInterval(()=>{
+       setTime((prevTime)=>prevTime - 1);
+     },1000)
+     return ()=>clearInterval(timer);
+  //clean up functions prevent memory leaks
     }
   })
  //console.log(Time)
@@ -86,21 +86,29 @@ function ExerciseTrainer(props){
  let [totalExercises,setTotalExercises]=React.useState(0)
 
   const GoToRest=()=>{
-     if(ExerciseIndex>=ExerciseSchedule.exercise.length-1){
+      setRest((prevForm)=>!prevForm)
+  }
+
+  const ShowFinishedSection=async()=>{
+    setShowFinished((prevPage)=>!prevPage)
+    if(ExerciseIndex>=ExerciseSchedule.exercise.length-1){
       //alert('End of the road')
       setTotalExercises((preValue)=>preValue+1)
-      setShowFinished((prevPage)=>!prevPage)
-      dispatch(SetExerciseHistory({
-          Date:date,
-          ExerciseName:WorkoutType.ExerciseType,
-          Exerciseicon:ExercisesIcons.image
-      }))
       dispatch(SetTimeFinished({
         time:FinishTime
       }))
-     }
-     else{
-      setRest((prevForm)=>!prevForm)
+        await fetch("http://localhost:8080/completeExercises",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+             date:new Date().toLocaleDateString(),
+             time:new Date().toLocaleTimeString(),
+             exercisename:WorkoutType.ExerciseType,
+             calories:Calories,
+             minutes:Minutes,
+             totalTime:Timeformat
+          })
+        }).then((res)=>res.json()).catch((err)=>console.log(err))
      }
   }
   //console.log(rest)
@@ -115,14 +123,53 @@ function ExerciseTrainer(props){
     display:EndPage?'none':'block'
   }
   let[showReport,setShowReport]=React.useState(false)
-  const ShowReport=()=>{
+  let[Records,setRecords]=React.useState({})
+
+  const ShowReport=async()=>{
      setShowReport((prevState)=>!prevState)
-     dispatch(SetTotalResults({
-      exercisesComplete:totalExercises,
-      timeElapsed:Minutes,
-      calories:Calories
-     }))
+     window.location.assign("/virtualworkout");
+     Records.map(async(item)=>{
+      return(
+       <>
+          {item.id && await fetch(`http://localhost:8080/updateexerciseRecords/${item.id}`,{
+            method:"PUT",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+               calories:item.calories + Calories,
+               minutes:item.minutes +  Minutes,
+               exercises:item.exercises + 1
+            })
+          })}
+       </>
+      )
+     })
+     Records.length === 0 && await fetch("http://localhost:8080/exerciseRecords",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+         calories:Calories,
+         minutes:Minutes,
+         exercises:totalExercises
+      })
+     }).then((res)=>res.json()).catch((err)=>{console(err)})
   }
+  useEffect(()=>{
+    fetch("http://localhost:8080/exerciseRecords")
+    .then((res)=>res.json())
+    .then((data)=>{
+     // console.log(data);
+      let dataRecord = data.data.map((item)=>{
+        return{
+          calories:item.Calories,
+          exercises:item.Exercises,
+          minutes:item.Minutes,
+          id:item._id
+        }
+      })
+      setRecords(dataRecord);
+    })
+  })
+  console.log(Records)
   let stylesReport = {
     display:showReport?'none':'block'
   }
@@ -131,7 +178,7 @@ function ExerciseTrainer(props){
     setShowThankyou((prevState)=>!prevState)
   }
   let thankyoustyles ={
-    bottom:showThankyou?'590px':'625px'
+    bottom:showThankyou?'550px':'625px'
   }
   let thumbstyle = {
     backgroundColor:showThankyou?'rgb(30, 102, 197)':'#333'
@@ -193,10 +240,15 @@ function ExerciseTrainer(props){
               <FontAwesomeIcon icon={faArrowAltCircleLeft}/>
               <h4>Previous</h4>
            </div>
-            <div className='next' onClick={MoveExerciseFoward} style={btnStyles}>
+           {ExerciseIndex>=ExerciseSchedule.exercise.length-1?<button 
+           className='finBtn' 
+            onClick={ShowFinishedSection}
+            >
+            <h4>Finish!</h4>
+          </button>: <div className='next' onClick={MoveExerciseFoward} style={btnStyles}>
             <FontAwesomeIcon icon={faArrowAltCircleRight}/>
              <h4>Next</h4>
-          </div>
+          </div>}
          </Controls>
          <div className='thankyou' style={thankyoustyles}>
             <FontAwesomeIcon icon={faCheckCircle} className='check'/>
@@ -220,7 +272,7 @@ function ExerciseTrainer(props){
          FnHandler={ShowReport}
          historystyles={stylesReport}
        />:''}
-       {showReport?<Report
+        {showReport?<Report
          BackFnHandler={props.HAndler}
          ReportStyle={props.R_Styles}
        />:''}
@@ -232,7 +284,7 @@ function ExerciseTrainer(props){
   )
 }
 
-export default ExerciseTrainer
+export default React.memo(ExerciseTrainer)
 let Container = styled.div`
  width:100%;
  height:max-content;
@@ -321,8 +373,9 @@ let Container = styled.div`
  }
  .thankyou{
   display:flex;
-  bottom:500px;
-  position:relative;
+  bottom:530px;
+  position:absolute;
+  left:150px;
   z-index:7;
   align-items:center;
   justify-content:center;
@@ -359,5 +412,14 @@ let Controls=styled.div`
   display:flex;
   align-items:center;
   cursor:pointer;
+ }
+ .finBtn{
+  background-color:rgb(30, 102, 197);
+  border-radius:15px;
+  padding:12px 30px;
+  border:none;
+  outline:none;
+  cursor:pointer;
+  color:#fff;
  }
 `

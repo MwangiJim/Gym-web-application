@@ -27,7 +27,7 @@ let Container = styled.div`
 width:100%;
 height:60vh;
 z-index:6;
-bottom:230px;
+bottom:200px;
 position:absolute;
 padding:5px;
 background:radial-gradient(transparent,#fff);

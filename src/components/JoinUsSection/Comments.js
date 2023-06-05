@@ -1,21 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReply, faRetweet, faStar, faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
+import { userDetailsContext } from '../../App'
 
 const Comments = (props) => {
   let{DetailsName}=useSelector((state)=>state.gymRegucer);
+  let userdetails = useContext(userDetailsContext);
   let received = {
     marginLeft:props.id === 2?'35px':''
   }
   return (
     <Container style={received}>
      <div className='User_box'>
-       <span>{DetailsName.data.username.charAt(0)}</span>
+       <span>G</span>
        <div className='userdetails'>
-         <p>{DetailsName.data.username}.</p>
+         <p>{userdetails.data.usernamer}.</p>
          <small>{props.time}.</small>
          <small>{props.date}</small>
        </div>

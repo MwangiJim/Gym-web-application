@@ -1,21 +1,22 @@
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react'
+import React ,{useContext}from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import UserProfile from './UserProfile';
+import { userDetailsContext } from '../App';
 
 function BookingDisplay(props) {
 
     let{ userDetails,DetailsName}= useSelector((state)=>state.gymRegucer);
-
+     let userdetails = useContext(userDetailsContext)
    // console.log(userProfileInfo)
   return (
     <Container>
         <Content>
                <div className='user__details'>
-                  <h4>{userDetails.UserName?userDetails.UserName:DetailsName?.UserName}</h4>
-                  <small>{userDetails.Email?userDetails.Email:DetailsName?.Email}</small>
+                  <h4>{userdetails.data.username?userdetails.data.username:DetailsName?.UserName}</h4>
+                  <small>{userdetails.data.email?userdetails.data.email:DetailsName?.Email}</small>
                </div>
         </Content>
         <div className='profile'>

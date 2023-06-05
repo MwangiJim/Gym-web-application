@@ -155,7 +155,6 @@ let Container = styled.div`
     left:0%;
     position:absolute;
     top:10.6%;
-    z-index:5;
     .left__side{
         flex-basis:24%;
         background:#fff;

@@ -75,7 +75,7 @@ function Joinus() {
                biography:Form.Message,
                Period:RadioForm.periodTraining,
                pushups:RadioForm.pushups,  
-               email:DetailsName.Email
+               email:userDetails.data.email
             })
         })
     }
@@ -171,7 +171,7 @@ let[Member,setMember]=React.useState([])
         setSingleQuote(randomQuote);
       })
  },[1])
- console.log(SingleQuote)
+ console.log(Trainer)
   return (
     <Container>
        <UserInformation.Provider value={Member}>

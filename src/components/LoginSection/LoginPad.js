@@ -5,6 +5,7 @@ import {useDispatch}  from 'react-redux'
 import { storeUserDetails } from '../../redux/reducers/reducerSlice'
 import { faEye, faEyeSlash, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Loader from '../Loader'
 
 
 function LoginPad() {
@@ -61,7 +62,7 @@ function LoginPad() {
                 alert('successful login')
                 window.localStorage.setItem('token',data.data)
                 window.localStorage.setItem('isLoggedIn',true);
-                window.location.assign('/')
+                window.location.assign('/redirect')
             }
         })
     }

@@ -98,27 +98,44 @@ body::-webkit-scrollbar-track{
   display: none;
 }
 .container{
-  height:50vh;
-  background-color: #333;
-  color:#fff;
+  position: relative;
 }
 .arrow__left{
   left:10px;
-  top:10px;
+  top:20px;
   position:relative;
   cursor:pointer;
-  color:#f44336;
+  color:#fff;
 }
 .arrow__left:hover{
   color:#f44336;
 }
 .section{
-  bottom: 625px;
-  position: relative;
+  position: absolute;
+  top:-15px;
   width:100%;
   z-index:9;
   height:90vh;
+  max-height: 90vh;
+  overflow-y: scroll;
   background-color: #fff;
+}
+.section .head{
+  bottom: 150px;
+  position: relative;
+  color: #fff;
+  font-size: 20px;
+  left:20px;
+  width:150px;
+}
+::-webkit-scrollbar{
+  width:0;
+}
+.sub_head{
+  bottom:140px;
+  left:10px;
+  position: relative;
+  color: #fff;
 }
 .weight__area{
   padding:10px 3px;

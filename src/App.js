@@ -23,6 +23,9 @@ import ScrollToTop from './components/ScrollToTop';
 import { createContext } from 'react';
 import AdminDashboard from './components/Dashboard/Users'
 import LoginPad from './components/LoginSection/LoginPad';
+import Loader from './components/Loader';
+import TrainerDashboard from './components/JoinUsSection/TrainerDashboard';
+import Dashboard from './components/JoinUsSection/Dashboard';
 export const userDetailsContext = createContext();
 
 function App() {
@@ -40,7 +43,7 @@ function App() {
     .then((res)=>res.json())
     .then((data)=>{
        console.log('User Logged in',data);
-       alert(data.data.userType);
+      // alert(data.data.userType);
        setuser(data);
        setUserType(data.data.userType);
     })
@@ -53,10 +56,12 @@ function App() {
    <userDetailsContext.Provider value={user}>
      <PayPalScriptProvider options={Options}>
     <div className="App">
-      {loggedIn?
       <BrowserRouter>
        <Header type={userType}/>
         <Routes>
+          <Route path="/memberdashboard" element={<Dashboard/>}/>
+          <Route path="/trainerdashboard" element={<TrainerDashboard/>}/>
+          <Route path='/redirect' element={<Loader/>}></Route>
           <Route path = '/admindashboard' element={<AdminDashboard/>}></Route>
           <Route path='/login' element={<LoginPad/>}></Route>
           <Route path = '/accountsetup' element ={<UserLogin/>}></Route>
@@ -68,12 +73,11 @@ function App() {
           <Route path='/payment' element={<PaypalPayment/>}></Route>
           <Route path='/checkout' element={<CheckoutCart/>}></Route>
           <Route path='/shopping' element={<Shopping/>}></Route>
-          <Route path='/' element={<Home/>}></Route>
+          <Route path='/' element={loggedIn?<Home/>:<UserLogin/>}></Route>
         </Routes>
         <ScrollToTop/>
         <Footer/>
-      </BrowserRouter>:
-      <UserLogin/>}
+      </BrowserRouter>
     </div>
     </PayPalScriptProvider>
    </userDetailsContext.Provider>

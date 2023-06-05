@@ -8,10 +8,10 @@ function ExerciseHistoryComponent(props) {
   return (
     <Container>
       <div className='image'>
-         <img src={props.Image}/>
+         <img src="/Images/chest.png"/>
       </div>
        <div className='history_info'>
-          <small>{props.Time},3:45 pm</small>
+          <small>{props.Date},{props.Time}</small>
           <h3>{props.Exercise}</h3>
           <div className='details'>
              <Detail>

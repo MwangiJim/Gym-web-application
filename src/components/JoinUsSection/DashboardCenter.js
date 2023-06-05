@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 import Rating from './Rating'
@@ -9,6 +9,7 @@ import { faCircleExclamation, faMessage, faTriangleExclamation } from '@fortawes
 import Comments from './Comments'
 import DeleteTrainerAccount from './DeleteTrainerAccount'
 import TrainersViews from './TrainersViews'
+import { userDetailsContext } from '../../App'
 
 const DashboardCenter = (props) => {
   let{BookingsMade}=useSelector((state)=>state.gymRegucer);
@@ -96,6 +97,7 @@ const DashboardCenter = (props) => {
    const DeleteAccount=()=>{
        setDeleteComponent((prevState)=>!prevState)
    }
+   let userdetails = useContext(userDetailsContext);
   return (
     <Container>
       {DeleteComponent?<DeleteTrainerAccount

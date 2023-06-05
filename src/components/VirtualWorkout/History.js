@@ -6,6 +6,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import {useSelector,useDispatch} from 'react-redux'
 import ExerciseHistoryComponent from './ExerciseHistoryComponent'
 import moment from 'moment';
+import { useEffect } from 'react'
 
 function History(props) {
     let[date,setDate]=React.useState(new Date())
@@ -21,9 +22,26 @@ function History(props) {
   //get minutes
   let Minutes = moment.duration(timeDifference).asMinutes();
   let Calories = (Minutes*5*60)/200
-  //get Total Time
-  //get totalCalories
-  //get totalMinutes
+   let[ExerciseData,setExerciseData]=React.useState([]);
+  useEffect(()=>{
+     fetch("http://localhost:8080/getCompleteExercises")
+     .then((res)=>res.json())
+     .then((data)=>{
+        console.log(data);
+        let Exercisedata = data.data.map((item)=>{
+            return{
+                minutes:item.Minutes,
+                exercisename:item.ExerciseName,
+                Date:item.Date,
+                time:item.Time,
+                calories:item.Calories,
+                totalTime:item.totalTime
+            }
+        })
+        setExerciseData(Exercisedata);
+     })
+  })
+  console.log(ExerciseData)
   return (
     <Container style={props.historystyles}>
         <Head>
@@ -37,14 +55,15 @@ function History(props) {
         />
         <h3>{date.toDateString()}</h3>
         <div className='history'>
-            {StoreExerciseHistory.map((data)=>{
+            {ExerciseData.map((data)=>{
                 return(
                     <ExerciseHistoryComponent
                       Image={data.Exerciseicon}
-                      Time={data.Date}
-                      Exercise={data.ExerciseName}
-                      calories={Calories}
-                      time_format={Timeformat}
+                      Date={data.Date}
+                      Time={data.time}
+                      Exercise={data.exercisename}
+                      calories={data.calories}
+                      time_format={data.totalTime}
                     />
                 )
             })}

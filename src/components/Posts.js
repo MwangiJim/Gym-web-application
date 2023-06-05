@@ -156,10 +156,10 @@ align-items:center;
  }
  @load{
     0%{
-        background:#333;
+        background:linear-gradient(#9bb2e5,#698cbf);
     }
     100%{
-        background:#000;
+        background:linear-gradient(#6d90b9,#bbc7dc);
     }
  }
 `

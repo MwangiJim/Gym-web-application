@@ -120,7 +120,7 @@ let Gifs = styled.div`
 `
 let Footer = styled.div`
  width:96%;
- z-index:10;
+ z-index:8;
  padding:15px 12px;
  background-color:#fff;
  text-align:center;

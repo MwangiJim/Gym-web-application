@@ -8,27 +8,16 @@ import styled from 'styled-components'
 function Pricing() {
   let navigate= useNavigate()
   let{StorePricingPlan}=useSelector((state)=>state.gymRegucer);
-  let[minutes,setMinutes]=useState(null)
-  let[Hours,setHours]=useState(null)
-  let[Days,setDays]=useState(null)
-  let[seconds,setSeconds]=useState(null)
-  //console.log(StorePricingPlan)
-   let[startTime,setStartTime]=React.useState(86400)
-     useEffect(()=>{
-     const Counter =  setInterval(()=>{
-        let day = Math.floor(startTime/86400)
-        let hours = Math.floor(startTime/3600)
-        let minutes = Math.floor(startTime/1440)
-        let seconds = startTime%60;
-        setDays(day)
-        setHours(hours)
-        setMinutes(minutes)
-        setSeconds(seconds)
-       // setStartTime(prevTime=>prevTime-1)
-      },1000)
-      return ()=>clearInterval(Counter)//Always use Clean up functions in setIntervals.
-     },[startTime])
-  console.log(`days:${Days}:hours:${Hours}:minutes:${minutes}:seconds:${seconds}`);
+   let [Time,setTime]=React.useState(10)
+  let Counter = React.useRef(Time);
+
+  useEffect(()=>{
+    setInterval(()=>{
+      Counter.current = Counter.current - 1;
+    },1000)
+  },[])
+  console.log(Counter.current)
+
   const SelectPlan=()=>{
      navigate(`/pricingpayment`)
   }
@@ -51,22 +40,22 @@ function Pricing() {
           <p>Get Advanced Care And Training Experience with{StorePricingPlan.Plan} with a 12 month Subscription</p>
           <div className='time'>
              <div className='day'>
-                <p>{Days<1?`0${Days}`:Days}</p> 
+                <p></p> 
                 <h6>days</h6>
              </div>
              <small>:</small>
              <div className='day'>
-                <p>{Hours<10?`0${Hours}`:Hours}</p> 
+                <p></p> 
                 <h6>hours</h6>
              </div>
              <small>:</small>
              <div className='day'>
-                <p>{minutes<10?`0${minutes}`:minutes}</p> 
+                <p></p> 
                 <h6>minutes</h6>
              </div>
              <small>:</small>
              <div className='day'>
-                <p>{seconds<10?`0${seconds}`:seconds}</p> 
+                <p></p> 
                 <h6>seconds</h6>
              </div>
           </div>

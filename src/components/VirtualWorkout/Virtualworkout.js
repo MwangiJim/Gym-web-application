@@ -82,7 +82,7 @@ const Virtualworkout = () => {
   useEffect(()=>{
     setTimeout(()=>{
        setPreloaderImg(true);
-    },9000);
+    },5000);
   })
   let styles = {
     display:PreloaderImg?'none':'block'

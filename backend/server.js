@@ -12,6 +12,8 @@ import UserAccount from './models/UserAccount.js';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
+import ExerciseRecords from './models/ExerciseRecords.js';
+import CompleteExercises from './models/CompleteExercises.js';
 
 const PORT = 8080;
 const app = express();
@@ -88,7 +90,6 @@ app.post('/login',async(req,res)=>{
     }
     res.json({status:'error',error:'Invalid Password'})
 })
-
 app.post('/userDetails',async(req,res)=>{
     const {token} = req.body;
     try {
@@ -181,8 +182,9 @@ app.get('/newMember',async(req,res)=>{
 })
 app.post('/newMember',async(req,res)=>{
     const{name,age,state,location,biography,Period,pushups,email} = req.body;
-    if(!name){
-        return res.status(400).json({"message":"Input Fields Required!!!"})
+    let existingUser = await memberProfile.findOne({Email:email})
+    if(existingUser){
+        return res.status(400).json({data:"User already exists"})
     }
     else{
         const newMember = await memberProfile.create({
@@ -254,8 +256,8 @@ app.get('/userTrainer/:id',async(req,res)=>{
 })
 app.post('/newTrainer',async(req,res)=>{
     const{userName,age,city,location,message,hourlyPay,levelofExperience,phone,experience,flag,email}=req.body;
-    if(!userName||!age){
-        return res.status(400).json({"message":"No Inputs in the Fields"})
+    if(await trainerProfile.findOne({Email:email})){
+        return res.status(400).json({"message":"Trainer Account Alreay exists"})
     }
     else{
         const newTrainer = await trainerProfile.create({
@@ -399,6 +401,68 @@ app.post('/Trainercomments',async(req,res)=>{
     }
   })
 
+  app.post('/exerciseRecords',async(req,res)=>{
+    const{calories,minutes,exercises} = req.body;
+    if(!calories && !minutes){
+        return res.status(500).json({"msg":"Error"})
+    }
+    else{
+        const exerciseRecord = await ExerciseRecords.create({
+            Calories:calories,
+            Minutes:minutes,
+            Exercises:exercises,
+        })
+        return res.status(200).json({status:"ok",data:exerciseRecord})
+    }
+  })
+  app.put("/updateexerciseRecords/:id",async(req,res)=>{
+     const {id}=req.params;
+     const {calories,exercises,minutes} = req.body;
+     if(!id) return res.status(500).json({status:"error",error:"id not found"})
+   else{
+    let updatedRecords = await ExerciseRecords.findByIdAndUpdate(id,{$set:{
+        Calories:calories,
+        Exercises:exercises,
+        Minutes:minutes
+    }},{returnOriginal:false})
+    console.log(updatedRecords)
+    return res.status(200).json({status:"ok",message:"Record Updated"})
+   }
+  })
+  app.get("/exerciseRecords",async(req,res)=>{
+    const FoundRecords = await ExerciseRecords.find();
+    if(!FoundRecords){
+        return res.status(500).json({status:"error",error:"Records not found!!"})
+    }
+    else{
+        return res.status(200).json({status:"ok",data:FoundRecords})
+    }
+  })
+app.post("/completeExercises",async(req,res)=>{
+    const{date,time,exercisename,minutes,calories,totalTime} = req.body;
+    if(!date,!time,!exercisename) return res.status(500).json({status:"error",error:"Error Accessing Server"})
+
+    else{
+        const newCompleteExercise = await CompleteExercises.create({
+            Date:date,
+            Time:time,
+            ExerciseName:exercisename,
+            Minutes:minutes,
+            Calories:calories,
+            totalTime:totalTime
+        })
+        res.status(201).json({status:"ok"})
+    }
+})
+app.get("/getCompleteExercises",async(req,res)=>{
+    const FoundExercises = await CompleteExercises.find();
+    if(!FoundExercises){
+        return res.status(404).json({status:"error",error:"No Records Found!"})
+    }
+    else{
+        return res.status(200).json({status:"ok",data:FoundExercises})
+    }
+})
 app.all("*",(req,res)=>{
     return res.status(404).json({"message":"Page not Found"})
 })

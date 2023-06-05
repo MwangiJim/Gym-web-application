@@ -7,8 +7,11 @@ import styled from 'styled-components'
 import { addPost } from '../redux/reducers/reducerSlice'
 import FooterLink from './FooterLink'
 import Star from './Star'
+import { useContext } from 'react'
+import { userDetailsContext } from '../App'
 
 function Footer() {
+  let DetailsUser = useContext(userDetailsContext);
   let dispatch = useDispatch()
     let[Form,setForm] = useState({
         input:'',

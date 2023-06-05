@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { db } from '../../firebase'
 import{createUserWithEmailAndPassword, FacebookAuthProvider, getAuth, GithubAuthProvider, sendEmailVerification,signInWithPopup, updateProfile} from 'firebase/auth'
@@ -7,6 +7,7 @@ import { faE, faEye, faEyeSlash, faPerson,faMailBulk, faTriangleExclamation } fr
 import { useDispatch } from 'react-redux'
 import { storeUserDetails } from '../../redux/reducers/reducerSlice'
 import LoginPad from './LoginPad'
+import { userDetailsContext } from '../../App'
 
 function UserLogin() {
     let dispatch = useDispatch()
@@ -129,6 +130,7 @@ function UserLogin() {
                          type='text'
                          placeholder='----'
                          value={secretKey}
+                         autoComplete={false}
                          name='secretKey'
                          onChange={(e)=>setSecretKey(e.target.value)}
                         />
@@ -162,7 +164,7 @@ function UserLogin() {
                         type={Eye?'text':'password'}
                         onChange={HandleInput}
                         value={form.secondPwd}
-                        name='password'
+                        name='secondPwd'
                         />
                     <br/>
                     <label>Full Name</label>
