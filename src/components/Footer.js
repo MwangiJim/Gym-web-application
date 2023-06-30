@@ -12,6 +12,7 @@ import { userDetailsContext } from '../App'
 
 function Footer() {
   let DetailsUser = useContext(userDetailsContext);
+  console.log(DetailsUser)
   let dispatch = useDispatch()
     let[Form,setForm] = useState({
         input:'',
