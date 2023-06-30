@@ -14,6 +14,8 @@ import moment from 'moment'
 import useSpeechSynthesis from 'react-speech-kit/dist/useSpeechSynthesis'
 import NegativeFeedback from './NegativeFeedback'
 import VideoPreviewSection from './VideoPreviewSection'
+import { useContext } from 'react'
+import { userDetailsContext } from '../../App'
 
 
 function ExerciseTrainer(props){
@@ -30,7 +32,7 @@ function ExerciseTrainer(props){
   //  let Timeformat = moment.utc(time_difference*1000).format('mm:ss')
    //get minutes
    let Minutes = moment.duration(timeDifference).asMinutes();
-   let Calories = Math.floor((Minutes*5*60)/200)
+   let Calories = (Minutes*5*60)/200
    //console.log(timeDifference)
   useEffect(()=>{
     if(time>0){
@@ -106,9 +108,10 @@ function ExerciseTrainer(props){
              exercisename:WorkoutType.ExerciseType,
              calories:Calories,
              minutes:Minutes,
-             totalTime:Timeformat
+             totalTime:Timeformat,
           })
-        }).then((res)=>res.json()).catch((err)=>console.log(err))
+        }).then((res)=>res.json())
+        .catch((err)=>alert('Error updating server',err))
      }
   }
   //console.log(rest)
@@ -119,7 +122,7 @@ function ExerciseTrainer(props){
   const ShowLandingPage=()=>{
     setEndPage((prevForm)=>!prevForm)
   }
-  let EndofWorkoutStyles ={
+  let EndofWorkoutStyles = {
     display:EndPage?'none':'block'
   }
   let[showReport,setShowReport]=React.useState(false)
@@ -127,7 +130,6 @@ function ExerciseTrainer(props){
 
   const ShowReport=async()=>{
      setShowReport((prevState)=>!prevState)
-     window.location.assign("/virtualworkout");
      Records.map(async(item)=>{
       return(
        <>
@@ -169,7 +171,7 @@ function ExerciseTrainer(props){
       setRecords(dataRecord);
     })
   })
-  console.log(Records)
+  //console.log(Records)
   let stylesReport = {
     display:showReport?'none':'block'
   }

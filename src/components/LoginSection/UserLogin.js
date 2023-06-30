@@ -1,23 +1,18 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { db } from '../../firebase'
-import{createUserWithEmailAndPassword, FacebookAuthProvider, getAuth, GithubAuthProvider, sendEmailVerification,signInWithPopup, updateProfile} from 'firebase/auth'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faE, faEye, faEyeSlash, faPerson,faMailBulk, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
-import { storeUserDetails } from '../../redux/reducers/reducerSlice'
-import LoginPad from './LoginPad'
 import { userDetailsContext } from '../../App'
 
 function UserLogin() {
-    let dispatch = useDispatch()
-    let auth = getAuth()
     let[form,setForm] = React.useState({
         email:'',
         username:'',
         password:'',
         address:'',
-        secondPwd:''
+        secondPwd:'',
+        country:'',
+        occupation:'',
+        phonenumber:''
     })
     let[usertype,setusertype]=React.useState({
         chosen:"",
@@ -51,7 +46,8 @@ function UserLogin() {
         if(usertype.chosen === 'Admin' && secretKey !== 'P@ssword'){
             alert('Invalid Admin...Are you Admin???');
         }
-        await fetch('http://localhost:8080/register',{
+        if(form.password !== "" && form.secondPwd !== ""){
+            await fetch('http://localhost:8080/register',{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({
@@ -60,7 +56,10 @@ function UserLogin() {
                password:form.password,
                userType:usertype.chosen,
                date:new Date().toLocaleDateString(),
-               time:new Date().toLocaleTimeString()
+               time:new Date().toLocaleTimeString(),
+               phonenumber:form.phonenumber,
+               country:form.country,
+               occupation:form.occupation
             })
         })
         .then((res)=>res.json())
@@ -71,6 +70,7 @@ function UserLogin() {
         .catch((err)=>{
             console.log('error',err)
         })
+        }
     }
     let[Visual,setVisual]=React.useState(false)
     const ChangeStatus=()=>{
@@ -135,6 +135,48 @@ function UserLogin() {
                          onChange={(e)=>setSecretKey(e.target.value)}
                         />
                     </div>:''}
+                    <br/>
+                    <label>Full Name</label>
+                    <br/>
+                    <div className='inputBox'>
+                        <input
+                        className='input'
+                        type='text'
+                        onChange={HandleInput}
+                        value={form.username}
+                        name='username'
+                        />
+                    </div>
+                    <br/>
+                    <label>Occupation</label>
+                    <br/>
+                    <input
+                     className='input'
+                     type='text'
+                     onChange={HandleInput}
+                     value={form.occupation}
+                     name='occupation'
+                    />
+                    <br/>
+                    <label>Country</label>
+                    <input
+                     className='input'
+                     type='text'
+                     onChange={HandleInput}
+                     value={form.country}
+                     name='country'
+                    />
+                    <br/>
+                    <label>Phone Number</label>
+                    <br/>
+                    <input
+                     className='input'
+                     type='text'
+                     onChange={HandleInput}
+                     value={form.phonenumber}
+                     name='phonenumber'
+                    />
+                    <br/>
                     <label>Email Address</label>
                     <br/>
                     <div className='inputBox'>
@@ -166,18 +208,6 @@ function UserLogin() {
                         value={form.secondPwd}
                         name='secondPwd'
                         />
-                    <br/>
-                    <label>Full Name</label>
-                    <br/>
-                    <div className='inputBox'>
-                        <input
-                        className='input'
-                        type='text'
-                        onChange={HandleInput}
-                        value={form.username}
-                        name='username'
-                        />
-                    </div>
                     <br/>
                     <label>Address</label>
                      <div className='inputBox'>

@@ -13,6 +13,7 @@ import Reminder from './Reminder';
 import WeeklyGoal from './WeeklyGoal';
 import Languages from './Languages';
 import { userDetailsContext } from '../../App';
+import Report from './Report';
 export const LangaugeSetter = createContext()//Creating Context
 
 const Virtualworkout = () => {
@@ -20,18 +21,19 @@ const Virtualworkout = () => {
   let userDetails = React.useContext(userDetailsContext);
     let[Start,setStart]=React.useState(false);
     let StartTime = new Date();
-    let dispatch=useDispatch()
+    let dispatch=useDispatch();
     const StartWorkout=()=>{
        setStart((prevView)=>!prevView)
        dispatch(SetTimeStart({
         time:StartTime
        }))
+
     }
    // console.log(StartTime)
    let[showMainPage,setShowMainPage]=React.useState(false)
   const BackToMainPage=()=>{
      setShowMainPage((prevState)=>!prevState)
-     setStart(false);
+     window.location.assign("/virtualworkout");
   }
   //alert(Start)
   let reportstyles = {
@@ -65,10 +67,6 @@ const Virtualworkout = () => {
   const QuitExercise=()=>{
       setStart(false)
   }
-  let[reminder,setReminder]=React.useState(false);
-  const ShowReminder=()=>{
-    setReminder((prevState)=>!prevState)
-  }
   let[Weeklygoal,setWeeklyGoal]=React.useState(false)
   const ShowWeeklyGoalsMenu=()=>{
         setWeeklyGoal((prevState)=>!prevState)
@@ -87,6 +85,8 @@ const Virtualworkout = () => {
   let styles = {
     display:PreloaderImg?'none':'block'
   }
+  let [report,setReport] = React.useState(false)
+  let[reminder,setReminder]=React.useState(false);
    //console.log(Count)
   return (
     <Container>
@@ -122,12 +122,13 @@ const Virtualworkout = () => {
            icontype={faBarChart}
            text='Report'
            id={3}
+           reportHandler = {setReport}
           />
            <Options
            icontype={faClockFour}
            text='Reminder'
-           ShowOptionsHandler = {ShowReminder}
            id={4}
+           reminderHandler = {setReminder}
           />
           <Options
            icontype={faGlobeAfrica}
@@ -166,6 +167,7 @@ const Virtualworkout = () => {
           <LangaugeSetter.Provider value={languages}>
               {langauge?<Languages/>:''}
           </LangaugeSetter.Provider>
+           {report?<Report/>:""}
       </Center>
        {/**Right Container */}
        <RightNewsSection/>

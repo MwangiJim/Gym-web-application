@@ -6,7 +6,10 @@ const User = mongoose.Schema({
     password:String,
     userType:String,
     dateRegistered:String,
-    timeRegistered:String
+    timeRegistered:String,
+    phoneNumber:String,
+    Country:String,
+    Occupation:String
 })
 
 export default mongoose.model('User',User);

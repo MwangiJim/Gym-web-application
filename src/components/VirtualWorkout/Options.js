@@ -4,8 +4,16 @@ import React from 'react'
 import styled from 'styled-components'
 
 function Options(props) {
+  function optionsHandler(){
+    if(props.id === 3){
+      props.reportHandler((prevState)=>!prevState)
+    }
+    if(props.id === 4){
+      props.reminderHandler((prevState)=>!prevState)
+    }
+  }
   return (
-    <Container onClick={props.ShowOptionsHandler}>
+    <Container onClick={optionsHandler}>
         <FontAwesomeIcon icon={props.icontype} className='icon'/>
         <h4>{props.text}</h4>
     </Container>

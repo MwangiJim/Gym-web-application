@@ -3,6 +3,9 @@
   padding: 0%;
   font-family: 'Noto Sans', sans-serif;
 }
+.App{
+  font-family: 'Noto Sans', sans-serif;
+}
 body{
   background-color: #000;
   overflow-x: hidden;
@@ -128,6 +131,12 @@ body::-webkit-scrollbar-track{
   left:20px;
   width:150px;
 }
+.shown{
+  display:block;
+}
+.not_shown{
+  display: none;
+}
 ::-webkit-scrollbar{
   width:0;
 }
@@ -174,4 +183,7 @@ body::-webkit-scrollbar-track{
 }
 .container_inactive{
   display: none;
+}
+.bar{
+  fill:rgb(30, 102, 197);
 }

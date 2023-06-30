@@ -18,7 +18,8 @@ function Testimonials() {
               profession:item.Profession,
               time:item.timeCommented,
               date:item.dateCommented,
-              Message:item.message
+              Message:item.message,
+              username:item.Username
             }
           )
         })
@@ -38,17 +39,20 @@ function Testimonials() {
            <p>Here is a feedback from all the Customers.Find out What is going on in our Gym Facility</p>
        </LeftSide>
        <Row>
-         {testimonials.map((info,i)=>{
+        {testimonials.length > 0 ?<>
+          {testimonials.map((info,i)=>{
           return(
             <TestimonialColumn
              key={i}
+             username={info.username}
              work = {info.profession}
              time = {info.time}
              date = {info.date}
              Text = {info.Message}
             />
           )
-         })}
+         })}</>:<h3 style={{textAlign:"center",color:"#fff",
+         fontSize:"17px",fontWeight:"400"}}>Be the First to write a Testimonial</h3>}
        </Row>
     </Container>
   )

@@ -1,6 +1,5 @@
 import { faBars, faBell, faClockFour, faHome, faLocation, faLock, faShop, faShoppingCart, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getAuth } from 'firebase/auth'
 import React ,{useContext, useEffect}from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -11,7 +10,6 @@ import { userDetailsContext } from '../App'
 function Header(props) {
     let navigate = useNavigate()
     let{EcommerceStore,DetailsName} = useSelector((state)=>state.gymRegucer)
-    let auth = getAuth()
     console.log(DetailsName)
     const MoveToCheckOut=()=>{
         navigate(`/checkout`)
@@ -81,7 +79,7 @@ let Container = styled.div`
  top:0;
  left:0;
  position:fixed;
- z-index:30;
+ z-index:10;
  width:100%;
  .menu{
     color:#fff;

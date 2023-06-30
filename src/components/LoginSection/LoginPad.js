@@ -1,4 +1,4 @@
-import { GoogleAuthProvider,signInWithPopup ,getAuth, sendPasswordResetEmail,signInWithEmailAndPassword} from 'firebase/auth'
+
 import React from 'react'
 import styled from 'styled-components'
 import {useDispatch}  from 'react-redux'
@@ -9,28 +9,6 @@ import Loader from '../Loader'
 
 
 function LoginPad() {
-    let provider = new GoogleAuthProvider()
-    let dispatch = useDispatch()
-    let auth = getAuth()
-    const SignInWithGoogle=()=>{
-        signInWithPopup(auth,provider)
-        .then((result)=>{
-          dispatch(storeUserDetails({
-              UserName:result.user.displayName,
-              PhotoImage:result.user.photoURL,
-              Email:result.user.email
-          }))
-        })
-     }
-     const ForgotPassword=()=>{
-        sendPasswordResetEmail(auth,LoginForm.email)
-        .then(()=>{
-            console.log('Email sent')
-        })
-        .catch((error)=>{
-            setError(error)
-        })
-    }
     let[LoginForm,setLoginForm]=React.useState({
         email:'',
         password:''
@@ -75,7 +53,7 @@ function LoginPad() {
         <h2>BEFIT<small>TM</small></h2>
     <form onSubmit={HandleLoginForm}>
         <h3>WELCOME BACK!</h3>
-        <button> <img src='/Images/google.png'  onClick={SignInWithGoogle}/>
+        <button> <img src='/Images/google.png'/>
         Sign In With Google
         </button>
         <small>Or Sign In With Email</small>
@@ -100,7 +78,7 @@ function LoginPad() {
              onChange={HandleLogin}
             />
         </div>
-        <p onClick={ForgotPassword}>Forgot Your Password?</p>
+        <p>Forgot Your Password?</p>
         <button className='button'>Sign in</button>
         {Error?<div className="error">
                         <FontAwesomeIcon icon={faTriangleExclamation}/>

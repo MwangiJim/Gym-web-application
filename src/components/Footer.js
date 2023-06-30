@@ -36,7 +36,8 @@ function Footer() {
           message:Form.input,
           Occupation:Form.occupation,
           timePosted:new Date().toLocaleTimeString(),
-          datePosted:new Date().toLocaleDateString()
+          datePosted:new Date().toLocaleDateString(),
+          userName:DetailsUser.data.username
         })
        })
     }

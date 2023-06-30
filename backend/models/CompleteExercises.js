@@ -6,6 +6,6 @@ const CompleteExercises = mongoose.Schema({
     Date:String,
     Time:String,
     ExerciseName:String,
-    totalTime:String
+    totalTime:String,
 })
 export default mongoose.model("Completeexercises",CompleteExercises)

@@ -5,7 +5,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import UserLogin from './components/LoginSection/UserLogin';
 import React, { useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { userNameStore } from './redux/reducers/reducerSlice';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';

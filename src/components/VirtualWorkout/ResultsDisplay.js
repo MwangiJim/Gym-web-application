@@ -33,7 +33,7 @@ function ResultsDisplay() {
               <p>WORKOUTS</p>
             </Col>
             <Col>
-              <h2>{item.calories}</h2>
+              <h2>{item.calories.toFixed(0)}</h2>
               <p>KCAL</p>
             </Col>
             <Col>

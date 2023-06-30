@@ -37,7 +37,7 @@ const transporter = nodemailer.createTransport({
 //Authentication and creating accounts of users
 
 app.post('/register',async(req,res)=>{
-    const{username,email,password,userType,date,time} = req.body;
+    const{username,email,password,userType,date,time,occupation,phonenumber,country} = req.body;
 
     let existingUser = await UserAccount.findOne({email:email});
     let hashPwd = await bcrypt.hash(password,10)
@@ -51,7 +51,10 @@ app.post('/register',async(req,res)=>{
             password:hashPwd,
             userType:userType,
             dateRegistered:date,
-            timeRegistered:time
+            timeRegistered:time,
+            phoneNumber:phonenumber,
+            Country:country,
+            Occupation:occupation
         })
         const options = {
             from:"kingongomwangi@outlook.com",
@@ -128,7 +131,7 @@ app.get('/testimonials',async(req,res)=>{
     }
 })
 app.post('/testimonials',async(req,res)=>{
-    const{message,Occupation,timePosted,datePosted} = req.body;
+    const{message,Occupation,timePosted,datePosted,userName} = req.body;
     if(!message){
         return res.status(400).json({"message":"No inputs!!!"})
     }
@@ -138,6 +141,7 @@ app.post('/testimonials',async(req,res)=>{
             timeCommented:timePosted,
             dateCommented:datePosted,
             Profession:Occupation,
+            Username:userName
          })
 
          res.status(201).json({"message":newTestimonial})
@@ -439,7 +443,7 @@ app.post('/Trainercomments',async(req,res)=>{
     }
   })
 app.post("/completeExercises",async(req,res)=>{
-    const{date,time,exercisename,minutes,calories,totalTime} = req.body;
+    const{date,time,exercisename,minutes,calories,totalTime,email} = req.body;
     if(!date,!time,!exercisename) return res.status(500).json({status:"error",error:"Error Accessing Server"})
 
     else{
@@ -449,7 +453,7 @@ app.post("/completeExercises",async(req,res)=>{
             ExerciseName:exercisename,
             Minutes:minutes,
             Calories:calories,
-            totalTime:totalTime
+            totalTime:totalTime,
         })
         res.status(201).json({status:"ok"})
     }
