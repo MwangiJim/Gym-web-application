@@ -35,6 +35,7 @@ To run this project,
 ```
 $clone repository
 $cd ../yourprojectfolder
+$run npm install
 $run npm start
 $cd backend
 $run npm start
@@ -45,7 +46,7 @@ $run npm start
 * News Api.
 ## How it Works
 Quick Guideline to how it works
-* [Create an account with BEFIT(app-name).
+* [Create an account with BEFIT(app-name).Login and Registering is handled by Jsonwebtoken which will create sessions for user/Admin in the appication.Token will be destroyed upon logging out.
 * [The landing page offers in-depth information to the company's work]
 * [The Virtual Workout section - provides you with well curated routines for beginners,intermediate and advanced trainers.]
 * [Plan Sections - Here you can choose a basic or Premium plan to suit you.Purchases are done with paypal]
