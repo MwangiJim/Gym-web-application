@@ -27,6 +27,13 @@ function LineChart() {
         return d[0]
        }),0])
        .range([0,height])
+//get min and max values
+   const minValue = d3.min(data,function(d){
+    return d[0]
+   })
+   const maxValue = d3.max(data,function(d){
+    return d[0]
+   })
 
        svg.append('g')
        .call(d3.axisBottom(xScale))
@@ -38,7 +45,13 @@ function LineChart() {
        const lineGenerator = d3.line()
        .x((d)=>xScale(d[1]))
        .y((d)=>yScale(d[0])).curve(d3.curveCardinal)
-
+      //area generator
+      const AreaPath = d3.area()
+      .x(d => xScale(d[1]))
+      .y0(d => yScale(d[0]))
+      .y1(()=>yScale(minValue - 1))
+      .curve(d3.curveMonotoneX)(data)
+       
        //append line
        svg.append('path')
        .data([data])
@@ -47,6 +60,12 @@ function LineChart() {
        .style('stroke','gold')
        .style('stroke-width',1.5)
        .attr('d',lineGenerator)
+       //append area
+       svg.append('area')
+       .data([data])
+       .attr('d',AreaPath)
+       .style('fill','#f44336')
+       .style('opacity',0.3)
     },[data])
   return (
     <svg ref={svgRef}></svg>

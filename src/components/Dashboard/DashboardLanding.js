@@ -70,8 +70,8 @@ const DashboardLanding = () => {
 export default DashboardLanding
 let Container = styled.div`
  .landing_section{
-    height:85vh;
-    max-height:85vh;
+    height:80vh;
+    max-height:80vh;
     overflow-y:scroll;
     ::-webkit-scrollbar{
       width:0px;

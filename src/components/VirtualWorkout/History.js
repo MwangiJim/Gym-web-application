@@ -102,8 +102,8 @@ let Container=styled.div`
     }
  }
  .history{
-    max-height:45vh;
-    height:45vh;
+    max-height:40vh;
+    height:40vh;
     overflow-y:scroll;
     ::-webkit-scrollbar{
         display:none;

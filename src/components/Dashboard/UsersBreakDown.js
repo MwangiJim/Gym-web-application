@@ -4,7 +4,34 @@ import UserComponent from './UserComponent'
 
 const UsersBreakDown = () => {
     let[Users,setUsers] = React.useState([])
+    let[usersCount,setUsersCount]=React.useState(4)
+    let totalPages = Math.ceil(Users.length/usersCount);
+    let pages = [...Array(totalPages + 1).keys()].slice(1);
 
+    const [currPage,setCurrPage]=React.useState(1);
+
+    const indexOfLastElement = currPage * usersCount;
+    const indexofFirstElement = indexOfLastElement - usersCount;
+
+    const visibleUsers = Users.slice(indexofFirstElement,indexOfLastElement);
+
+
+    const PrevPage = () =>{
+      if(currPage > 1){
+        setCurrPage((prevPage)=>prevPage - 1)
+      }
+      else{
+        return;
+      }
+    }
+    const nextPage = () =>{
+      if(currPage <= pages.length){
+        setCurrPage((prevPage)=>prevPage + 1)
+      }
+      else{
+        return;
+      }
+    }
     useEffect(()=>{
        fetch('http://localhost:8080/fetchUsers')
        .then((res)=>res.json())
@@ -30,7 +57,7 @@ const UsersBreakDown = () => {
          <div>Cost</div>
       </div>
       <div className='users'>
-      {Users.map((user)=>{
+      {visibleUsers.map((user)=>{
         return(
           <UserComponent
             id={user.id}
@@ -41,6 +68,15 @@ const UsersBreakDown = () => {
           />
         )
       })}
+      </div>
+      <div className="footer">
+        <button disabled={currPage === 1?true:false} onClick={PrevPage}>Prev</button>
+        {pages.map((page,i)=>{
+        return <p onClick={()=>setCurrPage(page)} key={page}>{page}</p>
+      })}
+      <button 
+      disabled={currPage === pages.length?true:false}
+      onClick={nextPage}>Next</button>
       </div>
     </Container>
   )
@@ -58,7 +94,7 @@ height:48vh;
   color:#fff;
   .users{
     height:43vh;
-    max-height:43vh;
+    max-height:40vh;
     overflow-y:scroll;
     ::-webkit-scrollbar{
       width:3px;
@@ -85,5 +121,20 @@ height:48vh;
       color:#fff;
       text-align:left;
      }
+  }
+  .footer{
+    width:100%;
+    height:30px;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:left;
+    p{
+      margin:0 2%;
+      cursor:pointer;
+      border:1px solid #fff;
+      padding:3px 6px;
+      border-radius:5px;
+    }
   }
 `

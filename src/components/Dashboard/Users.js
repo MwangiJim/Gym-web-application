@@ -11,9 +11,10 @@ import OverView from './OverView'
 import Daily from './Daily'
 import Monthly from './Monthly'
 import BreakDown from './BreakDown'
+import Geography from './Geography'
 
 function AdminDashboard() {
-  let[dashboard,setdashboard]=React.useState(false)
+  let[dashboard,setdashboard]=React.useState(true)
   let[products,setproducts]=React.useState(false)
   let[customers,setcustomers]=React.useState(false)
   let[transactions,settransactions]=React.useState(false)
@@ -125,14 +126,15 @@ function AdminDashboard() {
             </div>
           </div>
          <div className="landing_section">
-             <DashboardLanding/> 
+          {/* <Geography/> */}
+             <DashboardLanding/>
             {/* {products?<ProductsView/>:''} */}
-           {/* <Customers/> */}
-           {/* <Transactions/> */}
-           {/* <OverView/> */}
-            {/* <Daily/>  */}
-            {/* <Monthly/> */}
-              {/* <BreakDown/> */}
+            {/* {customers?<Customers/> :''} */}
+           {/* {transactions? <Transactions/> :''}
+           {overview? <OverView/> :''}
+            {daily? <Daily/> :''} 
+             {monthly?<Monthly/> :''}
+              {breakdown? <BreakDown/> :''} */}
          </div>
       </div>
     </Container>

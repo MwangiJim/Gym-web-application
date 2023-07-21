@@ -10,7 +10,7 @@ const PieChart = () => {
         {sales:38104,category:'Machinery'}
     ])
    useEffect(()=>{
-    const height = 400;
+    const height = 200;
     const width = 500;
 
     const svg = d3.select(svgRef.current)

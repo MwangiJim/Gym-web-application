@@ -4,13 +4,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight, faBurger } from '@fortawesome/free-solid-svg-icons'
 
 function DashboardColumns({icon,description,id,
-  Da_handler,P_handler,D_handler,M_handler,O_handler,C_handler,Br_handler,T_handler}) {
+  Da_handler,P_handler,T_handler,D_handler,M_handler,O_handler,C_handler,Br_handler}) {
   function handledisplay(){
     if(id === 1){
-      window.location.assign('/admindashboard')
+      Da_handler((prevState)=>!prevState)
     }
     if(id === 2){
       P_handler((prevState)=>!prevState)
+    }
+    if(id === 3){
+      C_handler((prevState)=>!prevState)
+    }
+    if(id === 4){
+      T_handler((prevState)=>!prevState)
+    }
+    if(id === 9){
+      Br_handler((prevState)=>!prevState)
+    }
+    if(id === 6){
+      O_handler((prevState)=>!prevState)
+    }
+    if(id === 7){
+     D_handler((prevState)=>!prevState)
+    }
+    if(id === 8){
+      M_handler((prevState)=>!prevState)
     }
   }
   return (

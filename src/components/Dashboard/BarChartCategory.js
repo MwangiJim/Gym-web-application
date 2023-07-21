@@ -20,13 +20,15 @@ const BarChartCategory = () => {
       .attr('transform',`translate(${width - 250},${height - 50})`)
 
     //format data into pie chart
-    const formatdata = d3.pie().value(d => d.sales)(salesdata)
+    const formatdata = d3.pie().startAngle(-0.75 * Math.PI).value(d => d.sales)(salesdata)
     //setup arc generator
+
     const arcGenerator = d3.arc()
     .innerRadius(40)
     .outerRadius(130)
-    .padAngle(0.02)
+    .padAngle(0.04)
     .cornerRadius(10)
+    
     //setup colors
     const colors = d3.scaleOrdinal()
     .range(['#ffc017','#ffc017','gold','gold'])
@@ -36,6 +38,8 @@ const BarChartCategory = () => {
     .join('path')
     .attr('d',arcGenerator)
     .style('fill',d => colors(d.data.sales))
+    .style('stroke','#fff')
+    .style('stroke-width',1.5)
     .transition()
     .duration(800)
     .attrTween('d',function(d){

@@ -54,7 +54,7 @@ function DailyChart() {
         .data([dailysales])
         .attr('class','line')
         .style('fill','none')
-        .style('stroke','#fff')
+        .style('stroke','gold')
         .style('stroke-width',1.5)
         .attr('d',lineGenerator)
         

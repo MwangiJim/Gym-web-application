@@ -130,6 +130,7 @@ function MainWorkout(props){
           Exercise='SHOULDER & BACK ADVANCED'
           imagebackground='/Images/shoulder advanced.jpg'
          />
+         <p style={{color:'gray',fontSize:'14px',textAlign:'center'}}>© Copyright by BEFIT,2023</p>
       </Buttons>
     </Container>
   )
