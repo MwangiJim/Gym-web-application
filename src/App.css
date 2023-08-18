@@ -1,10 +1,7 @@
 *{
   margin:0%;
   padding: 0%;
-  font-family: 'Noto Sans', sans-serif;
-}
-.App{
-  font-family: 'Noto Sans', sans-serif;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 body{
   background-color: #000;
@@ -38,7 +35,6 @@ body::-webkit-scrollbar-track{
 .image{
   flex-basis:33.3%;
   cursor: pointer;
-
 }
 @media(max-width:600px){
   .image{

@@ -37,9 +37,10 @@ function ExercisePreview(props){
               <p> {TotalTime} mins . {ExerciseSchedule.exercise.length} workouts</p>
             </Header>
              <div className='Gifs'>
-                {ExerciseSchedule.exercise.map((item)=>{
+                {ExerciseSchedule.exercise.map((item,i)=>{
                 return(
                   <ExerciseComponent
+                    key={i}
                     Gif={item.gifPath}
                     exercise={item.Name}
                     duration={item.Duration}

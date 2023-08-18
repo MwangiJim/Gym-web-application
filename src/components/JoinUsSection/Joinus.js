@@ -204,12 +204,6 @@ let[Member,setMember]=React.useState([])
 
            </div>
          </div>
-         <div className='quotes'>
-            <FontAwesomeIcon icon={faQuoteLeft} className='icon'/>
-             <h2>{!SingleQuote?.Text?'Checking....':SingleQuote.Text}</h2>
-            <p>{!SingleQuote?.Author?'ShakeSpeare checking....':SingleQuote.Author}</p> 
-            <FontAwesomeIcon icon={faQuoteRight} className='icon'/>
-         </div>
       </div> 
       <div className='right__side'>
         <div className='header'>

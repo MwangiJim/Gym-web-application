@@ -9,8 +9,8 @@ import { userDetailsContext } from '../App'
 
 function Header(props) {
     let navigate = useNavigate()
-    let{EcommerceStore,DetailsName} = useSelector((state)=>state.gymRegucer)
-    console.log(DetailsName)
+    let{EcommerceStore,DetailsName,PurchasePlanCart} = useSelector((state)=>state.gymRegucer)
+    //console.log(DetailsName)
     const MoveToCheckOut=()=>{
         navigate(`/checkout`)
     }
@@ -27,44 +27,38 @@ function Header(props) {
     let styles = {
         right:Menu?'-50px':'-400px'
     }
-    let[Googlemaps,setGoogleMaps]=React.useState(false)
-    const ShowGoogleMaps=()=>{
-       setGoogleMaps((prevForm)=>!prevForm)
-    }
-    let name = 'Guest'
      function Logout(){
         window.localStorage.clear();
         window.localStorage.setItem("isLoggedIn",false);
         window.location.assign('/accountsetup');
      }
      let userDetails = useContext(userDetailsContext);
-     
+     let totalCartLength = EcommerceStore.length + PurchasePlanCart.length;
   return (
     <Container>
-          <h2 className='h2'>BE<strong>FIT</strong></h2>
-      <div className='center'>
-          <li onClick={ShowHome}><FontAwesomeIcon icon={faHome}/><small>Home</small></li>
+      <div className='left'>
+         <h2 className='h2'>BE<strong>FIT</strong></h2>
+          <li onClick={ShowHome}><small>Home</small></li>
           <li onClick={()=>navigate(`/virtualworkout`)}><small>Virtual Workout</small></li>
-          <li onClick={ShowShopping}><FontAwesomeIcon icon={faShop}/><small>Shop</small></li>
-          <li onClick={()=>navigate('/joinus')}><FontAwesomeIcon icon={faLock}/><small>Account</small></li>
+          <li onClick={ShowShopping}><small>Shop</small></li>
+          <li onClick={()=>navigate('/joinus')}><small>Account</small></li>
           <li onClick={MoveToCheckOut}><FontAwesomeIcon icon={faShoppingCart} className='shopping'/><span>{EcommerceStore.length}</span></li>
+      </div>
+      <div className='right'>
+           <div className='location'>
+                <img src='/Images/kenya.png' style={{width:'25px',height:'15px',objectFit:'cover'}}/>
+            </div>
           <div className='profile_image'>
             <p>{userDetails?.data.username?userDetails.data.username.charAt(0):'G'}</p>
           </div>
           <small>Hello<br/>{userDetails?.data.username?userDetails.data.username:'Guest'}</small>
         {/* //   <p></p>}  */}
           <button onClick={Logout}>LOGOUT</button>
-          <div className='location'>
-                <FontAwesomeIcon icon={faLocation} className='icon' onClick={ShowGoogleMaps}/>
-                <small>{localStorage.getItem('address')}</small>
-            </div>
            {props.type === 'Admin'? <div className='admin' onClick={()=>navigate('/admindashboard')}>
-                <h3>A</h3>
-                <h6>Admin</h6>
+                <h3>Dashboard</h3>
             </div>:''}
       </div>
       <FontAwesomeIcon icon={Menu?faTimes:faBars} className='menu' onClick={ShowMenu}/>
-      {Googlemaps?<GoogleMap/>:''}
     </Container>
   )
 }
@@ -75,7 +69,7 @@ let Container = styled.div`
  justify-content:space-between;
  align-items:center;
  background-color:#000;
- padding:10px 0;
+ padding:15px 0;
  top:0;
  left:0;
  position:fixed;
@@ -113,7 +107,7 @@ let Container = styled.div`
      margin:0 7%;
  }
  @media(max-width:600px){
-    .center{
+    .left{
         background-color:#000;
         width:100%;
         height:20vh;
@@ -131,25 +125,34 @@ let Container = styled.div`
             align-items:center;
             margin-bottom:-20px;
             padding:-35px 0;
-            color:#000;
-            font-size:17px;
+            color:grey;
+            font-size:15px;
             small{
                 display:none;
             }
         }
     }
  }
- .center{
-     text-align:left;
+ .right{
+    text-align:left;
      align-items:center;
+     justify-content:center;
      display:flex;
-     margin-right:5%;
-     color:#f44336;
-     .admin{
-        background-color:gray;
-        height:50px;
-        width:50px;
-        border-radius:50%;
+     margin-right:3%;
+     color:#fff;
+     flex:0.35;
+     button{
+        background:transparent;
+        outline:none;
+        border:2px solid #fff;
+        padding:8px 20px;
+        cursor:pointer;
+        color:#fff;
+        border-radius:6px;
+    }
+    .admin{
+        background-color:transparent;
+        padding:7px 20px;
         cursor:pointer;
         border:2px solid #fff;
         display:flex;
@@ -158,13 +161,23 @@ let Container = styled.div`
         flex-direction:column;
         h3{
             color:#fff;
+            font-weight:300;
+            font-size:17px;
         }
-        h6{
-            color:#fff;
-            font-size:9px;
-            font-weight:200;
-        }
+        border-radius:7px;
      }
+     .profile_image{
+        cursor:pointer;
+        margin:0 2%;
+     }
+ }
+ .left{
+     text-align:left;
+     align-items:center;
+     display:flex;
+     margin-right:5%;
+     color:#f44336;
+     flex:0.5;
      .profile_image{
         cursor:pointer;
      }
@@ -180,15 +193,6 @@ let Container = styled.div`
         color:#fff;
         cursor:pointer;
      }
-     button{
-         background:#ffc017;
-         outline:none;
-         border:2px solid #fff;
-         padding:7px 20px;
-         cursor:pointer;
-         color:#000;
-         border-radius:6px;
-     }
      small{
          color:#fff;
          font-size:15px;
@@ -201,6 +205,9 @@ let Container = styled.div`
         list-style:none;
         color:#fff;
         cursor:pointer;
+        small{
+            
+        }
         ::after{
             content:'';
             width:0;

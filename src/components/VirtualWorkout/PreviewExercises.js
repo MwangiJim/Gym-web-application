@@ -14,13 +14,10 @@ function PreviewExercises() {
         display:Close?'none':'block'
     }
     let[prevIndex,setPrevIndex]=React.useState(0);
-    let[Button,setButton] = React.useState(false);
+  //  let[Button,setButton] = React.useState(false);
     const MoveFoward=()=>{
        if(prevIndex < ExerciseSchedule.exercise.length-1){
         setPrevIndex((previndex)=>previndex+1)
-       }
-       else if(prevIndex === ExerciseSchedule.exercise.length-1){
-         setButton(true)
        }
        else{
         setPrevIndex(0)
@@ -33,9 +30,6 @@ function PreviewExercises() {
        else{
         setPrevIndex(0)
        }
-    }
-    let buttonStyles = {
-        display:Button?'none':'block'
     }
   return (
     <Container style={styles}>
@@ -52,9 +46,19 @@ function PreviewExercises() {
             )
          })}
           <Controllers>
-             <FontAwesomeIcon icon={faBackwardStep} className='icon' onClick={MoveBackwards}/>
+            <button
+              disabled={prevIndex <= 0?true:false}
+            ><FontAwesomeIcon 
+            icon={faBackwardStep} 
+            className='icon' 
+            onClick={MoveBackwards}/></button>
              <h3><strong>{prevIndex+1}</strong>/{ExerciseSchedule.exercise?.length}</h3>
-             <FontAwesomeIcon icon={faForwardStep} className='icon' onClick={MoveFoward} style={buttonStyles}/>
+            <button
+             disabled={prevIndex === ExerciseSchedule.exercise.length?true:false}
+            ><FontAwesomeIcon 
+            icon={faForwardStep} 
+            className='icon' 
+            onClick={MoveFoward}/></button>
           </Controllers>
        </div>
     </Container>
@@ -109,6 +113,12 @@ let Controllers = styled.div`
  background-color:#333;
  color:#fff;
  padding:10px 5px;
+ button{
+  background:none;
+  border:none;
+  outline:none;
+  color:#fff;
+ }
  .icon{
     cursor:pointer;
     font-size:20px;

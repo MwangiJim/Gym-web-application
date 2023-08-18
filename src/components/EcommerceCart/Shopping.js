@@ -27,6 +27,7 @@ function Shopping() {
                 <img src='/Images/banner-bg.jpg'/>
                   <Fade center>
                     <h2>Set Up Your BackYard For Fitness Routines</h2>
+               
                   </Fade>
                 <div className='darkmode'>
 

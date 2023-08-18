@@ -40,9 +40,10 @@ function Report(props) {
           <BarChartDisplay/>
         <div className='history'>
             {ExerciseData.length > 0?<>
-              {ExerciseData.map((data)=>{
+              {ExerciseData.map((data,index)=>{
                 return(
                     <ExerciseHistoryComponent
+                    key={index}
                       Image={data.Exerciseicon}
                       Date={data.Date}
                       Time={data.time}

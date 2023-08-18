@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 function PricingPaypalButton(props) {
   let{StorePricingPlan,PurchaseDetails}=useSelector((state)=>state.gymRegucer);
-  console.log(StorePricingPlan.Plan,PurchaseDetails.Price,PurchaseDetails.Period)
+  //console.log(StorePricingPlan.Plan,PurchaseDetails.Price,PurchaseDetails.Period)
  const SubmitDetails=async()=>{
    await fetch('http://localhost:8080/purchased_plan',{
     method:'POST',

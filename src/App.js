@@ -1,10 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
-import Home from './components/Home';
+//import Home from './components/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import UserLogin from './components/LoginSection/UserLogin';
-import React, { useEffect } from 'react';
+import React, { useEffect,Suspense } from 'react';
 import { useDispatch } from 'react-redux';
 import { userNameStore } from './redux/reducers/reducerSlice';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
@@ -25,6 +25,8 @@ import LoginPad from './components/LoginSection/LoginPad';
 import Loader from './components/Loader';
 import TrainerDashboard from './components/JoinUsSection/TrainerDashboard';
 import Dashboard from './components/JoinUsSection/Dashboard';
+
+const Home = React.lazy(()=> import('./components/Home'))
 export const userDetailsContext = createContext();
 
 function App() {
@@ -46,7 +48,7 @@ function App() {
        setuser(data);
        setUserType(data.data.userType);
     })
- },[])
+ },[])  
   let Options = {
     "client-id":"AXlh9wwCU-jQ3qLmNO7EIz15HAmw-w1r8aLyWLpMzjgskOBTZHVweztDrhBhZbqMz_7NPu01KOZ2eZvQ",
   }
@@ -72,7 +74,7 @@ function App() {
           <Route path='/payment' element={<PaypalPayment/>}></Route>
           <Route path='/checkout' element={<CheckoutCart/>}></Route>
           <Route path='/shopping' element={<Shopping/>}></Route>
-          <Route path='/' element={loggedIn?<Home/>:<UserLogin/>}></Route>
+          <Route path='/' element={user?<Suspense fallback={<div>Loading...</div>}><Home/></Suspense>:<UserLogin/>}></Route>
         </Routes>
         <ScrollToTop/>
         <Footer/>

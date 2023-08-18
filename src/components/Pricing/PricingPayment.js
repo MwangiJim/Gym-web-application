@@ -1,16 +1,42 @@
-import { faCircleDollarToSlot, faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons'
+import { faCircleDollarToSlot, faMoneyCheckDollar, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import PlanBox from './PlanBox'
 import EmailSection from './EmailSection'
 import PricingPaypalButton from './PricingPaypalButton'
 import PurchasedPlan from './PurchasedPlan'
+import { useNavigate } from 'react-router-dom'
+import { setPurchasePlanCart } from '../../redux/reducers/reducerSlice'
 
 function PricingPayment() {
     let{StorePricingPlan,PurchaseDetails}=useSelector((state)=>state.gymRegucer);
+    let dispatch = useDispatch();
+    let navigate=useNavigate()
 
+    function generateValues(){
+        let randVal = ''
+        let len = 5
+
+        for(let i =0;i<=len;i++){
+            randVal += Math.floor(Math.random() * len)
+        }
+        return randVal;
+    }
+    let randomString = generateValues()
+    const AddPurchasedPlan =()=>{
+        dispatch(setPurchasePlanCart({
+          id:randomString,
+          purchasePlan:StorePricingPlan.Plan,
+          pricingPlan:PurchaseDetails.Price,
+          purchasePlanPeriod:PurchaseDetails.Period,
+          datePurchased:new Date().toLocaleDateString(),
+          timePurchased:new Date().toLocaleTimeString(),
+        }))
+       navigate(`/payment`)
+    //alert('hello')
+    }
   return (
     <Container>
      <div className='header'>
@@ -76,12 +102,16 @@ function PricingPayment() {
                         <small>Total</small>
                         <p>$ {PurchaseDetails.Price}</p>
                     </Line>
-                    <PricingPaypalButton
-                    planCost = {PurchaseDetails.Price}
-                    />
+                     <button className='paypal_btn' 
+                     disabled={!PurchaseDetails?.Price?true:false}
+                     onClick={AddPurchasedPlan}
+                     style={{display:'flex',justifyContent:'center',alignItems:'center'}}
+                     >
+                        <FontAwesomeIcon icon={faShoppingCart} style={{color:'#fff'}}/>
+                     Add to Cart : {StorePricingPlan.Plan}</button>
                 </div>
                 </div>
-                <PurchasedPlan/>
+                {/* <PurchasedPlan/> */}
            </div>
        </Paysection>
     </Box>
@@ -161,6 +191,16 @@ let Paysection = styled.div`
 text-align:left;
 padding-top:20px;
 margin:3% 0;
+.paypal_btn{
+    width:100%;
+    background:#000;
+    border-radius:10px;
+    color:#fff;
+    border:none;
+    outline:none;
+    height:40px;
+    cursor:pointer;
+}
 h3{
     font-size:30px;
     font-weight:300;
@@ -184,7 +224,7 @@ padding:20px 12px;
 `
 let Line = styled.div`
  display:flex;
- margin:1% 0;
+ margin:2% 0;
  padding:7px 0;
  justify-content:space-between;
  align-items:center;

@@ -76,9 +76,16 @@ function LoginPad() {
              value={LoginForm.password}
              name='password'
              onChange={HandleLogin}
+             className='input'
             />
         </div>
         <p>Forgot Your Password?</p>
+       <div style={{display:'flex',margin:'2% 0'}}>
+       <input
+          type='checkbox'
+        />
+        <h4>Stay logged in for 30 days</h4>
+       </div>
         <button className='button'>Sign in</button>
         {Error?<div className="error">
                         <FontAwesomeIcon icon={faTriangleExclamation}/>
@@ -188,7 +195,7 @@ let Left = styled.div`
         font-size:35px;
         font-weight:700;
     }
-    input{
+    .input{
         width:90%;
         height:50px;
         border-radius:25px;
@@ -225,6 +232,7 @@ let Right = styled.div`
  p{
     color:gray;
     font-size:14px;
+    font-family: 'Cookie' , cursive;
     width:150px;
     font-weight:600;
     text-align:center;

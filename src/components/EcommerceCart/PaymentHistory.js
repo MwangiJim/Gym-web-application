@@ -21,10 +21,10 @@ function PaymentHistory() {
        <h2>Your Checkout History</h2>
         <FontAwesomeIcon icon={faTimesCircle} className='close' onClick={HideHistory}/>
         {PurchasedItems.history? <div className='history'>
-         {PurchasedItems.history.map((item)=>{
+         {PurchasedItems.history.map((item,i)=>{
           return(
             <PaymentHistoryComponent
-             key={item.Price}
+             key={i}
              image={item.ProductImage}
              description={item.Description}
              price={item.Price}

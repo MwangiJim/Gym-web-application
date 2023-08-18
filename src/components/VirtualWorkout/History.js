@@ -27,7 +27,7 @@ function History(props) {
      fetch("http://localhost:8080/getCompleteExercises")
      .then((res)=>res.json())
      .then((data)=>{
-        console.log(data);
+        //console.log(data);
         let Exercisedata = data.data.map((item)=>{
             return{
                 minutes:item.Minutes,
@@ -41,7 +41,7 @@ function History(props) {
         setExerciseData(Exercisedata);
      })
   })
-  console.log(ExerciseData)
+ // console.log(ExerciseData)
   return (
     <Container style={props.historystyles}>
         <Head>
@@ -55,9 +55,10 @@ function History(props) {
         />
         <h3>{date.toDateString()}</h3>
         <div className='history'>
-            {ExerciseData.map((data)=>{
+            {ExerciseData.map((data,index)=>{
                 return(
                     <ExerciseHistoryComponent
+                    key={index}
                       Image={data.Exerciseicon}
                       Date={data.Date}
                       Time={data.time}

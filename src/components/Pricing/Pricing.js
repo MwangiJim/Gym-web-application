@@ -1,6 +1,7 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import { min } from 'moment'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -8,29 +9,26 @@ import styled from 'styled-components'
 function Pricing() {
   let navigate= useNavigate()
   let{StorePricingPlan}=useSelector((state)=>state.gymRegucer);
-   let [Time,setTime]=React.useState(10)
-  let Counter = React.useRef(Time);
-
-  useEffect(()=>{
-    setInterval(()=>{
-      Counter.current = Counter.current - 1;
-    },1000)
-  },[])
-  console.log(Counter.current)
 
   const SelectPlan=()=>{
      navigate(`/pricingpayment`)
   }
-  // let[Time,SetTime]=useState(30)
-
-  // useEffect(()=>{
-  //    let count= setInterval(()=>{
-  //      SetTime(prevTime=>prevTime-1)
-  //    },1000)
-
-  //    return ()=>clearInterval(count)
-  // },[Time])
-  // console.log(Time)
+  let [totalTime,setTotalTime] = React.useState(3600)
+ // console.log(`${minutes}:${seconds}`)
+ //let hours = Math.floor(totalTime/3600)
+ let minutes = Math.floor(totalTime/60)
+ let seconds = totalTime%60;
+ useEffect(()=>{
+    if(totalTime > 0){
+      let timer = setInterval(()=>{
+        setTotalTime((prevTime)=>prevTime-1)
+        // let day = Math.floor(totalTime/86400);
+      //  console.log(`${hours}:${minutes}:${seconds}`)
+      },1000)
+      return ()=> clearInterval(timer)
+    }
+ })
+ //console.log(totalTime)
   return (
     <Container>
       <img src='/Images/image1.png'/>
@@ -40,22 +38,22 @@ function Pricing() {
           <p>Get Advanced Care And Training Experience with{StorePricingPlan.Plan} with a 12 month Subscription</p>
           <div className='time'>
              <div className='day'>
-                <p></p> 
+                <p>--</p> 
                 <h6>days</h6>
              </div>
              <small>:</small>
              <div className='day'>
-                <p></p> 
+                <p>--</p> 
                 <h6>hours</h6>
              </div>
              <small>:</small>
              <div className='day'>
-                <p></p> 
+                <p>{minutes}</p> 
                 <h6>minutes</h6>
              </div>
              <small>:</small>
              <div className='day'>
-                <p></p> 
+                <p>{seconds<10?`0${seconds}`:seconds}</p> 
                 <h6>seconds</h6>
              </div>
           </div>

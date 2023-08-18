@@ -39,6 +39,7 @@ let Container = styled.div`
          list-style:none;
          padding:10px 12px;
          position:relative;
+         font-family:'Cookie',cursive;
          a{
              color:gray;
              font-size:15px;

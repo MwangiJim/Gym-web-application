@@ -2,8 +2,10 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { userDetailsContext } from '../../App'
 
 function CheckoutPayment() {
+  const userDetails = React.useContext(userDetailsContext);
   let navigate = useNavigate()
     let{EcommerceStore}=useSelector((state)=>state.gymRegucer)
 

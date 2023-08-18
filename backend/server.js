@@ -35,7 +35,15 @@ const transporter = nodemailer.createTransport({
 });
 
 //Authentication and creating accounts of users
+const randomStrGenerator = ()=>{
+    let randStr = ''
+    let len = 10
 
+    for(let i =0;i<=len;i++){
+        randStr += Math.floor(Math.random()*len)
+    }
+    return randStr;
+}
 app.post('/register',async(req,res)=>{
     const{username,email,password,userType,date,time,occupation,phonenumber,country} = req.body;
 
@@ -60,7 +68,7 @@ app.post('/register',async(req,res)=>{
             from:"kingongomwangi@outlook.com",
             to:"",
             subject:"Welcome to BEFIT,This is node at work",
-            text:"It Works and so should you..make sure you work out everyday use this link 'http://localhost:3000' to access it"
+            text:"It Works and so should you.Verify here:use this link 'http://localhost:3000' to access it"
         }
         transporter.sendMail(options,function(err,info){
             if(err){
@@ -77,7 +85,7 @@ let JWT_TOKEN = 'svy3et2783ew1892wi293e746tregdyuewqdt1823ueos2yhe2983e123sie239
 
 app.post('/login',async(req,res)=>{
     const {email,password} = req.body;
-
+     let randStrVal = randomStrGenerator()
     let existingUser = await UserAccount.findOne({email:email});
     if(!existingUser){
         return res.status(402).json({error:'User does not exist'})
@@ -85,6 +93,20 @@ app.post('/login',async(req,res)=>{
     if(await bcrypt.compare(password,existingUser.password)){
         let token = jwt.sign({email:existingUser.email},JWT_TOKEN);
         if(res.status(200)){
+            const mailOptions = {
+                from:'kingongomwangi@outlook.com',
+                to:email,
+                subject:'Verify Authentication',
+                text:`Kindly verify you are not a bot here http://localhost:8080/${randStrVal}`
+            }
+            transporter.sendMail(mailOptions,(err,data)=>{
+                if(err){
+                    console.log('Mail failed to send.')
+                }
+                else{
+                    console.log('Mail successfully sent!',data.response)
+                }
+            })
             return res.send({status:'ok',data:token})
         }
         else{

@@ -87,6 +87,7 @@ h2{
     text-align:center;
     display:flex;
     align-items:center;
+    font-family:'Cookie',cursive;
     ::after{
         content:'';
         width:100%;

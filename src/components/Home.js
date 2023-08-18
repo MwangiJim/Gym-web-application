@@ -6,7 +6,7 @@ import Features from './Features'
 import Footer from './Footer'
 import Planning from './Planning'
 import Posts from './Posts'
-import Slider from './Slider'
+import ImageCaraousel from './ImageCaraousel'
 import Testimonials from './Testimonials'
 import Trainers from './Trainers'
 import { useEffect } from 'react'
@@ -18,7 +18,7 @@ function Home() {
    console.log(DetailsName)
   return (
      <Container>
-        <Slider/>
+        <ImageCaraousel/>
         <Aboutus/>
         <Features/>
         <Planning/>

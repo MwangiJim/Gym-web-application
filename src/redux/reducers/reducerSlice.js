@@ -73,7 +73,10 @@ export const gymReducer = createSlice({
         },
         PurchasedPlan:{
 
-        }
+        },
+        PurchasePlanCart:[
+
+        ]
     },
     reducers:{
         addPost:(state,action)=>{
@@ -246,6 +249,26 @@ export const gymReducer = createSlice({
                 ...state,
                 PurchasedPlan:action.payload
             }
+         },
+         setPurchasePlanCart:(state,action)=>{
+            return{
+                ...state,
+                PurchasePlanCart:[...state.PurchasePlanCart,action.payload]
+            }
+         },
+         DeletePlans:(state,action)=>{
+            const idx = state.PurchasePlanCart.findIndex((itemIdx)=>itemIdx.id === action.payload)
+
+            let newbasket = [...state.PurchasePlanCart]
+            if(idx < 0){
+                newbasket.splice(idx,1)
+            }else{
+                console.log('You canot delete this item')
+            }
+            return {
+                ...state,
+                PurchasePlanCart:newbasket
+            }
          }
     }
 })
@@ -276,8 +299,10 @@ export const {
     setReminderDetails,
     setDaysSelected,
     SetProfile,
+    setPurchasePlanCart,
     SetDaysCount,
     setTrainerProfileDetails,
-    setPurchasedPlan
+    setPurchasedPlan,
+    DeletePlans
     } = gymReducer.actions
 export default gymReducer.reducer

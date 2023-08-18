@@ -209,7 +209,7 @@ function ExerciseTrainer(props){
            <div className='session'>
              {ExerciseSchedule.exercise.map((item,index)=>{
                return(
-                  <div className={ExerciseIndex === index?'visible':'invisible'}>
+                  <div className={ExerciseIndex === index?'visible':'invisible'} key={index}>
                      {/*{speak({text:`The Next ${item.Frequency?item.Frequency:`${item.Duration} seconds`},${item.Name}`})}*/}
                         <img src={item.gifPath}/>
                           {/**Progress Bar */}
